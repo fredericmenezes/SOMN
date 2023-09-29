@@ -1,7 +1,8 @@
 """jobshop class."""
 import collections
 from ortools.sat.python import cp_model
-
+import wandb
+from stable_baselines3.common.base_class import BaseAlgorithm
 #class Task:
 #    def __init__(self, machine, duration):
 #        self.machine = machine
@@ -95,6 +96,7 @@ class JobShop:
 
             # Create per machine output lines.
             self.output = ''
+            i = 0
             for machine in self.all_machines:
                 # Sort by starting time.
                 self.assigned_jobs[machine].sort()
@@ -121,9 +123,13 @@ class JobShop:
             # Finally print the solution found.
             print(f'Optimal Schedule Length: {self.solver.ObjectiveValue()}')
             print(self.output)
+            
+            wandb.log({'Objective Value': self.solver.ObjectiveValue(), 'steps': i})
+            
         else:
             print('No solution found.')
 
+        i += 1
         # Statistics.
         print('\nStatistics')
         print('  - conflicts: %i' % self.solver.NumConflicts())

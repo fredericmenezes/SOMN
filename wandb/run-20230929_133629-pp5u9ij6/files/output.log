@@ -1,0 +1,48 @@
+Solution:
+Optimal Schedule Length: 9.0
+Machine 0:
+Machine 1: job_8_task_0
+           [0,2]
+Machine 2:
+Machine 3:
+Machine 4: job_8_task_1
+           [2,4]
+Machine 5: job_8_task_2
+           [4,5]
+Machine 6: job_8_task_3
+           [5,7]
+Machine 7: job_8_task_4
+           [7,8]
+Machine 8:
+Machine 9: job_8_task_5
+           [8,9]
+Traceback (most recent call last):
+  File "c:\Users\alyss\OneDrive\Área de Trabalho\OPTSIMFLEX\Treinamento.py", line 70, in <module>
+    model.learn(total_timesteps=3328*10)
+  File "c:\Users\alyss\OneDrive\Área de Trabalho\OPTSIMFLEX\Stable_baselines3\PPO.py", line 439, in learn
+    return super().learn(
+           ^^^^^^^^^^^^^^
+  File "c:\Users\alyss\OneDrive\Área de Trabalho\OPTSIMFLEX\Stable_baselines3\OnPolicyAlgirithm.py", line 262, in learn
+    continue_training = self.collect_rollouts(self.env, callback, self.rollout_buffer, n_rollout_steps=self.n_steps)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\alyss\OneDrive\Área de Trabalho\OPTSIMFLEX\Stable_baselines3\OnPolicyAlgirithm.py", line 179, in collect_rollouts
+    new_obs, rewards, dones, infos = env.step(clipped_actions)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alyss\OneDrive\Área de Trabalho\OPTSIMFLEX\.venv\Lib\site-packages\stable_baselines3\common\vec_env\base_vec_env.py", line 197, in step
+    return self.step_wait()
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\alyss\OneDrive\Área de Trabalho\OPTSIMFLEX\.venv\Lib\site-packages\stable_baselines3\common\vec_env\dummy_vec_env.py", line 58, in step_wait
+    obs, self.buf_rews[env_idx], terminated, truncated, self.buf_infos[env_idx] = self.envs[env_idx].step(
+                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alyss\OneDrive\Área de Trabalho\OPTSIMFLEX\.venv\Lib\site-packages\stable_baselines3\common\monitor.py", line 94, in step
+    observation, reward, terminated, truncated, info = self.env.step(action)
+                                                       ^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\alyss\OneDrive\Área de Trabalho\OPTSIMFLEX\Ambiente_SOMN\Somn.py", line 427, in step
+    self.product_scheduling(Somn.time, action)
+  File "c:\Users\alyss\OneDrive\Área de Trabalho\OPTSIMFLEX\Ambiente_SOMN\Somn.py", line 294, in product_scheduling
+    Somn.instance.Output()  ## precisa salvar a lista de resultados
+    ^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\alyss\OneDrive\Área de Trabalho\OPTSIMFLEX\JobShop\JobShop.py", line 125, in Output
+    wandb.log({'Objective Value': self.solver.ObjectiveValue(), 'timesteps': self.num_timesteps})
+                                                                             ^^^^^^^^^^^^^^^^^^
+AttributeError: 'JobShop' object has no attribute 'num_timesteps'
