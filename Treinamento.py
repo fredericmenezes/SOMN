@@ -62,7 +62,7 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
             #stats_window_size=config.stats_window_size,
             verbose=0,
             #seed = 2023,
-            device='cpu',
+            device='cuda',
             #tensorboard_log=f"/content/drive/MyDrive/SOMN2/runs/{run1.id}"
             tensorboard_log=f"runs/{run1.id}"
         )

@@ -18,3 +18,7 @@ chaves:
 >(fredcomputacao): 69336ac55d8f8254054224201713747849b022bf<br>
 >(isaacnsmenezes): 2b1e96559cebc2b21529015e7ab69bcefa749ca8<br>
 >(AlyssonPereira): fb2a13f8823d020860b578001c5e9b50875d1b3c<br>
+
+<h3 align="left">3. Executar o arquivo treinamento</h3>
+
+>Necessário ser executada no ambiente virtual disponível junto ao código
