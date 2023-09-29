@@ -1,0 +1,7 @@
+wandb
+stable-baselines3[extra]>=2.0.0a4
+git+https://github.com/Stable-Baselines-Team/stable-baselines3-contrib
+ortools
+heapdict
+scipy
+seaborn
