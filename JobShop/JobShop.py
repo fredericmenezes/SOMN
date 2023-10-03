@@ -124,7 +124,7 @@ class JobShop:
             print(f'Optimal Schedule Length: {self.solver.ObjectiveValue()}')
             print(self.output)
             
-            wandb.log({'Objective Value': self.solver.ObjectiveValue(), 'steps': i})
+            wandb.log({'Objective Value': self.solver.ObjectiveValue(), 'steps': BaseAlgorithm.getNumTimeStep})
             
         else:
             print('No solution found.')
