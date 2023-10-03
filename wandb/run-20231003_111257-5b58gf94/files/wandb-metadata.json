@@ -1,0 +1,47 @@
+{
+    "os": "Windows-10-10.0.19045-SP0",
+    "python": "3.11.5",
+    "heartbeatAt": "2023-10-03T14:12:59.314935",
+    "startedAt": "2023-10-03T14:12:57.549051",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "c:\\Users\\alyss\\OneDrive\\\u00c1rea de Trabalho\\SOMN\\Treinamento.py",
+    "codePathLocal": "Treinamento.py",
+    "codePath": "Treinamento.py",
+    "host": "DESKTOP-55GCPFK",
+    "username": "alyss",
+    "executable": "C:\\Users\\alyss\\OneDrive\\\u00c1rea de Trabalho\\SOMN\\.venv\\Scripts\\python.exe",
+    "cpu_count": 4,
+    "cpu_count_logical": 8,
+    "cpu_freq": {
+        "current": 3600.0,
+        "min": 0.0,
+        "max": 3600.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3600.0,
+            "min": 0.0,
+            "max": 3600.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 931.4619102478027,
+            "used": 84.61917495727539
+        }
+    },
+    "gpu": "NVIDIA GeForce GTX 1050 Ti",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce GTX 1050 Ti",
+            "memory_total": 4294967296
+        }
+    ],
+    "memory": {
+        "total": 15.902114868164062
+    }
+}
