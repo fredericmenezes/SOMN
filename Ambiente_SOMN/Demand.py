@@ -71,7 +71,7 @@ class Demand:
         #self.CO = self.AM * self.CO  -- custo sem o amount
         self.PR = Demand.MAXPR*self.CO  ### LUCRO EH 2X CUSTO  self.PR = Demand.MAXPE  (by fred)
 
-        self.SP = self.fun_gamma() ####* Yard.Y   #SPACE CONSUMPTION FACTOR
+        self.SP = self.fun_gamma() ####* 'cpu'.Y   #SPACE CONSUMPTION FACTOR
         self.VA = self.fun_upsilon() ### [0low 1up]
         self.SU = 1- self.fun_sigma() ### [0low 1up]
         self.TP = self.DO - t

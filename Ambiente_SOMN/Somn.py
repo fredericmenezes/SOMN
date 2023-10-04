@@ -47,7 +47,7 @@ class Somn(Env):
         super(Somn).__init__()
 
         Somn.priorqpr = heapdict()
-        Somn.instance = JobShop()
+        # Somn.instance = JobShop()
         # Somn.priorqsu = heapdict()
         # Somn.priorqva = heapdict()
         Somn.time = 1
@@ -266,32 +266,32 @@ class Somn(Env):
     def product_scheduling(self, t: int, action):
         flag = 0
         for _ in range(len(Somn.priorqpr)):  ### ACMO UTILIZAR 3 FILAS E ESCOLHER UMA DELAS AQUI
-          obj = Somn.priorqpr.popitem()
-          i = obj[0]
-          if i > 0:
-              if self.DE[i].ST == 1:  ## DE[I].ST VAI SER SEMPRE 1 PORQUE VEM DA FILAP
+            obj = Somn.priorqpr.popitem()
+            i = obj[0]
+            if i > 0:
+                if self.DE[i].ST == 1:  ## DE[I].ST VAI SER SEMPRE 1 PORQUE VEM DA FILAP
 ### COPY JOB TO JOBSHOP SCHEDULING
-                  for j in range(self.M):
-                    if self.DE[i].FT[j]!= 0:
-                      Somn.instance.InsertJobs(i, j, self.DE[i].FT[j])
-                      flag = 1
+                #   for j in range(self.M):
+                #     if self.DE[i].FT[j]!= 0:
+                #     #   Somn.instance.InsertJobs(i, j, self.DE[i].FT[j])
+                #       flag = 1
 ###
-                  if self.DE[i].DO > (t + self.DE[i].LT + action):
-                      self.DE[i].ST = 3  ## produced status --- remember to run time for each case
-                      self.OU -= self.DE[i].FT  ## CONSOME OS RECURSOS
-                      Demand.load = Demand.load + 1
-                      self.DE[i].real_LT = poisson.rvs(mu=(self.DE[i].LT+Demand.load)) # by_frederic
-                      self.DE[i].TP = t + self.DE[i].real_LT
-                  else:
-                      Demand.reject = Demand.reject + 1
-                      self.DE[i].ST = 2  ## rejected status
-                      self.OU -= self.DE[i].FT  ### libera do buffer de produção
-                      self.BA += self.DE[i].FT  ## devolve para o saldo para os próximos
+                    if self.DE[i].DO > (t + self.DE[i].LT + action):
+                        self.DE[i].ST = 3  ## produced status --- remember to run time for each case
+                        self.OU -= self.DE[i].FT  ## CONSOME OS RECURSOS
+                        Demand.load = Demand.load + 1
+                        self.DE[i].real_LT = poisson.rvs(mu=(self.DE[i].LT+Demand.load)) # by_frederic
+                        self.DE[i].TP = t + self.DE[i].real_LT
+                    else:
+                        Demand.reject = Demand.reject + 1
+                        self.DE[i].ST = 2  ## rejected status
+                        self.OU -= self.DE[i].FT  ### libera do buffer de produção
+                        self.BA += self.DE[i].FT  ## devolve para o saldo para os próximos
 ## se formou buffer, resolve para comparar depois
-        if flag ==1:
-          Somn.instance.BuildModel()
-          Somn.instance.Solve()
-          Somn.instance.Output()  ## precisa salvar a lista de resultados
+        # if flag ==1:
+        #   Somn.instance.BuildModel()
+        #   Somn.instance.Solve()
+        #   Somn.instance.Output()  ## precisa salvar a lista de resultados
 
 
     def product_destination(self, t: int):

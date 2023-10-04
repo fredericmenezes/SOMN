@@ -1,0 +1,80 @@
+2023-10-03 14:59:28,710 INFO    StreamThr :6444 [internal.py:wandb_internal():86] W&B internal server running at pid: 6444, started at: 2023-10-03 14:59:28.708677
+2023-10-03 14:59:28,719 DEBUG   HandlerThread:6444 [handler.py:handle_request():144] handle_request: status
+2023-10-03 14:59:28,726 INFO    WriterThread:6444 [datastore.py:open_for_write():85] open: C:\Users\alyss\OneDrive\햞ea de Trabalho\SOMN\wandb\run-20231003_145928-0tojkd97\run-0tojkd97.wandb
+2023-10-03 14:59:28,731 DEBUG   SenderThread:6444 [sender.py:send():380] send: header
+2023-10-03 14:59:28,731 DEBUG   SenderThread:6444 [sender.py:send():380] send: run
+2023-10-03 14:59:29,787 INFO    SenderThread:6444 [dir_watcher.py:__init__():211] watching files in: C:\Users\alyss\OneDrive\햞ea de Trabalho\SOMN\wandb\run-20231003_145928-0tojkd97\files
+2023-10-03 14:59:29,788 INFO    SenderThread:6444 [sender.py:_start_run_threads():1122] run started: 0tojkd97 with start time 1696355968.709672
+2023-10-03 14:59:29,807 DEBUG   HandlerThread:6444 [handler.py:handle_request():144] handle_request: check_version
+2023-10-03 14:59:29,808 DEBUG   SenderThread:6444 [sender.py:send_request():407] send_request: check_version
+2023-10-03 14:59:30,508 DEBUG   HandlerThread:6444 [handler.py:handle_request():144] handle_request: run_start
+2023-10-03 14:59:30,534 DEBUG   HandlerThread:6444 [system_info.py:__init__():32] System info init
+2023-10-03 14:59:30,535 DEBUG   HandlerThread:6444 [system_info.py:__init__():47] System info init done
+2023-10-03 14:59:30,535 INFO    HandlerThread:6444 [system_monitor.py:start():181] Starting system monitor
+2023-10-03 14:59:30,536 INFO    HandlerThread:6444 [system_monitor.py:probe():201] Collecting system info
+2023-10-03 14:59:30,537 INFO    SystemMonitor:6444 [system_monitor.py:_start():145] Starting system asset monitoring threads
+2023-10-03 14:59:30,538 INFO    SystemMonitor:6444 [interfaces.py:start():190] Started cpu monitoring
+2023-10-03 14:59:30,542 INFO    SystemMonitor:6444 [interfaces.py:start():190] Started disk monitoring
+2023-10-03 14:59:30,545 INFO    SystemMonitor:6444 [interfaces.py:start():190] Started gpu monitoring
+2023-10-03 14:59:30,547 INFO    SystemMonitor:6444 [interfaces.py:start():190] Started memory monitoring
+2023-10-03 14:59:30,557 DEBUG   HandlerThread:6444 [system_info.py:probe():196] Probing system
+2023-10-03 14:59:30,559 INFO    SystemMonitor:6444 [interfaces.py:start():190] Started network monitoring
+2023-10-03 14:59:30,573 DEBUG   HandlerThread:6444 [gitlib.py:_init_repo():53] git repository is invalid
+2023-10-03 14:59:30,574 DEBUG   HandlerThread:6444 [system_info.py:probe():244] Probing system done
+2023-10-03 14:59:30,574 DEBUG   HandlerThread:6444 [system_monitor.py:probe():210] {'os': 'Windows-10-10.0.19045-SP0', 'python': '3.11.5', 'heartbeatAt': '2023-10-03T17:59:30.558854', 'startedAt': '2023-10-03T17:59:28.648242', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': 'c:\\Users\\alyss\\OneDrive\\햞ea de Trabalho\\SOMN\\Treinamento.py', 'codePathLocal': 'Treinamento.py', 'codePath': 'Treinamento.py', 'host': 'DESKTOP-55GCPFK', 'username': 'alyss', 'executable': 'c:\\Users\\alyss\\OneDrive\\햞ea de Trabalho\\SOMN\\.venv\\Scripts\\python.exe', 'cpu_count': 4, 'cpu_count_logical': 8, 'cpu_freq': {'current': 3600.0, 'min': 0.0, 'max': 3600.0}, 'cpu_freq_per_core': [{'current': 3600.0, 'min': 0.0, 'max': 3600.0}], 'disk': {'/': {'total': 931.4619102478027, 'used': 82.21920394897461}}, 'gpu': 'NVIDIA GeForce GTX 1050 Ti', 'gpu_count': 1, 'gpu_devices': [{'name': 'NVIDIA GeForce GTX 1050 Ti', 'memory_total': 4294967296}], 'memory': {'total': 15.902114868164062}}
+2023-10-03 14:59:30,574 INFO    HandlerThread:6444 [system_monitor.py:probe():211] Finished collecting system info
+2023-10-03 14:59:30,574 INFO    HandlerThread:6444 [system_monitor.py:probe():214] Publishing system info
+2023-10-03 14:59:30,574 DEBUG   HandlerThread:6444 [system_info.py:_save_pip():52] Saving list of pip packages installed into the current environment
+2023-10-03 14:59:30,575 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:30,575 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:30,575 DEBUG   HandlerThread:6444 [system_info.py:_save_pip():68] Saving pip packages done
+2023-10-03 14:59:30,576 DEBUG   HandlerThread:6444 [system_info.py:_save_code():90] Saving code
+2023-10-03 14:59:30,577 DEBUG   HandlerThread:6444 [system_info.py:_save_code():111] Saving code done
+2023-10-03 14:59:30,579 INFO    HandlerThread:6444 [system_monitor.py:probe():216] Finished publishing system info
+2023-10-03 14:59:30,598 DEBUG   SenderThread:6444 [sender.py:send():380] send: files
+2023-10-03 14:59:30,599 INFO    SenderThread:6444 [sender.py:_save_file():1378] saving file wandb-metadata.json with policy now
+2023-10-03 14:59:30,600 INFO    SenderThread:6444 [sender.py:_save_file():1378] saving file code\Treinamento.py with policy now
+2023-10-03 14:59:30,620 DEBUG   HandlerThread:6444 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-03 14:59:30,622 DEBUG   SenderThread:6444 [sender.py:send_request():407] send_request: stop_status
+2023-10-03 14:59:30,628 DEBUG   HandlerThread:6444 [handler.py:handle_request():144] handle_request: internal_messages
+2023-10-03 14:59:30,792 INFO    Thread-21 :6444 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\alyss\OneDrive\햞ea de Trabalho\SOMN\wandb\run-20231003_145928-0tojkd97\files\wandb-metadata.json
+2023-10-03 14:59:30,792 INFO    Thread-21 :6444 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\alyss\OneDrive\햞ea de Trabalho\SOMN\wandb\run-20231003_145928-0tojkd97\files\requirements.txt
+2023-10-03 14:59:30,792 INFO    Thread-21 :6444 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\alyss\OneDrive\햞ea de Trabalho\SOMN\wandb\run-20231003_145928-0tojkd97\files\code\Treinamento.py
+2023-10-03 14:59:30,793 INFO    Thread-21 :6444 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\alyss\OneDrive\햞ea de Trabalho\SOMN\wandb\run-20231003_145928-0tojkd97\files\code
+2023-10-03 14:59:31,605 DEBUG   SenderThread:6444 [sender.py:send():380] send: telemetry
+2023-10-03 14:59:31,804 INFO    Thread-21 :6444 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\alyss\OneDrive\햞ea de Trabalho\SOMN\wandb\run-20231003_145928-0tojkd97\files\output.log
+2023-10-03 14:59:32,193 INFO    wandb-upload_0:6444 [upload_job.py:push():131] Uploaded file C:\Users\alyss\AppData\Local\Temp\tmpt1pc682mwandb\iijpcnvk-wandb-metadata.json
+2023-10-03 14:59:32,598 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:32,598 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:32,750 INFO    wandb-upload_1:6444 [upload_job.py:push():131] Uploaded file C:\Users\alyss\AppData\Local\Temp\tmpt1pc682mwandb\3421vb6z-code/Treinamento.py
+2023-10-03 14:59:33,774 DEBUG   HandlerThread:6444 [handler.py:handle_request():144] handle_request: status_report
+2023-10-03 14:59:33,821 INFO    Thread-21 :6444 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\alyss\OneDrive\햞ea de Trabalho\SOMN\wandb\run-20231003_145928-0tojkd97\files\output.log
+2023-10-03 14:59:34,612 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:34,612 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:36,640 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:36,640 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:38,658 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:38,659 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:38,821 DEBUG   HandlerThread:6444 [handler.py:handle_request():144] handle_request: status_report
+2023-10-03 14:59:40,679 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:40,679 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:42,702 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:42,702 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:43,853 DEBUG   HandlerThread:6444 [handler.py:handle_request():144] handle_request: status_report
+2023-10-03 14:59:44,726 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:44,727 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:45,620 DEBUG   HandlerThread:6444 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-03 14:59:45,621 DEBUG   SenderThread:6444 [sender.py:send_request():407] send_request: stop_status
+2023-10-03 14:59:45,637 DEBUG   HandlerThread:6444 [handler.py:handle_request():144] handle_request: internal_messages
+2023-10-03 14:59:46,745 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:46,745 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:48,775 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:48,775 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:48,931 DEBUG   HandlerThread:6444 [handler.py:handle_request():144] handle_request: status_report
+2023-10-03 14:59:50,799 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:50,800 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:52,819 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:52,819 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:53,976 DEBUG   HandlerThread:6444 [handler.py:handle_request():144] handle_request: status_report
+2023-10-03 14:59:54,841 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-03 14:59:54,841 ERROR   gpu       :6444 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
