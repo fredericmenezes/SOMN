@@ -1,5 +1,6 @@
 import os
 import wandb
+import time
 #import gym
 
 #from stable_baselines3 import PPO
@@ -33,7 +34,7 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
     }
 
     for x in range(1):    #### ACMO NUMEROS DE EXECUÇÕES COMPETIDORAS
-        run1 = wandb.init(project='Somn_RLJS',
+        run1 = wandb.init(project='TesteExecuçãoCPU',
                           config=config_PPO,
                           group=f'custom-PPO-atraso_{atraso:02d}',
 #                          name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
@@ -67,6 +68,8 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
             tensorboard_log=f"runs/{run1.id}"
         )
 
-        model.learn(total_timesteps=3328*10)
+        model.learn(total_timesteps=3328*400)
+        
+        # 1000 e verificar o tempo
         model.save(os.path.join(wandb.run.dir, f"model_custom_PPO_atraso_{atraso:02d}"))
         wandb.finish()
