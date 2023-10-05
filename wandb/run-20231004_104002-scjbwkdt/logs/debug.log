@@ -25,3 +25,10 @@ config: {'atraso': -1, 'batch_size': 256, 'ent_coef': 0.001641577520175419, 'gae
 2023-10-04 10:40:07,552 INFO    MainThread:7764 [wandb_run.py:_redirect():2144] Redirects installed.
 2023-10-04 10:40:07,552 INFO    MainThread:7764 [wandb_init.py:init():845] run started, returning control to user process
 2023-10-04 10:40:07,903 INFO    MainThread:7764 [wandb_run.py:_tensorboard_callback():1470] tensorboard callback: runs/scjbwkdt\PPO_1, True
+2023-10-04 11:06:00,782 INFO    MainThread:7764 [wandb_run.py:_finish():1934] finishing run lacmor/TesteExecuçãoCPU/scjbwkdt
+2023-10-04 11:06:00,782 INFO    MainThread:7764 [wandb_run.py:_atexit_cleanup():2168] got exitcode: 0
+2023-10-04 11:06:00,782 INFO    MainThread:7764 [wandb_run.py:_restore():2151] restore
+2023-10-04 11:06:00,782 INFO    MainThread:7764 [wandb_run.py:_restore():2157] restore done
+2023-10-04 11:06:11,356 INFO    MainThread:7764 [wandb_run.py:_footer_history_summary_info():3554] rendering history
+2023-10-04 11:06:11,356 INFO    MainThread:7764 [wandb_run.py:_footer_history_summary_info():3586] rendering summary
+2023-10-04 11:06:11,369 INFO    MainThread:7764 [wandb_run.py:_footer_sync_info():3513] logging synced files

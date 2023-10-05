@@ -225,6 +225,7 @@ class Somn(Env):
                     Yard.cont -= 1    ### FRED NAO DEIXAR BAIXAR DE ZERO
                     self.DE[i].ST = 5  ## delivered p/ contar lucro
                     matched = True
+
         return matched
 
     def product_schedulingold(self, t: int, action):
@@ -305,7 +306,7 @@ class Somn(Env):
                         # print("\n Destination: Enviou", Yard.cont)
                     else:
                         self.DE[i].ST = 4  ## stored status
-                        if Yard.cont < Yard.Y - 1:
+                        if Yard.cont < Yard.Y:
                             self.YA[Yard.cont].yard = self.DE[i].FT
                             Yard.cont += 1
                             # print("\n Destination: Armazenou no YARD", Yard.cont)
