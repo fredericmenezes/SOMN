@@ -29,3 +29,5 @@ config: {}
 2023-10-06 08:25:50,120 INFO    Thread-20 (_run_job):6260 [wandb_run.py:_redirect():2144] Redirects installed.
 2023-10-06 08:25:50,120 INFO    Thread-20 (_run_job):6260 [wandb_init.py:init():845] run started, returning control to user process
 2023-10-06 08:25:52,423 INFO    Thread-20 (_run_job):6260 [wandb_run.py:_tensorboard_callback():1470] tensorboard callback: runs/y8azuntl\PPO_1, True
+2023-10-06 11:23:32,136 WARNING MsgRouterThr:6260 [router.py:message_loop():77] message_loop has been closed
+2023-10-06 11:23:33,577 INFO    MainThread:6260 [jupyter.py:_save_ipynb():384] looking for notebook: Sintonia_de_Parametros.ipynb
