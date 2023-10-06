@@ -1,0 +1,55 @@
+wandb_version: 1
+
+batch_size:
+  desc: null
+  value: 256
+ent_coef:
+  desc: null
+  value: 0.008858225950263395
+gae_lambda:
+  desc: null
+  value: 0.9297729487402728
+gamma:
+  desc: null
+  value: 0.9806685765931868
+learning_rate:
+  desc: null
+  value: 0.00043840611775349225
+n_epochs:
+  desc: null
+  value: 18
+n_steps:
+  desc: null
+  value: 2048
+target_kl:
+  desc: null
+  value: 0.02223329462234707
+_wandb:
+  desc: null
+  value:
+    python_version: 3.10.12
+    cli_version: 0.15.12
+    framework: torch
+    is_jupyter_run: true
+    is_kaggle_kernel: false
+    start_time: 1696569282.04855
+    t:
+      1:
+      - 1
+      - 55
+      2:
+      - 1
+      - 55
+      3:
+      - 2
+      - 23
+      - 34
+      - 37
+      4: 3.10.12
+      5: 0.15.12
+      8:
+      - 1
+      - 3
+      - 5
+      13: windows-amd64
+    session_history: code\_session_history.ipynb

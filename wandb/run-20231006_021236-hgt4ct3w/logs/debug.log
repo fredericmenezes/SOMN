@@ -1,0 +1,42 @@
+2023-10-06 02:12:36,299 INFO    Thread-15 (_run_job):7076 [wandb_setup.py:_flush():76] Current SDK version is 0.15.12
+2023-10-06 02:12:36,299 INFO    Thread-15 (_run_job):7076 [wandb_setup.py:_flush():76] Configure stats pid to 7076
+2023-10-06 02:12:36,299 INFO    Thread-15 (_run_job):7076 [wandb_setup.py:_flush():76] Loading settings from C:\Users\notebook-heitor\.config\wandb\settings
+2023-10-06 02:12:36,299 INFO    Thread-15 (_run_job):7076 [wandb_setup.py:_flush():76] Loading settings from C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\settings
+2023-10-06 02:12:36,300 INFO    Thread-15 (_run_job):7076 [wandb_setup.py:_flush():76] Loading settings from environment variables: {'project': 'Sintonia_OPTSIMFLEX_01', 'entity': 'lacmor', 'root_dir': 'C:\\Users\\notebook-heitor\\Documents\\GitHub\\SOMN', 'run_id': 'hgt4ct3w', 'sweep_param_path': 'C:\\Users\\notebook-heitor\\Documents\\GitHub\\SOMN\\wandb\\sweep-0as0bgog\\config-hgt4ct3w.yaml', 'sweep_id': '0as0bgog'}
+2023-10-06 02:12:36,300 INFO    Thread-15 (_run_job):7076 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2023-10-06 02:12:36,301 INFO    Thread-15 (_run_job):7076 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program': '<python with no main file>'}
+2023-10-06 02:12:36,301 INFO    Thread-15 (_run_job):7076 [wandb_init.py:_log_setup():528] Logging user logs to C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_021236-hgt4ct3w\logs\debug.log
+2023-10-06 02:12:36,302 INFO    Thread-15 (_run_job):7076 [wandb_init.py:_log_setup():529] Logging internal logs to C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_021236-hgt4ct3w\logs\debug-internal.log
+2023-10-06 02:12:36,302 INFO    Thread-15 (_run_job):7076 [wandb_init.py:_jupyter_setup():474] configuring jupyter hooks <wandb.sdk.wandb_init._WandbInit object at 0x000002378A77E890>
+2023-10-06 02:12:36,303 INFO    Thread-15 (_run_job):7076 [wandb_init.py:init():568] calling init triggers
+2023-10-06 02:12:36,303 INFO    Thread-15 (_run_job):7076 [wandb_init.py:init():575] wandb.init called with sweep_config: {'batch_size': 64, 'ent_coef': 0.005394054172166879, 'gae_lambda': 0.9538846256655872, 'gamma': 0.9312570703213, 'learning_rate': 0.00016860916781277847, 'n_epochs': 6, 'n_steps': 4096, 'target_kl': 0.006284958432726936}
+config: {}
+2023-10-06 02:12:36,303 INFO    Thread-15 (_run_job):7076 [wandb_init.py:init():618] starting backend
+2023-10-06 02:12:36,303 INFO    Thread-15 (_run_job):7076 [wandb_init.py:init():622] setting up manager
+2023-10-06 02:12:36,332 INFO    Thread-15 (_run_job):7076 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=spawn, using: spawn
+2023-10-06 02:12:36,334 INFO    Thread-15 (_run_job):7076 [wandb_init.py:init():628] backend started and connected
+2023-10-06 02:12:36,426 INFO    Thread-15 (_run_job):7076 [wandb_run.py:_config_callback():1324] config_cb None None {'batch_size': 64, 'ent_coef': 0.005394054172166879, 'gae_lambda': 0.9538846256655872, 'gamma': 0.9312570703213, 'learning_rate': 0.00016860916781277847, 'n_epochs': 6, 'n_steps': 4096, 'target_kl': 0.006284958432726936}
+2023-10-06 02:12:36,429 INFO    Thread-15 (_run_job):7076 [wandb_run.py:_label_probe_notebook():1276] probe notebook
+2023-10-06 02:12:36,431 INFO    Thread-15 (_run_job):7076 [wandb_run.py:_label_probe_notebook():1286] Unable to probe notebook: 'charmap' codec can't decode byte 0x8d in position 147527: character maps to <undefined>
+2023-10-06 02:12:36,431 INFO    Thread-15 (_run_job):7076 [wandb_init.py:init():720] updated telemetry
+2023-10-06 02:12:36,609 INFO    Thread-15 (_run_job):7076 [wandb_init.py:init():753] communicating run to backend with 90.0 second timeout
+2023-10-06 02:12:38,470 INFO    Thread-15 (_run_job):7076 [wandb_run.py:_on_init():2220] communicating current version
+2023-10-06 02:12:40,061 INFO    Thread-15 (_run_job):7076 [wandb_run.py:_on_init():2229] got version response 
+2023-10-06 02:12:40,061 INFO    Thread-15 (_run_job):7076 [wandb_init.py:init():804] starting run threads in backend
+2023-10-06 02:12:50,545 INFO    Thread-15 (_run_job):7076 [wandb_run.py:_console_start():2199] atexit reg
+2023-10-06 02:12:50,546 INFO    Thread-15 (_run_job):7076 [wandb_run.py:_redirect():2054] redirect: wrap_raw
+2023-10-06 02:12:50,546 INFO    Thread-15 (_run_job):7076 [wandb_run.py:_redirect():2119] Wrapping output streams.
+2023-10-06 02:12:50,546 INFO    Thread-15 (_run_job):7076 [wandb_run.py:_redirect():2144] Redirects installed.
+2023-10-06 02:12:50,547 INFO    Thread-15 (_run_job):7076 [wandb_init.py:init():845] run started, returning control to user process
+2023-10-06 02:12:52,760 INFO    Thread-15 (_run_job):7076 [wandb_run.py:_finish():1934] finishing run lacmor/Sintonia_OPTSIMFLEX_01/hgt4ct3w
+2023-10-06 02:12:52,805 INFO    Thread-15 (_run_job):7076 [jupyter.py:save_history():474] saving 30 cells to _session_history.ipynb
+2023-10-06 02:12:52,805 INFO    Thread-15 (_run_job):7076 [wandb_run.py:_config_callback():1324] config_cb ('_wandb', 'session_history') code\_session_history.ipynb None
+2023-10-06 02:12:52,852 INFO    Thread-15 (_run_job):7076 [jupyter.py:_save_ipynb():384] looking for notebook: Sintonia_de_Parametros.ipynb
+2023-10-06 02:12:54,304 INFO    Thread-15 (_run_job):7076 [wandb_init.py:_jupyter_teardown():455] saved code and history: <Artifact source-Sintonia_OPTSIMFLEX_01-Sintonia_de_Parametros.ipynb>
+2023-10-06 02:12:54,304 INFO    Thread-15 (_run_job):7076 [wandb_init.py:_jupyter_teardown():456] cleaning up jupyter logic
+2023-10-06 02:12:54,304 INFO    Thread-15 (_run_job):7076 [wandb_run.py:_atexit_cleanup():2168] got exitcode: 1
+2023-10-06 02:12:54,304 INFO    Thread-15 (_run_job):7076 [wandb_run.py:_restore():2151] restore
+2023-10-06 02:12:54,304 INFO    Thread-15 (_run_job):7076 [wandb_run.py:_restore():2157] restore done
+2023-10-06 02:13:04,428 INFO    Thread-15 (_run_job):7076 [wandb_run.py:_footer_history_summary_info():3599] rendering history
+2023-10-06 02:13:04,428 INFO    Thread-15 (_run_job):7076 [wandb_run.py:_footer_history_summary_info():3631] rendering summary
+2023-10-06 02:13:04,441 INFO    Thread-15 (_run_job):7076 [wandb_run.py:_footer_sync_info():3558] logging synced files
