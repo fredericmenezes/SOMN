@@ -1,0 +1,38 @@
+C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\.venv\Lib\site-packages\gymnasium\core.py:311: UserWarning: [33mWARN: env.get_Demands_Attr to get variables from other wrappers is deprecated and will be removed in v1.0, to get this variable you can do `env.unwrapped.get_Demands_Attr` for environment variables or `env.get_wrapper_attr('get_Demands_Attr')` that will search the reminding wrappers.
+  logger.warn(
+C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\.venv\Lib\site-packages\gymnasium\core.py:311: UserWarning: [33mWARN: env.get_atraso to get variables from other wrappers is deprecated and will be removed in v1.0, to get this variable you can do `env.unwrapped.get_atraso` for environment variables or `env.get_wrapper_attr('get_atraso')` that will search the reminding wrappers.
+  logger.warn(
+Traceback (most recent call last):
+  File "c:\Users\alyss\OneDrive\Área de Trabalho\SOMN\Treinamento.py", line 71, in <module>
+    model.learn(total_timesteps=3328*1000)
+  File "c:\Users\alyss\OneDrive\Área de Trabalho\SOMN\Stable_baselines3\PPO.py", line 440, in learn
+    return super().learn(
+           ^^^^^^^^^^^^^^
+  File "c:\Users\alyss\OneDrive\Área de Trabalho\SOMN\Stable_baselines3\OnPolicyAlgirithm.py", line 265, in learn
+    break
+  File "c:\Users\alyss\OneDrive\Área de Trabalho\SOMN\Stable_baselines3\OnPolicyAlgirithm.py", line 179, in collect_rollouts
+    new_obs, rewards, dones, infos = env.step(clipped_actions)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\.venv\Lib\site-packages\stable_baselines3\common\vec_env\base_vec_env.py", line 197, in step
+    return self.step_wait()
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\.venv\Lib\site-packages\stable_baselines3\common\vec_env\dummy_vec_env.py", line 58, in step_wait
+    obs, self.buf_rews[env_idx], terminated, truncated, self.buf_infos[env_idx] = self.envs[env_idx].step(
+                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\.venv\Lib\site-packages\stable_baselines3\common\monitor.py", line 94, in step
+    observation, reward, terminated, truncated, info = self.env.step(action)
+                                                       ^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\alyss\OneDrive\Área de Trabalho\SOMN\Ambiente_SOMN\Somn.py", line 435, in step
+    self.readDemand()
+  File "c:\Users\alyss\OneDrive\Área de Trabalho\SOMN\Ambiente_SOMN\Somn.py", line 213, in readDemand
+    self.DE[i](Somn.time)
+  File "c:\Users\alyss\OneDrive\Área de Trabalho\SOMN\Ambiente_SOMN\Demand.py", line 64, in __call__
+    self.real_LT = poisson.rvs(mu=self.LT) # by_frederic
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\.venv\Lib\site-packages\scipy\stats\_distn_infrastructure.py", line 3343, in rvs
+    return super().rvs(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\.venv\Lib\site-packages\scipy\stats\_distn_infrastructure.py", line 1048, in rvs
+    cond = logical_and(self._argcheck(*args), (scale >= 0))
+                       ^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

@@ -1,0 +1,35 @@
+Traceback (most recent call last):
+  File "c:\Users\alyss\OneDrive\Área de Trabalho\SOMN\Treinamento.py", line 71, in <module>
+    model.learn(total_timesteps=3328*1000)
+  File "c:\Users\alyss\OneDrive\Área de Trabalho\SOMN\Stable_baselines3\PPO.py", line 440, in learn
+    return super().learn(
+           ^^^^^^^^^^^^^^
+  File "c:\Users\alyss\OneDrive\Área de Trabalho\SOMN\Stable_baselines3\OnPolicyAlgirithm.py", line 262, in learn
+    continue_training = self.collect_rollouts(self.env, callback, self.rollout_buffer, n_rollout_steps=self.n_steps)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\alyss\OneDrive\Área de Trabalho\SOMN\Stable_baselines3\OnPolicyAlgirithm.py", line 179, in collect_rollouts
+    new_obs, rewards, dones, infos = env.step(clipped_actions)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\.venv\Lib\site-packages\stable_baselines3\common\vec_env\base_vec_env.py", line 197, in step
+    return self.step_wait()
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\.venv\Lib\site-packages\stable_baselines3\common\vec_env\dummy_vec_env.py", line 58, in step_wait
+    obs, self.buf_rews[env_idx], terminated, truncated, self.buf_infos[env_idx] = self.envs[env_idx].step(
+                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\.venv\Lib\site-packages\stable_baselines3\common\monitor.py", line 94, in step
+    observation, reward, terminated, truncated, info = self.env.step(action)
+                                                       ^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\alyss\OneDrive\Área de Trabalho\SOMN\Ambiente_SOMN\Somn.py", line 508, in step
+    plt.plot(3328,self.lixoYard, label='Lixo')
+  File "C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\.venv\Lib\site-packages\matplotlib\pyplot.py", line 3578, in plot
+    return gca().plot(
+           ^^^^^^^^^^^
+  File "C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\.venv\Lib\site-packages\matplotlib\axes\_axes.py", line 1721, in plot
+    lines = [*self._get_lines(self, *args, data=data, **kwargs)]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\.venv\Lib\site-packages\matplotlib\axes\_base.py", line 303, in __call__
+    yield from self._plot_args(
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\.venv\Lib\site-packages\matplotlib\axes\_base.py", line 499, in _plot_args
+    raise ValueError(f"x and y must have same first dimension, but "
+ValueError: x and y must have same first dimension, but have shapes (1,) and (0,)

@@ -1,0 +1,204 @@
+2023-10-06 12:21:45,307 INFO    StreamThr :10028 [internal.py:wandb_internal():86] W&B internal server running at pid: 10028, started at: 2023-10-06 12:21:45.307403
+2023-10-06 12:21:45,309 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: status
+2023-10-06 12:21:45,311 INFO    WriterThread:10028 [datastore.py:open_for_write():85] open: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\run-g189fl4b.wandb
+2023-10-06 12:21:45,312 DEBUG   SenderThread:10028 [sender.py:send():380] send: header
+2023-10-06 12:21:45,313 DEBUG   SenderThread:10028 [sender.py:send():380] send: run
+2023-10-06 12:21:46,264 INFO    SenderThread:10028 [dir_watcher.py:__init__():211] watching files in: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files
+2023-10-06 12:21:46,264 INFO    SenderThread:10028 [sender.py:_start_run_threads():1122] run started: g189fl4b with start time 1696605705.307402
+2023-10-06 12:21:46,273 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: check_version
+2023-10-06 12:21:46,273 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: check_version
+2023-10-06 12:21:46,864 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: run_start
+2023-10-06 12:21:46,877 DEBUG   HandlerThread:10028 [system_info.py:__init__():32] System info init
+2023-10-06 12:21:46,877 DEBUG   HandlerThread:10028 [system_info.py:__init__():47] System info init done
+2023-10-06 12:21:46,877 INFO    HandlerThread:10028 [system_monitor.py:start():194] Starting system monitor
+2023-10-06 12:21:46,877 INFO    SystemMonitor:10028 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2023-10-06 12:21:46,877 INFO    HandlerThread:10028 [system_monitor.py:probe():214] Collecting system info
+2023-10-06 12:21:46,877 INFO    SystemMonitor:10028 [interfaces.py:start():190] Started cpu monitoring
+2023-10-06 12:21:46,877 INFO    SystemMonitor:10028 [interfaces.py:start():190] Started disk monitoring
+2023-10-06 12:21:46,877 INFO    SystemMonitor:10028 [interfaces.py:start():190] Started gpu monitoring
+2023-10-06 12:21:46,877 INFO    SystemMonitor:10028 [interfaces.py:start():190] Started memory monitoring
+2023-10-06 12:21:46,897 INFO    SystemMonitor:10028 [interfaces.py:start():190] Started network monitoring
+2023-10-06 12:21:46,909 DEBUG   HandlerThread:10028 [system_info.py:probe():196] Probing system
+2023-10-06 12:21:46,911 DEBUG   HandlerThread:10028 [gitlib.py:_init_repo():53] git repository is invalid
+2023-10-06 12:21:46,911 DEBUG   HandlerThread:10028 [system_info.py:probe():244] Probing system done
+2023-10-06 12:21:46,911 DEBUG   HandlerThread:10028 [system_monitor.py:probe():223] {'os': 'Windows-10-10.0.19045-SP0', 'python': '3.11.5', 'heartbeatAt': '2023-10-06T15:21:46.910712', 'startedAt': '2023-10-06T15:21:45.293950', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': 'c:\\Users\\alyss\\OneDrive\\Área de Trabalho\\SOMN\\Treinamento.py', 'codePathLocal': 'Treinamento.py', 'codePath': 'Treinamento.py', 'host': 'DESKTOP-55GCPFK', 'username': 'alyss', 'executable': 'C:\\Users\\alyss\\OneDrive\\Área de Trabalho\\SOMN\\.venv\\Scripts\\python.exe', 'cpu_count': 4, 'cpu_count_logical': 8, 'cpu_freq': {'current': 3600.0, 'min': 0.0, 'max': 3600.0}, 'cpu_freq_per_core': [{'current': 3600.0, 'min': 0.0, 'max': 3600.0}], 'disk': {'/': {'total': 931.4619102478027, 'used': 139.25152206420898}}, 'gpu': 'NVIDIA GeForce GTX 1050 Ti', 'gpu_count': 1, 'gpu_devices': [{'name': 'NVIDIA GeForce GTX 1050 Ti', 'memory_total': 4294967296}], 'memory': {'total': 15.902114868164062}}
+2023-10-06 12:21:46,911 INFO    HandlerThread:10028 [system_monitor.py:probe():224] Finished collecting system info
+2023-10-06 12:21:46,911 INFO    HandlerThread:10028 [system_monitor.py:probe():227] Publishing system info
+2023-10-06 12:21:46,911 DEBUG   HandlerThread:10028 [system_info.py:_save_pip():52] Saving list of pip packages installed into the current environment
+2023-10-06 12:21:46,912 DEBUG   HandlerThread:10028 [system_info.py:_save_pip():68] Saving pip packages done
+2023-10-06 12:21:46,912 DEBUG   HandlerThread:10028 [system_info.py:_save_code():90] Saving code
+2023-10-06 12:21:46,912 ERROR   gpu       :10028 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-06 12:21:46,913 ERROR   gpu       :10028 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-06 12:21:46,913 DEBUG   HandlerThread:10028 [system_info.py:_save_code():111] Saving code done
+2023-10-06 12:21:46,914 INFO    HandlerThread:10028 [system_monitor.py:probe():229] Finished publishing system info
+2023-10-06 12:21:46,921 DEBUG   SenderThread:10028 [sender.py:send():380] send: files
+2023-10-06 12:21:46,921 INFO    SenderThread:10028 [sender.py:_save_file():1378] saving file wandb-metadata.json with policy now
+2023-10-06 12:21:46,922 INFO    SenderThread:10028 [sender.py:_save_file():1378] saving file code\Treinamento.py with policy now
+2023-10-06 12:21:46,928 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: stop_status
+2023-10-06 12:21:46,929 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: stop_status
+2023-10-06 12:21:46,932 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: internal_messages
+2023-10-06 12:21:47,211 DEBUG   SenderThread:10028 [sender.py:send():380] send: telemetry
+2023-10-06 12:21:47,274 INFO    Thread-16 :10028 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\wandb-metadata.json
+2023-10-06 12:21:47,275 INFO    Thread-16 :10028 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\code\Treinamento.py
+2023-10-06 12:21:47,275 INFO    Thread-16 :10028 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\requirements.txt
+2023-10-06 12:21:47,276 INFO    Thread-16 :10028 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\code
+2023-10-06 12:21:47,676 INFO    HandlerThread:10028 [handler.py:handle_tbrecord():764] handling tbrecord: tbrecord {
+  log_dir: "runs/g189fl4b\\PPO_1"
+  save: true
+  root_dir: "./runs"
+}
+control {
+  relay_id: "eaf2185d462943fbba1d7cd98472b44b"
+}
+_info {
+  stream_id: "g189fl4b"
+}
+
+2023-10-06 12:21:47,676 DEBUG   HandlerThread:10028 [config_util.py:dict_from_config_file():101] no default config file found in config-defaults.yaml
+2023-10-06 12:21:47,757 DEBUG   SenderThread:10028 [sender.py:send():380] send: tbrecord
+2023-10-06 12:21:47,758 DEBUG   Thread-20 (_thread_except_body):10028 [tb_watcher.py:_process_events():284] Encountered tensorboard directory watcher error: [WinError 1314] O cliente não tem o privilégio necessário: 'C:\\Users\\alyss\\OneDrive\\Área de Trabalho\\SOMN\\runs\\g189fl4b\\PPO_1\\events.out.tfevents.1696605707.DESKTOP-55GCPFK.11820.0' -> 'C:\\Users\\alyss\\OneDrive\\Área de Trabalho\\SOMN\\wandb\\run-20231006_122145-g189fl4b\\files\\events.out.tfevents.1696605707.DESKTOP-55GCPFK.11820.0'
+2023-10-06 12:21:47,835 DEBUG   SenderThread:10028 [sender.py:send():380] send: exit
+2023-10-06 12:21:47,835 INFO    SenderThread:10028 [sender.py:send_exit():585] handling exit code: 1
+2023-10-06 12:21:47,835 INFO    SenderThread:10028 [sender.py:send_exit():587] handling runtime: 0
+2023-10-06 12:21:47,836 INFO    SenderThread:10028 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-06 12:21:47,837 INFO    SenderThread:10028 [sender.py:send_exit():593] send defer
+2023-10-06 12:21:47,837 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 12:21:47,837 INFO    HandlerThread:10028 [handler.py:handle_request_defer():172] handle defer: 0
+2023-10-06 12:21:47,838 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: defer
+2023-10-06 12:21:47,838 INFO    SenderThread:10028 [sender.py:send_request_defer():609] handle sender defer: 0
+2023-10-06 12:21:47,838 INFO    SenderThread:10028 [sender.py:transition_state():613] send defer: 1
+2023-10-06 12:21:47,838 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 12:21:47,839 INFO    HandlerThread:10028 [handler.py:handle_request_defer():172] handle defer: 1
+2023-10-06 12:21:47,839 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: defer
+2023-10-06 12:21:47,839 INFO    SenderThread:10028 [sender.py:send_request_defer():609] handle sender defer: 1
+2023-10-06 12:21:47,839 INFO    SenderThread:10028 [sender.py:transition_state():613] send defer: 2
+2023-10-06 12:21:47,839 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 12:21:47,840 INFO    HandlerThread:10028 [handler.py:handle_request_defer():172] handle defer: 2
+2023-10-06 12:21:47,840 INFO    HandlerThread:10028 [system_monitor.py:finish():203] Stopping system monitor
+2023-10-06 12:21:47,840 DEBUG   SystemMonitor:10028 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2023-10-06 12:21:47,846 INFO    HandlerThread:10028 [interfaces.py:finish():202] Joined cpu monitor
+2023-10-06 12:21:47,846 DEBUG   SystemMonitor:10028 [system_monitor.py:_start():179] Finished system metrics aggregation loop
+2023-10-06 12:21:47,847 INFO    HandlerThread:10028 [interfaces.py:finish():202] Joined disk monitor
+2023-10-06 12:21:47,847 DEBUG   SystemMonitor:10028 [system_monitor.py:_start():183] Publishing last batch of metrics
+2023-10-06 12:21:47,872 ERROR   gpu       :10028 [interfaces.py:aggregate():161] Failed to serialize metric: division by zero
+2023-10-06 12:21:47,872 INFO    HandlerThread:10028 [interfaces.py:finish():202] Joined gpu monitor
+2023-10-06 12:21:47,872 INFO    HandlerThread:10028 [interfaces.py:finish():202] Joined memory monitor
+2023-10-06 12:21:47,873 INFO    HandlerThread:10028 [interfaces.py:finish():202] Joined network monitor
+2023-10-06 12:21:47,873 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: defer
+2023-10-06 12:21:47,873 INFO    SenderThread:10028 [sender.py:send_request_defer():609] handle sender defer: 2
+2023-10-06 12:21:47,873 INFO    SenderThread:10028 [sender.py:transition_state():613] send defer: 3
+2023-10-06 12:21:47,873 DEBUG   SenderThread:10028 [sender.py:send():380] send: stats
+2023-10-06 12:21:47,874 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 12:21:47,874 INFO    HandlerThread:10028 [handler.py:handle_request_defer():172] handle defer: 3
+2023-10-06 12:21:47,874 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: defer
+2023-10-06 12:21:47,874 INFO    SenderThread:10028 [sender.py:send_request_defer():609] handle sender defer: 3
+2023-10-06 12:21:47,874 INFO    SenderThread:10028 [sender.py:transition_state():613] send defer: 4
+2023-10-06 12:21:47,874 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 12:21:47,874 INFO    HandlerThread:10028 [handler.py:handle_request_defer():172] handle defer: 4
+2023-10-06 12:21:48,280 INFO    Thread-16 :10028 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\output.log
+2023-10-06 12:21:48,280 INFO    Thread-16 :10028 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\wandb-summary.json
+2023-10-06 12:21:48,772 INFO    wandb-upload_0:10028 [upload_job.py:push():131] Uploaded file C:\Users\alyss\AppData\Local\Temp\tmpio4gdugcwandb\y6utea9o-wandb-metadata.json
+2023-10-06 12:21:48,786 INFO    wandb-upload_1:10028 [upload_job.py:push():131] Uploaded file C:\Users\alyss\AppData\Local\Temp\tmpio4gdugcwandb\9a8kdp54-code/Treinamento.py
+2023-10-06 12:21:50,297 INFO    Thread-16 :10028 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\output.log
+2023-10-06 12:21:58,756 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: poll_exit
+2023-10-06 12:21:58,757 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: status_report
+2023-10-06 12:21:58,757 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: keepalive
+2023-10-06 12:21:58,757 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: status_report
+2023-10-06 12:21:58,758 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: defer
+2023-10-06 12:21:58,758 INFO    SenderThread:10028 [sender.py:send_request_defer():609] handle sender defer: 4
+2023-10-06 12:21:58,758 INFO    SenderThread:10028 [sender.py:transition_state():613] send defer: 5
+2023-10-06 12:21:58,758 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: poll_exit
+2023-10-06 12:21:58,759 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 12:21:58,759 INFO    HandlerThread:10028 [handler.py:handle_request_defer():172] handle defer: 5
+2023-10-06 12:21:58,760 DEBUG   SenderThread:10028 [sender.py:send():380] send: summary
+2023-10-06 12:21:58,764 INFO    SenderThread:10028 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-06 12:21:58,765 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: defer
+2023-10-06 12:21:58,765 INFO    SenderThread:10028 [sender.py:send_request_defer():609] handle sender defer: 5
+2023-10-06 12:21:58,765 INFO    SenderThread:10028 [sender.py:transition_state():613] send defer: 6
+2023-10-06 12:21:58,766 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 12:21:58,766 INFO    HandlerThread:10028 [handler.py:handle_request_defer():172] handle defer: 6
+2023-10-06 12:21:58,767 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: defer
+2023-10-06 12:21:58,767 INFO    SenderThread:10028 [sender.py:send_request_defer():609] handle sender defer: 6
+2023-10-06 12:21:58,774 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: status_report
+2023-10-06 12:21:58,993 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: keepalive
+2023-10-06 12:21:59,032 INFO    SenderThread:10028 [sender.py:transition_state():613] send defer: 7
+2023-10-06 12:21:59,032 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 12:21:59,032 INFO    HandlerThread:10028 [handler.py:handle_request_defer():172] handle defer: 7
+2023-10-06 12:21:59,033 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: defer
+2023-10-06 12:21:59,033 INFO    SenderThread:10028 [sender.py:send_request_defer():609] handle sender defer: 7
+2023-10-06 12:21:59,374 INFO    Thread-16 :10028 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\wandb-summary.json
+2023-10-06 12:21:59,375 INFO    Thread-16 :10028 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\config.yaml
+2023-10-06 12:21:59,834 INFO    SenderThread:10028 [sender.py:transition_state():613] send defer: 8
+2023-10-06 12:21:59,834 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 12:21:59,835 INFO    HandlerThread:10028 [handler.py:handle_request_defer():172] handle defer: 8
+2023-10-06 12:21:59,836 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: defer
+2023-10-06 12:21:59,836 INFO    SenderThread:10028 [sender.py:send_request_defer():609] handle sender defer: 8
+2023-10-06 12:21:59,836 INFO    SenderThread:10028 [job_builder.py:build():281] Attempting to build job artifact
+2023-10-06 12:21:59,836 INFO    SenderThread:10028 [job_builder.py:_get_source_type():404] no source found
+2023-10-06 12:21:59,836 INFO    SenderThread:10028 [sender.py:transition_state():613] send defer: 9
+2023-10-06 12:21:59,837 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 12:21:59,837 INFO    HandlerThread:10028 [handler.py:handle_request_defer():172] handle defer: 9
+2023-10-06 12:21:59,837 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: defer
+2023-10-06 12:21:59,837 INFO    SenderThread:10028 [sender.py:send_request_defer():609] handle sender defer: 9
+2023-10-06 12:21:59,837 INFO    SenderThread:10028 [dir_watcher.py:finish():358] shutting down directory watcher
+2023-10-06 12:22:00,377 INFO    SenderThread:10028 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\output.log
+2023-10-06 12:22:00,377 INFO    SenderThread:10028 [dir_watcher.py:finish():388] scan: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files
+2023-10-06 12:22:00,377 INFO    SenderThread:10028 [dir_watcher.py:finish():402] scan save: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\config.yaml config.yaml
+2023-10-06 12:22:00,377 INFO    SenderThread:10028 [dir_watcher.py:finish():402] scan save: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\output.log output.log
+2023-10-06 12:22:00,384 INFO    SenderThread:10028 [dir_watcher.py:finish():402] scan save: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\requirements.txt requirements.txt
+2023-10-06 12:22:00,387 INFO    SenderThread:10028 [dir_watcher.py:finish():402] scan save: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\wandb-metadata.json wandb-metadata.json
+2023-10-06 12:22:00,387 INFO    SenderThread:10028 [dir_watcher.py:finish():402] scan save: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\wandb-summary.json wandb-summary.json
+2023-10-06 12:22:00,389 INFO    SenderThread:10028 [dir_watcher.py:finish():402] scan save: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\code\Treinamento.py code/Treinamento.py
+2023-10-06 12:22:00,389 INFO    SenderThread:10028 [sender.py:transition_state():613] send defer: 10
+2023-10-06 12:22:00,389 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 12:22:00,389 INFO    HandlerThread:10028 [handler.py:handle_request_defer():172] handle defer: 10
+2023-10-06 12:22:00,389 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: defer
+2023-10-06 12:22:00,389 INFO    SenderThread:10028 [sender.py:send_request_defer():609] handle sender defer: 10
+2023-10-06 12:22:00,389 INFO    SenderThread:10028 [file_pusher.py:finish():175] shutting down file pusher
+2023-10-06 12:22:00,882 INFO    wandb-upload_0:10028 [upload_job.py:push():131] Uploaded file C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\config.yaml
+2023-10-06 12:22:00,905 INFO    wandb-upload_1:10028 [upload_job.py:push():131] Uploaded file C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\output.log
+2023-10-06 12:22:01,226 INFO    wandb-upload_2:10028 [upload_job.py:push():131] Uploaded file C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\requirements.txt
+2023-10-06 12:22:01,462 INFO    wandb-upload_3:10028 [upload_job.py:push():131] Uploaded file C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\files\wandb-summary.json
+2023-10-06 12:22:01,676 INFO    Thread-15 (_thread_body):10028 [sender.py:transition_state():613] send defer: 11
+2023-10-06 12:22:01,676 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 12:22:01,677 INFO    HandlerThread:10028 [handler.py:handle_request_defer():172] handle defer: 11
+2023-10-06 12:22:01,677 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: defer
+2023-10-06 12:22:01,678 INFO    SenderThread:10028 [sender.py:send_request_defer():609] handle sender defer: 11
+2023-10-06 12:22:01,678 INFO    SenderThread:10028 [file_pusher.py:join():181] waiting for file pusher
+2023-10-06 12:22:01,678 INFO    SenderThread:10028 [sender.py:transition_state():613] send defer: 12
+2023-10-06 12:22:01,678 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 12:22:01,678 INFO    HandlerThread:10028 [handler.py:handle_request_defer():172] handle defer: 12
+2023-10-06 12:22:01,678 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: defer
+2023-10-06 12:22:01,678 INFO    SenderThread:10028 [sender.py:send_request_defer():609] handle sender defer: 12
+2023-10-06 12:22:01,678 INFO    SenderThread:10028 [file_stream.py:finish():595] file stream finish called
+2023-10-06 12:22:01,915 INFO    SenderThread:10028 [file_stream.py:finish():599] file stream finish is done
+2023-10-06 12:22:01,915 INFO    SenderThread:10028 [sender.py:transition_state():613] send defer: 13
+2023-10-06 12:22:01,916 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 12:22:01,916 INFO    HandlerThread:10028 [handler.py:handle_request_defer():172] handle defer: 13
+2023-10-06 12:22:01,917 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: defer
+2023-10-06 12:22:01,917 INFO    SenderThread:10028 [sender.py:send_request_defer():609] handle sender defer: 13
+2023-10-06 12:22:01,918 INFO    SenderThread:10028 [sender.py:transition_state():613] send defer: 14
+2023-10-06 12:22:01,919 DEBUG   SenderThread:10028 [sender.py:send():380] send: final
+2023-10-06 12:22:01,919 DEBUG   SenderThread:10028 [sender.py:send():380] send: footer
+2023-10-06 12:22:01,919 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 12:22:01,919 INFO    HandlerThread:10028 [handler.py:handle_request_defer():172] handle defer: 14
+2023-10-06 12:22:01,920 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: defer
+2023-10-06 12:22:01,920 INFO    SenderThread:10028 [sender.py:send_request_defer():609] handle sender defer: 14
+2023-10-06 12:22:01,921 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: poll_exit
+2023-10-06 12:22:01,922 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: server_info
+2023-10-06 12:22:01,922 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: get_summary
+2023-10-06 12:22:01,922 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: sampled_history
+2023-10-06 12:22:01,922 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: internal_messages
+2023-10-06 12:22:01,923 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: job_info
+2023-10-06 12:22:01,924 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: poll_exit
+2023-10-06 12:22:01,924 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: server_info
+2023-10-06 12:22:02,127 DEBUG   SenderThread:10028 [sender.py:send_request():407] send_request: job_info
+2023-10-06 12:22:02,127 INFO    MainThread:10028 [wandb_run.py:_footer_history_summary_info():3599] rendering history
+2023-10-06 12:22:02,127 INFO    MainThread:10028 [wandb_run.py:_footer_history_summary_info():3631] rendering summary
+2023-10-06 12:22:02,127 INFO    MainThread:10028 [wandb_run.py:_footer_sync_info():3558] logging synced files
+2023-10-06 12:22:02,128 DEBUG   HandlerThread:10028 [handler.py:handle_request():146] handle_request: shutdown
+2023-10-06 12:22:02,128 INFO    HandlerThread:10028 [handler.py:finish():866] shutting down handler
+2023-10-06 12:22:02,930 INFO    WriterThread:10028 [datastore.py:close():294] close: C:\Users\alyss\OneDrive\Área de Trabalho\SOMN\wandb\run-20231006_122145-g189fl4b\run-g189fl4b.wandb
+2023-10-06 12:22:03,128 INFO    SenderThread:10028 [sender.py:finish():1534] shutting down sender
+2023-10-06 12:22:03,128 INFO    SenderThread:10028 [file_pusher.py:finish():175] shutting down file pusher
+2023-10-06 12:22:03,128 INFO    SenderThread:10028 [file_pusher.py:join():181] waiting for file pusher
