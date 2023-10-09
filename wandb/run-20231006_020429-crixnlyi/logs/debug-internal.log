@@ -1,0 +1,8 @@
+2023-10-06 02:04:29,854 INFO    StreamThr :12232 [internal.py:wandb_internal():86] W&B internal server running at pid: 12232, started at: 2023-10-06 02:04:29.852735
+2023-10-06 02:04:29,880 DEBUG   HandlerThread:12232 [handler.py:handle_request():146] handle_request: status
+2023-10-06 02:04:29,912 INFO    WriterThread:12232 [datastore.py:open_for_write():85] open: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020429-crixnlyi\run-crixnlyi.wandb
+2023-10-06 02:04:29,912 DEBUG   SenderThread:12232 [sender.py:send():380] send: header
+2023-10-06 02:04:30,037 DEBUG   SenderThread:12232 [sender.py:send():380] send: run
+2023-10-06 02:04:31,792 INFO    SenderThread:12232 [dir_watcher.py:__init__():211] watching files in: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020429-crixnlyi\files
+2023-10-06 02:04:31,792 INFO    SenderThread:12232 [sender.py:_start_run_threads():1122] run started: crixnlyi with start time 1696568669.85073
+2023-10-06 02:04:34,009 INFO    MainThread:12232 [internal.py:handle_exit():76] Internal process exited

@@ -1,0 +1,196 @@
+2023-10-06 02:01:40,964 INFO    StreamThr :15508 [internal.py:wandb_internal():86] W&B internal server running at pid: 15508, started at: 2023-10-06 02:01:40.964468
+2023-10-06 02:01:41,011 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: status
+2023-10-06 02:01:41,026 INFO    WriterThread:15508 [datastore.py:open_for_write():85] open: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\run-f8ybmol0.wandb
+2023-10-06 02:01:41,026 DEBUG   SenderThread:15508 [sender.py:send():380] send: header
+2023-10-06 02:01:41,198 DEBUG   SenderThread:15508 [sender.py:send():380] send: run
+2023-10-06 02:01:42,993 INFO    SenderThread:15508 [dir_watcher.py:__init__():211] watching files in: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files
+2023-10-06 02:01:42,993 INFO    SenderThread:15508 [sender.py:_start_run_threads():1122] run started: f8ybmol0 with start time 1696568500.933348
+2023-10-06 02:01:43,009 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: check_version
+2023-10-06 02:01:43,009 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: check_version
+2023-10-06 02:01:44,368 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: run_start
+2023-10-06 02:01:44,399 DEBUG   HandlerThread:15508 [system_info.py:__init__():32] System info init
+2023-10-06 02:01:44,399 DEBUG   HandlerThread:15508 [system_info.py:__init__():47] System info init done
+2023-10-06 02:01:44,399 INFO    HandlerThread:15508 [system_monitor.py:start():194] Starting system monitor
+2023-10-06 02:01:44,399 INFO    SystemMonitor:15508 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2023-10-06 02:01:44,399 INFO    HandlerThread:15508 [system_monitor.py:probe():214] Collecting system info
+2023-10-06 02:01:44,415 INFO    SystemMonitor:15508 [interfaces.py:start():190] Started cpu monitoring
+2023-10-06 02:01:44,415 DEBUG   HandlerThread:15508 [system_info.py:probe():196] Probing system
+2023-10-06 02:01:44,415 INFO    SystemMonitor:15508 [interfaces.py:start():190] Started disk monitoring
+2023-10-06 02:01:44,415 INFO    SystemMonitor:15508 [interfaces.py:start():190] Started memory monitoring
+2023-10-06 02:01:44,450 DEBUG   HandlerThread:15508 [system_info.py:_probe_git():181] Probing git
+2023-10-06 02:01:44,452 INFO    SystemMonitor:15508 [interfaces.py:start():190] Started network monitoring
+2023-10-06 02:01:44,695 DEBUG   HandlerThread:15508 [system_info.py:_probe_git():189] Probing git done
+2023-10-06 02:01:44,710 DEBUG   HandlerThread:15508 [system_info.py:probe():244] Probing system done
+2023-10-06 02:01:44,710 DEBUG   HandlerThread:15508 [system_monitor.py:probe():223] {'os': 'Windows-10-10.0.22621-SP0', 'python': '3.10.12', 'heartbeatAt': '2023-10-06T05:01:44.415363', 'startedAt': '2023-10-06T05:01:40.855750', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': 'Sintonia_de_Parametros.ipynb', 'codePathLocal': 'Sintonia_de_Parametros.ipynb', 'root': 'C:/Users/notebook-heitor/Documents/GitHub/SOMN', 'git': {'remote': 'https://github.com/fredericmenezes/SOMN.git', 'commit': '6a793af6aa5bc76933b7853b89292bdf4be7fb11'}, 'email': 'fredericmferreira@gmail.com', 'host': 'DESKTOP-GCCBVAD', 'username': 'notebook-heitor', 'executable': 'C:\\Users\\notebook-heitor\\anaconda3\\envs\\optsimflex\\python.exe', 'cpu_count': 2, 'cpu_count_logical': 2, 'cpu_freq': {'current': 1101.0, 'min': 0.0, 'max': 1101.0}, 'cpu_freq_per_core': [{'current': 1101.0, 'min': 0.0, 'max': 1101.0}], 'disk': {'/': {'total': 118.42089462280273, 'used': 91.2690544128418}}, 'memory': {'total': 3.8247146606445312}}
+2023-10-06 02:01:44,710 INFO    HandlerThread:15508 [system_monitor.py:probe():224] Finished collecting system info
+2023-10-06 02:01:44,710 INFO    HandlerThread:15508 [system_monitor.py:probe():227] Publishing system info
+2023-10-06 02:01:44,710 DEBUG   HandlerThread:15508 [system_info.py:_save_pip():52] Saving list of pip packages installed into the current environment
+2023-10-06 02:01:44,710 DEBUG   HandlerThread:15508 [system_info.py:_save_pip():68] Saving pip packages done
+2023-10-06 02:01:44,710 DEBUG   HandlerThread:15508 [system_info.py:_save_conda():75] Saving list of conda packages installed into the current environment
+2023-10-06 02:01:45,007 INFO    Thread-16 :15508 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\requirements.txt
+2023-10-06 02:01:45,007 INFO    Thread-16 :15508 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\conda-environment.yaml
+2023-10-06 02:01:56,122 INFO    Thread-16 :15508 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\conda-environment.yaml
+2023-10-06 02:01:56,559 DEBUG   HandlerThread:15508 [system_info.py:_save_conda():87] Saving conda packages done
+2023-10-06 02:01:56,559 DEBUG   HandlerThread:15508 [system_info.py:_save_code():90] Saving code
+2023-10-06 02:01:56,559 WARNING HandlerThread:15508 [system_info.py:_save_code():92] unable to save code -- program entry not found
+2023-10-06 02:01:56,559 DEBUG   HandlerThread:15508 [system_info.py:_save_patches():128] Saving git patches
+2023-10-06 02:01:57,606 DEBUG   HandlerThread:15508 [system_info.py:_save_patches():170] Saving git patches done
+2023-10-06 02:01:57,606 INFO    HandlerThread:15508 [system_monitor.py:probe():229] Finished publishing system info
+2023-10-06 02:01:57,638 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: status_report
+2023-10-06 02:01:57,638 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: keepalive
+2023-10-06 02:01:57,638 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: status_report
+2023-10-06 02:01:57,638 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: keepalive
+2023-10-06 02:01:57,638 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: status_report
+2023-10-06 02:01:57,638 DEBUG   SenderThread:15508 [sender.py:send():380] send: files
+2023-10-06 02:01:57,638 INFO    SenderThread:15508 [sender.py:_save_file():1378] saving file wandb-metadata.json with policy now
+2023-10-06 02:01:57,638 INFO    SenderThread:15508 [sender.py:_save_file():1378] saving file diff.patch with policy now
+2023-10-06 02:01:57,811 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: stop_status
+2023-10-06 02:01:57,813 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: stop_status
+2023-10-06 02:01:57,864 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: internal_messages
+2023-10-06 02:01:58,162 INFO    Thread-16 :15508 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\wandb-metadata.json
+2023-10-06 02:01:58,162 INFO    Thread-16 :15508 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\diff.patch
+2023-10-06 02:02:00,564 DEBUG   SenderThread:15508 [sender.py:send():380] send: telemetry
+2023-10-06 02:02:01,371 INFO    wandb-upload_0:15508 [upload_job.py:push():131] Uploaded file C:\Users\NOTEBO~1\AppData\Local\Temp\tmpxvcoaraxwandb\qqs1jul1-wandb-metadata.json
+2023-10-06 02:02:01,572 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: status_report
+2023-10-06 02:02:02,600 DEBUG   SenderThread:15508 [sender.py:send():380] send: telemetry
+2023-10-06 02:02:02,790 DEBUG   SenderThread:15508 [sender.py:send():380] send: config
+2023-10-06 02:02:02,867 INFO    wandb-upload_1:15508 [upload_job.py:push():131] Uploaded file C:\Users\NOTEBO~1\AppData\Local\Temp\tmpxvcoaraxwandb\liirkrk0-diff.patch
+2023-10-06 02:02:03,407 INFO    Thread-16 :15508 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\code\_session_history.ipynb
+2023-10-06 02:02:03,407 INFO    Thread-16 :15508 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\code
+2023-10-06 02:02:04,335 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: log_artifact
+2023-10-06 02:02:04,335 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: log_artifact
+2023-10-06 02:02:05,366 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: poll_exit
+2023-10-06 02:02:07,535 INFO    wandb-upload_1:15508 [upload_job.py:push():89] Uploaded file C:\Users\notebook-heitor\AppData\Local\wandb\wandb\artifacts\staging\tmpnna_t_ik
+2023-10-06 02:02:07,566 INFO    wandb-upload_0:15508 [upload_job.py:push():89] Uploaded file C:\Users\notebook-heitor\AppData\Local\wandb\wandb\artifacts\staging\tmpcvosfvb1
+2023-10-06 02:02:08,510 INFO    SenderThread:15508 [sender.py:send_request_log_artifact():1444] logged artifact source-Sintonia_OPTSIMFLEX_01-Sintonia_de_Parametros.ipynb - {'id': 'QXJ0aWZhY3Q6NTk1NzczMTUw', 'state': 'PENDING', 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjEwNDYxNjEzNg==', 'latestArtifact': None}}
+2023-10-06 02:02:08,510 DEBUG   SenderThread:15508 [sender.py:send():380] send: exit
+2023-10-06 02:02:08,510 INFO    SenderThread:15508 [sender.py:send_exit():585] handling exit code: 1
+2023-10-06 02:02:08,511 INFO    SenderThread:15508 [sender.py:send_exit():587] handling runtime: 19
+2023-10-06 02:02:08,511 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: status_report
+2023-10-06 02:02:08,515 INFO    SenderThread:15508 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-06 02:02:08,517 INFO    SenderThread:15508 [sender.py:send_exit():593] send defer
+2023-10-06 02:02:08,518 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: poll_exit
+2023-10-06 02:02:08,518 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 02:02:08,519 INFO    HandlerThread:15508 [handler.py:handle_request_defer():172] handle defer: 0
+2023-10-06 02:02:08,522 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: defer
+2023-10-06 02:02:08,522 INFO    SenderThread:15508 [sender.py:send_request_defer():609] handle sender defer: 0
+2023-10-06 02:02:08,522 INFO    SenderThread:15508 [sender.py:transition_state():613] send defer: 1
+2023-10-06 02:02:08,523 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 02:02:08,523 INFO    HandlerThread:15508 [handler.py:handle_request_defer():172] handle defer: 1
+2023-10-06 02:02:08,524 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: defer
+2023-10-06 02:02:08,524 INFO    SenderThread:15508 [sender.py:send_request_defer():609] handle sender defer: 1
+2023-10-06 02:02:08,524 INFO    SenderThread:15508 [sender.py:transition_state():613] send defer: 2
+2023-10-06 02:02:08,524 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 02:02:08,525 INFO    HandlerThread:15508 [handler.py:handle_request_defer():172] handle defer: 2
+2023-10-06 02:02:08,525 INFO    HandlerThread:15508 [system_monitor.py:finish():203] Stopping system monitor
+2023-10-06 02:02:08,526 DEBUG   SystemMonitor:15508 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2023-10-06 02:02:08,526 DEBUG   SystemMonitor:15508 [system_monitor.py:_start():179] Finished system metrics aggregation loop
+2023-10-06 02:02:08,526 INFO    HandlerThread:15508 [interfaces.py:finish():202] Joined cpu monitor
+2023-10-06 02:02:08,526 DEBUG   SystemMonitor:15508 [system_monitor.py:_start():183] Publishing last batch of metrics
+2023-10-06 02:02:08,527 INFO    HandlerThread:15508 [interfaces.py:finish():202] Joined disk monitor
+2023-10-06 02:02:08,528 INFO    HandlerThread:15508 [interfaces.py:finish():202] Joined memory monitor
+2023-10-06 02:02:08,529 INFO    HandlerThread:15508 [interfaces.py:finish():202] Joined network monitor
+2023-10-06 02:02:08,530 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: defer
+2023-10-06 02:02:08,530 INFO    SenderThread:15508 [sender.py:send_request_defer():609] handle sender defer: 2
+2023-10-06 02:02:08,530 INFO    SenderThread:15508 [sender.py:transition_state():613] send defer: 3
+2023-10-06 02:02:08,531 DEBUG   SenderThread:15508 [sender.py:send():380] send: stats
+2023-10-06 02:02:08,531 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 02:02:08,531 INFO    HandlerThread:15508 [handler.py:handle_request_defer():172] handle defer: 3
+2023-10-06 02:02:08,532 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: defer
+2023-10-06 02:02:08,532 INFO    SenderThread:15508 [sender.py:send_request_defer():609] handle sender defer: 3
+2023-10-06 02:02:08,532 INFO    SenderThread:15508 [sender.py:transition_state():613] send defer: 4
+2023-10-06 02:02:08,532 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 02:02:08,533 INFO    HandlerThread:15508 [handler.py:handle_request_defer():172] handle defer: 4
+2023-10-06 02:02:08,533 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: defer
+2023-10-06 02:02:08,533 INFO    SenderThread:15508 [sender.py:send_request_defer():609] handle sender defer: 4
+2023-10-06 02:02:08,534 INFO    SenderThread:15508 [sender.py:transition_state():613] send defer: 5
+2023-10-06 02:02:08,534 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 02:02:08,534 INFO    HandlerThread:15508 [handler.py:handle_request_defer():172] handle defer: 5
+2023-10-06 02:02:08,535 DEBUG   SenderThread:15508 [sender.py:send():380] send: summary
+2023-10-06 02:02:08,536 INFO    SenderThread:15508 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2023-10-06 02:02:08,538 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: defer
+2023-10-06 02:02:08,538 INFO    SenderThread:15508 [sender.py:send_request_defer():609] handle sender defer: 5
+2023-10-06 02:02:08,539 INFO    SenderThread:15508 [sender.py:transition_state():613] send defer: 6
+2023-10-06 02:02:08,539 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 02:02:08,539 INFO    HandlerThread:15508 [handler.py:handle_request_defer():172] handle defer: 6
+2023-10-06 02:02:08,540 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: defer
+2023-10-06 02:02:08,540 INFO    SenderThread:15508 [sender.py:send_request_defer():609] handle sender defer: 6
+2023-10-06 02:02:08,548 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: status_report
+2023-10-06 02:02:08,804 INFO    SenderThread:15508 [sender.py:transition_state():613] send defer: 7
+2023-10-06 02:02:08,804 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 02:02:08,804 INFO    HandlerThread:15508 [handler.py:handle_request_defer():172] handle defer: 7
+2023-10-06 02:02:08,804 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: defer
+2023-10-06 02:02:08,804 INFO    SenderThread:15508 [sender.py:send_request_defer():609] handle sender defer: 7
+2023-10-06 02:02:08,804 INFO    SenderThread:15508 [sender.py:transition_state():613] send defer: 8
+2023-10-06 02:02:08,804 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 02:02:08,804 INFO    HandlerThread:15508 [handler.py:handle_request_defer():172] handle defer: 8
+2023-10-06 02:02:08,804 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: defer
+2023-10-06 02:02:08,804 INFO    SenderThread:15508 [sender.py:send_request_defer():609] handle sender defer: 8
+2023-10-06 02:02:08,804 INFO    SenderThread:15508 [sender.py:transition_state():613] send defer: 9
+2023-10-06 02:02:08,804 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 02:02:08,804 INFO    HandlerThread:15508 [handler.py:handle_request_defer():172] handle defer: 9
+2023-10-06 02:02:08,804 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: defer
+2023-10-06 02:02:08,804 INFO    SenderThread:15508 [sender.py:send_request_defer():609] handle sender defer: 9
+2023-10-06 02:02:08,804 INFO    SenderThread:15508 [dir_watcher.py:finish():358] shutting down directory watcher
+2023-10-06 02:02:09,469 INFO    Thread-16 :15508 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\config.yaml
+2023-10-06 02:02:09,472 INFO    SenderThread:15508 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\wandb-summary.json
+2023-10-06 02:02:09,472 INFO    SenderThread:15508 [dir_watcher.py:finish():388] scan: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files
+2023-10-06 02:02:09,473 INFO    SenderThread:15508 [dir_watcher.py:finish():402] scan save: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\conda-environment.yaml conda-environment.yaml
+2023-10-06 02:02:09,474 INFO    SenderThread:15508 [dir_watcher.py:finish():402] scan save: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\config.yaml config.yaml
+2023-10-06 02:02:09,478 INFO    SenderThread:15508 [dir_watcher.py:finish():402] scan save: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\diff.patch diff.patch
+2023-10-06 02:02:09,479 INFO    SenderThread:15508 [dir_watcher.py:finish():402] scan save: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\requirements.txt requirements.txt
+2023-10-06 02:02:09,480 INFO    SenderThread:15508 [dir_watcher.py:finish():402] scan save: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\wandb-metadata.json wandb-metadata.json
+2023-10-06 02:02:09,481 INFO    SenderThread:15508 [dir_watcher.py:finish():402] scan save: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\wandb-summary.json wandb-summary.json
+2023-10-06 02:02:09,484 INFO    SenderThread:15508 [dir_watcher.py:finish():402] scan save: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\code\_session_history.ipynb code/_session_history.ipynb
+2023-10-06 02:02:09,485 INFO    SenderThread:15508 [sender.py:transition_state():613] send defer: 10
+2023-10-06 02:02:09,487 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 02:02:09,488 INFO    HandlerThread:15508 [handler.py:handle_request_defer():172] handle defer: 10
+2023-10-06 02:02:09,493 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: defer
+2023-10-06 02:02:09,494 INFO    SenderThread:15508 [sender.py:send_request_defer():609] handle sender defer: 10
+2023-10-06 02:02:09,494 INFO    SenderThread:15508 [file_pusher.py:finish():175] shutting down file pusher
+2023-10-06 02:02:09,965 INFO    wandb-upload_1:15508 [upload_job.py:push():131] Uploaded file C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\conda-environment.yaml
+2023-10-06 02:02:10,013 INFO    wandb-upload_0:15508 [upload_job.py:push():131] Uploaded file C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\config.yaml
+2023-10-06 02:02:10,425 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: keepalive
+2023-10-06 02:02:11,983 INFO    wandb-upload_3:15508 [upload_job.py:push():131] Uploaded file C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\wandb-summary.json
+2023-10-06 02:02:11,983 INFO    wandb-upload_2:15508 [upload_job.py:push():131] Uploaded file C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\requirements.txt
+2023-10-06 02:02:12,249 INFO    wandb-upload_4:15508 [upload_job.py:push():131] Uploaded file C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\files\code\_session_history.ipynb
+2023-10-06 02:02:12,452 INFO    Thread-15 (_thread_body):15508 [sender.py:transition_state():613] send defer: 11
+2023-10-06 02:02:12,454 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 02:02:12,455 INFO    HandlerThread:15508 [handler.py:handle_request_defer():172] handle defer: 11
+2023-10-06 02:02:12,455 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: defer
+2023-10-06 02:02:12,455 INFO    SenderThread:15508 [sender.py:send_request_defer():609] handle sender defer: 11
+2023-10-06 02:02:12,456 INFO    SenderThread:15508 [file_pusher.py:join():181] waiting for file pusher
+2023-10-06 02:02:12,456 INFO    SenderThread:15508 [sender.py:transition_state():613] send defer: 12
+2023-10-06 02:02:12,458 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 02:02:12,458 INFO    HandlerThread:15508 [handler.py:handle_request_defer():172] handle defer: 12
+2023-10-06 02:02:12,458 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: defer
+2023-10-06 02:02:12,458 INFO    SenderThread:15508 [sender.py:send_request_defer():609] handle sender defer: 12
+2023-10-06 02:02:12,458 INFO    SenderThread:15508 [file_stream.py:finish():595] file stream finish called
+2023-10-06 02:02:12,702 INFO    SenderThread:15508 [file_stream.py:finish():599] file stream finish is done
+2023-10-06 02:02:12,702 INFO    SenderThread:15508 [sender.py:transition_state():613] send defer: 13
+2023-10-06 02:02:12,702 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 02:02:12,702 INFO    HandlerThread:15508 [handler.py:handle_request_defer():172] handle defer: 13
+2023-10-06 02:02:12,702 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: defer
+2023-10-06 02:02:12,702 INFO    SenderThread:15508 [sender.py:send_request_defer():609] handle sender defer: 13
+2023-10-06 02:02:12,702 INFO    SenderThread:15508 [sender.py:transition_state():613] send defer: 14
+2023-10-06 02:02:12,702 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: defer
+2023-10-06 02:02:12,702 DEBUG   SenderThread:15508 [sender.py:send():380] send: final
+2023-10-06 02:02:12,702 INFO    HandlerThread:15508 [handler.py:handle_request_defer():172] handle defer: 14
+2023-10-06 02:02:12,702 DEBUG   SenderThread:15508 [sender.py:send():380] send: footer
+2023-10-06 02:02:12,702 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: defer
+2023-10-06 02:02:12,702 INFO    SenderThread:15508 [sender.py:send_request_defer():609] handle sender defer: 14
+2023-10-06 02:02:12,717 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: internal_messages
+2023-10-06 02:02:12,717 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: poll_exit
+2023-10-06 02:02:12,717 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: server_info
+2023-10-06 02:02:12,717 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: get_summary
+2023-10-06 02:02:12,717 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: sampled_history
+2023-10-06 02:02:12,717 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: job_info
+2023-10-06 02:02:12,717 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: poll_exit
+2023-10-06 02:02:12,733 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: server_info
+2023-10-06 02:02:12,936 DEBUG   SenderThread:15508 [sender.py:send_request():407] send_request: job_info
+2023-10-06 02:02:12,936 DEBUG   HandlerThread:15508 [handler.py:handle_request():146] handle_request: shutdown
+2023-10-06 02:02:12,936 INFO    HandlerThread:15508 [handler.py:finish():866] shutting down handler
+2023-10-06 02:02:13,748 INFO    WriterThread:15508 [datastore.py:close():294] close: C:\Users\notebook-heitor\Documents\GitHub\SOMN\wandb\run-20231006_020140-f8ybmol0\run-f8ybmol0.wandb
+2023-10-06 02:02:13,951 INFO    SenderThread:15508 [sender.py:finish():1534] shutting down sender
+2023-10-06 02:02:13,951 INFO    SenderThread:15508 [file_pusher.py:finish():175] shutting down file pusher
+2023-10-06 02:02:13,951 INFO    SenderThread:15508 [file_pusher.py:join():181] waiting for file pusher
