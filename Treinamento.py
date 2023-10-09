@@ -38,7 +38,7 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
                           config=config_PPO,
                           group=f'NovosTestes{atraso:02d}', #GRUPOS A SEREM ADCIONADOS NO WANDB
 #                          name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
-                          name=f'Aumento episódio y = 1', #NOME DA EXECUÇÃO
+                          name=f'teste{atraso:02d}', #NOME DA EXECUÇÃO
                           save_code=True,
                           reinit=True
         )

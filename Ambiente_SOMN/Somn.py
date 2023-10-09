@@ -1,6 +1,8 @@
 from JobShop.JobShop import JobShop
 from Ambiente_SOMN.Demand import Demand
 from Ambiente_SOMN.Yard import Yard
+from Stable_baselines3.OnPolicyAlgirithm import OnPolicyAlgorithm
+import matplotlib.pyplot as plt
 
 from numpy.random.mtrand import seed
 # a biblioteca gym mudou
@@ -103,7 +105,6 @@ class Somn(Env):
         # DO varia de 3 a (ub_time + ub_LT + MAXDO)
         self.lb_DO = 3
         self.ub_DO = self.ub_time + self.ub_LT + self.MAXDO
-
 
         # TP varia de 2 a (ub_time + ub_LT + 2) onde 2 e um ruido (troquei 2 pela distribuicao de poisson)
         self.lb_TP = 2
@@ -388,6 +389,8 @@ class Somn(Env):
                 totReward += self.DE[i].AM * self.DE[i].PR
         self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
         return totReward, totPenalty
+
+    
 
     ######################
     #       step         #
