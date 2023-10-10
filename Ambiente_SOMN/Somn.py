@@ -213,7 +213,7 @@ class Somn(Env):
                 for j in range(Demand.M):
                     # print('Y(y,j):', y,j, 'Y x D:', self.YA[y].yard[j],self.DE[i].FT[j], 'cont:', Yard.cont, 'l x m:', limiar, match)
                     if self.DE[i].FT[j] > 0:
-                        if self.DE[i].FT[j] == self.YA[y].yard[j]: #mudança de <= para == 
+                        if self.DE[i].FT[j] == self.YA[y].yard[j]: #mudança de <= para ==  
                             match = match + 1
                     # se for ZERO então não pode ter a caracteristica
                     else:
