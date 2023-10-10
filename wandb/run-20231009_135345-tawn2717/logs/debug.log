@@ -1,0 +1,26 @@
+2023-10-09 13:53:45,059 INFO    MainThread:8824 [wandb_setup.py:_flush():76] Current SDK version is 0.15.12
+2023-10-09 13:53:45,060 INFO    MainThread:8824 [wandb_setup.py:_flush():76] Configure stats pid to 8824
+2023-10-09 13:53:45,060 INFO    MainThread:8824 [wandb_setup.py:_flush():76] Loading settings from C:\Users\LACMOR10\.config\wandb\settings
+2023-10-09 13:53:45,060 INFO    MainThread:8824 [wandb_setup.py:_flush():76] Loading settings from C:\Users\LACMOR10\Documents\GitHub\SOMN\wandb\settings
+2023-10-09 13:53:45,060 INFO    MainThread:8824 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2023-10-09 13:53:45,060 INFO    MainThread:8824 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2023-10-09 13:53:45,061 INFO    MainThread:8824 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'Treinamento.py', 'program_abspath': 'c:\\Users\\LACMOR10\\Documents\\GitHub\\SOMN\\Treinamento.py', 'program': 'c:\\Users\\LACMOR10\\Documents\\GitHub\\SOMN\\Treinamento.py'}
+2023-10-09 13:53:45,061 INFO    MainThread:8824 [wandb_init.py:_log_setup():528] Logging user logs to C:\Users\LACMOR10\Documents\GitHub\SOMN\wandb\run-20231009_135345-tawn2717\logs\debug.log
+2023-10-09 13:53:45,061 INFO    MainThread:8824 [wandb_init.py:_log_setup():529] Logging internal logs to C:\Users\LACMOR10\Documents\GitHub\SOMN\wandb\run-20231009_135345-tawn2717\logs\debug-internal.log
+2023-10-09 13:53:45,061 INFO    MainThread:8824 [wandb_init.py:init():568] calling init triggers
+2023-10-09 13:53:45,062 INFO    MainThread:8824 [wandb_init.py:init():575] wandb.init called with sweep_config: {}
+config: {'atraso': -1, 'batch_size': 256, 'ent_coef': 0.001641577520175419, 'gae_lambda': 0.9142950466044, 'gamma': 0.918623650457886, 'learning_rate': 0.0003660144793262825, 'n_epochs': 21, 'n_steps': 3328, 'target_kl': 0.02113910446426361}
+2023-10-09 13:53:45,062 INFO    MainThread:8824 [wandb_init.py:init():618] starting backend
+2023-10-09 13:53:45,062 INFO    MainThread:8824 [wandb_init.py:init():622] setting up manager
+2023-10-09 13:53:45,065 INFO    MainThread:8824 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=spawn, using: spawn
+2023-10-09 13:53:45,070 INFO    MainThread:8824 [wandb_init.py:init():628] backend started and connected
+2023-10-09 13:53:45,078 INFO    MainThread:8824 [wandb_init.py:init():720] updated telemetry
+2023-10-09 13:53:45,129 INFO    MainThread:8824 [wandb_init.py:init():753] communicating run to backend with 90.0 second timeout
+2023-10-09 13:53:46,034 INFO    MainThread:8824 [wandb_run.py:_on_init():2220] communicating current version
+2023-10-09 13:53:46,482 INFO    MainThread:8824 [wandb_run.py:_on_init():2229] got version response 
+2023-10-09 13:53:46,482 INFO    MainThread:8824 [wandb_init.py:init():804] starting run threads in backend
+2023-10-09 13:53:51,049 INFO    MainThread:8824 [wandb_run.py:_console_start():2199] atexit reg
+2023-10-09 13:53:51,049 INFO    MainThread:8824 [wandb_run.py:_redirect():2054] redirect: wrap_raw
+2023-10-09 13:53:51,049 INFO    MainThread:8824 [wandb_run.py:_redirect():2119] Wrapping output streams.
+2023-10-09 13:53:51,049 INFO    MainThread:8824 [wandb_run.py:_redirect():2144] Redirects installed.
+2023-10-09 13:53:51,051 INFO    MainThread:8824 [wandb_init.py:init():845] run started, returning control to user process

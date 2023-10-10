@@ -1,0 +1,111 @@
+2023-10-09 13:53:45,072 INFO    StreamThr :13484 [internal.py:wandb_internal():86] W&B internal server running at pid: 13484, started at: 2023-10-09 13:53:45.070482
+2023-10-09 13:53:45,078 DEBUG   HandlerThread:13484 [handler.py:handle_request():146] handle_request: status
+2023-10-09 13:53:45,081 INFO    WriterThread:13484 [datastore.py:open_for_write():85] open: C:\Users\LACMOR10\Documents\GitHub\SOMN\wandb\run-20231009_135345-tawn2717\run-tawn2717.wandb
+2023-10-09 13:53:45,087 DEBUG   SenderThread:13484 [sender.py:send():380] send: header
+2023-10-09 13:53:45,134 DEBUG   SenderThread:13484 [sender.py:send():380] send: run
+2023-10-09 13:53:46,011 INFO    SenderThread:13484 [dir_watcher.py:__init__():211] watching files in: C:\Users\LACMOR10\Documents\GitHub\SOMN\wandb\run-20231009_135345-tawn2717\files
+2023-10-09 13:53:46,012 INFO    SenderThread:13484 [sender.py:_start_run_threads():1122] run started: tawn2717 with start time 1696870425.071481
+2023-10-09 13:53:46,034 DEBUG   HandlerThread:13484 [handler.py:handle_request():146] handle_request: check_version
+2023-10-09 13:53:46,035 DEBUG   SenderThread:13484 [sender.py:send_request():407] send_request: check_version
+2023-10-09 13:53:46,494 DEBUG   HandlerThread:13484 [handler.py:handle_request():146] handle_request: run_start
+2023-10-09 13:53:46,519 DEBUG   HandlerThread:13484 [system_info.py:__init__():32] System info init
+2023-10-09 13:53:46,520 DEBUG   HandlerThread:13484 [system_info.py:__init__():47] System info init done
+2023-10-09 13:53:46,520 INFO    HandlerThread:13484 [system_monitor.py:start():194] Starting system monitor
+2023-10-09 13:53:46,521 INFO    HandlerThread:13484 [system_monitor.py:probe():214] Collecting system info
+2023-10-09 13:53:46,522 INFO    SystemMonitor:13484 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2023-10-09 13:53:46,524 INFO    SystemMonitor:13484 [interfaces.py:start():190] Started cpu monitoring
+2023-10-09 13:53:46,529 INFO    SystemMonitor:13484 [interfaces.py:start():190] Started disk monitoring
+2023-10-09 13:53:46,532 INFO    SystemMonitor:13484 [interfaces.py:start():190] Started gpu monitoring
+2023-10-09 13:53:46,533 INFO    SystemMonitor:13484 [interfaces.py:start():190] Started memory monitoring
+2023-10-09 13:53:46,545 DEBUG   HandlerThread:13484 [system_info.py:probe():196] Probing system
+2023-10-09 13:53:46,547 INFO    SystemMonitor:13484 [interfaces.py:start():190] Started network monitoring
+2023-10-09 13:53:46,564 DEBUG   HandlerThread:13484 [system_info.py:_probe_git():181] Probing git
+2023-10-09 13:53:46,573 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:53:46,574 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:53:46,666 DEBUG   HandlerThread:13484 [system_info.py:_probe_git():189] Probing git done
+2023-10-09 13:53:46,666 DEBUG   HandlerThread:13484 [system_info.py:probe():244] Probing system done
+2023-10-09 13:53:46,666 DEBUG   HandlerThread:13484 [system_monitor.py:probe():223] {'os': 'Windows-10-10.0.19045-SP0', 'python': '3.11.5', 'heartbeatAt': '2023-10-09T16:53:46.546245', 'startedAt': '2023-10-09T16:53:45.033341', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': 'c:\\Users\\LACMOR10\\Documents\\GitHub\\SOMN\\Treinamento.py', 'codePathLocal': 'Treinamento.py', 'codePath': 'Treinamento.py', 'git': {'remote': 'https://github.com/fredericmenezes/SOMN.git', 'commit': 'b9a7a920b8994a1ad47d0d32209c5846eeaf726c'}, 'email': 'fredericmenezes@gmail.com', 'root': 'C:/Users/LACMOR10/Documents/GitHub/SOMN', 'host': 'DESKTOP-RGEFF34', 'username': 'LACMOR10', 'executable': 'C:\\ProgramData\\Anaconda3\\envs\\sintonia\\python.exe', 'cpu_count': 6, 'cpu_count_logical': 12, 'cpu_freq': {'current': 3192.0, 'min': 0.0, 'max': 3192.0}, 'cpu_freq_per_core': [{'current': 3192.0, 'min': 0.0, 'max': 3192.0}], 'disk': {'/': {'total': 754.1234130859375, 'used': 628.3797035217285}}, 'gpu': 'NVIDIA GeForce GTX 1050 Ti', 'gpu_count': 1, 'gpu_devices': [{'name': 'NVIDIA GeForce GTX 1050 Ti', 'memory_total': 4294967296}], 'memory': {'total': 15.807819366455078}}
+2023-10-09 13:53:46,666 INFO    HandlerThread:13484 [system_monitor.py:probe():224] Finished collecting system info
+2023-10-09 13:53:46,667 INFO    HandlerThread:13484 [system_monitor.py:probe():227] Publishing system info
+2023-10-09 13:53:46,667 DEBUG   HandlerThread:13484 [system_info.py:_save_pip():52] Saving list of pip packages installed into the current environment
+2023-10-09 13:53:46,669 DEBUG   HandlerThread:13484 [system_info.py:_save_pip():68] Saving pip packages done
+2023-10-09 13:53:46,669 DEBUG   HandlerThread:13484 [system_info.py:_save_conda():75] Saving list of conda packages installed into the current environment
+2023-10-09 13:53:47,020 INFO    Thread-21 :13484 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\LACMOR10\Documents\GitHub\SOMN\wandb\run-20231009_135345-tawn2717\files\requirements.txt
+2023-10-09 13:53:47,021 INFO    Thread-21 :13484 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\LACMOR10\Documents\GitHub\SOMN\wandb\run-20231009_135345-tawn2717\files\conda-environment.yaml
+2023-10-09 13:53:48,592 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:53:48,592 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:53:50,552 DEBUG   HandlerThread:13484 [system_info.py:_save_conda():87] Saving conda packages done
+2023-10-09 13:53:50,552 DEBUG   HandlerThread:13484 [system_info.py:_save_code():90] Saving code
+2023-10-09 13:53:50,612 DEBUG   HandlerThread:13484 [system_info.py:_save_code():111] Saving code done
+2023-10-09 13:53:50,612 DEBUG   HandlerThread:13484 [system_info.py:_save_patches():128] Saving git patches
+2023-10-09 13:53:50,621 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:53:50,622 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:53:51,014 DEBUG   HandlerThread:13484 [system_info.py:_save_patches():170] Saving git patches done
+2023-10-09 13:53:51,016 INFO    HandlerThread:13484 [system_monitor.py:probe():229] Finished publishing system info
+2023-10-09 13:53:51,030 DEBUG   HandlerThread:13484 [handler.py:handle_request():146] handle_request: status_report
+2023-10-09 13:53:51,030 DEBUG   SenderThread:13484 [sender.py:send():380] send: files
+2023-10-09 13:53:51,031 INFO    SenderThread:13484 [sender.py:_save_file():1378] saving file wandb-metadata.json with policy now
+2023-10-09 13:53:51,032 INFO    SenderThread:13484 [sender.py:_save_file():1378] saving file code\Treinamento.py with policy now
+2023-10-09 13:53:51,032 INFO    SenderThread:13484 [sender.py:_save_file():1378] saving file diff.patch with policy now
+2023-10-09 13:53:51,051 DEBUG   HandlerThread:13484 [handler.py:handle_request():146] handle_request: stop_status
+2023-10-09 13:53:51,051 DEBUG   HandlerThread:13484 [handler.py:handle_request():146] handle_request: internal_messages
+2023-10-09 13:53:51,053 DEBUG   SenderThread:13484 [sender.py:send_request():407] send_request: stop_status
+2023-10-09 13:53:51,066 INFO    Thread-21 :13484 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\LACMOR10\Documents\GitHub\SOMN\wandb\run-20231009_135345-tawn2717\files\conda-environment.yaml
+2023-10-09 13:53:51,066 INFO    Thread-21 :13484 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\LACMOR10\Documents\GitHub\SOMN\wandb\run-20231009_135345-tawn2717\files\code\Treinamento.py
+2023-10-09 13:53:51,067 INFO    Thread-21 :13484 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\LACMOR10\Documents\GitHub\SOMN\wandb\run-20231009_135345-tawn2717\files\wandb-metadata.json
+2023-10-09 13:53:51,067 INFO    Thread-21 :13484 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\LACMOR10\Documents\GitHub\SOMN\wandb\run-20231009_135345-tawn2717\files\diff.patch
+2023-10-09 13:53:51,067 INFO    Thread-21 :13484 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\LACMOR10\Documents\GitHub\SOMN\wandb\run-20231009_135345-tawn2717\files\code
+2023-10-09 13:53:51,801 DEBUG   SenderThread:13484 [sender.py:send():380] send: telemetry
+2023-10-09 13:53:52,141 INFO    wandb-upload_0:13484 [upload_job.py:push():131] Uploaded file C:\Users\LACMOR10\AppData\Local\Temp\tmpsbr6r1s3wandb\lpspnze2-wandb-metadata.json
+2023-10-09 13:53:52,647 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:53:52,647 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:53:52,735 INFO    wandb-upload_2:13484 [upload_job.py:push():131] Uploaded file C:\Users\LACMOR10\AppData\Local\Temp\tmpsbr6r1s3wandb\awb4m29c-diff.patch
+2023-10-09 13:53:52,742 INFO    wandb-upload_1:13484 [upload_job.py:push():131] Uploaded file C:\Users\LACMOR10\AppData\Local\Temp\tmpsbr6r1s3wandb\xteo20s4-code/Treinamento.py
+2023-10-09 13:53:54,666 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:53:54,666 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:53:55,837 DEBUG   HandlerThread:13484 [handler.py:handle_request():146] handle_request: status_report
+2023-10-09 13:53:56,690 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:53:56,691 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:53:58,707 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:53:58,708 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:00,729 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:00,729 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:00,890 DEBUG   HandlerThread:13484 [handler.py:handle_request():146] handle_request: status_report
+2023-10-09 13:54:02,750 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:02,750 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:04,770 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:04,771 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:05,948 DEBUG   HandlerThread:13484 [handler.py:handle_request():146] handle_request: status_report
+2023-10-09 13:54:06,042 DEBUG   HandlerThread:13484 [handler.py:handle_request():146] handle_request: stop_status
+2023-10-09 13:54:06,043 DEBUG   SenderThread:13484 [sender.py:send_request():407] send_request: stop_status
+2023-10-09 13:54:06,074 DEBUG   HandlerThread:13484 [handler.py:handle_request():146] handle_request: internal_messages
+2023-10-09 13:54:06,795 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:06,796 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:07,230 INFO    Thread-21 :13484 [dir_watcher.py:_on_file_created():271] file/dir created: C:\Users\LACMOR10\Documents\GitHub\SOMN\wandb\run-20231009_135345-tawn2717\files\output.log
+2023-10-09 13:54:08,817 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:08,817 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:09,260 INFO    Thread-21 :13484 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\LACMOR10\Documents\GitHub\SOMN\wandb\run-20231009_135345-tawn2717\files\output.log
+2023-10-09 13:54:10,838 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:10,838 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:11,840 DEBUG   HandlerThread:13484 [handler.py:handle_request():146] handle_request: status_report
+2023-10-09 13:54:12,862 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:12,862 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:14,890 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:14,890 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:16,921 DEBUG   HandlerThread:13484 [handler.py:handle_request():146] handle_request: status_report
+2023-10-09 13:54:16,950 ERROR   gpu       :13484 [interfaces.py:aggregate():161] Failed to serialize metric: division by zero
+2023-10-09 13:54:16,959 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:16,960 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:17,356 INFO    Thread-21 :13484 [dir_watcher.py:_on_file_modified():288] file/dir modified: C:\Users\LACMOR10\Documents\GitHub\SOMN\wandb\run-20231009_135345-tawn2717\files\config.yaml
+2023-10-09 13:54:18,985 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:18,985 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:21,007 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:21,007 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:21,047 DEBUG   HandlerThread:13484 [handler.py:handle_request():146] handle_request: stop_status
+2023-10-09 13:54:21,047 DEBUG   SenderThread:13484 [sender.py:send_request():407] send_request: stop_status
+2023-10-09 13:54:21,078 DEBUG   HandlerThread:13484 [handler.py:handle_request():146] handle_request: internal_messages
+2023-10-09 13:54:22,291 DEBUG   HandlerThread:13484 [handler.py:handle_request():146] handle_request: status_report
+2023-10-09 13:54:23,019 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:23,019 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:25,035 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported
+2023-10-09 13:54:25,036 ERROR   gpu       :13484 [interfaces.py:monitor():144] Failed to sample metric: Not Supported

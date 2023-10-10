@@ -1,0 +1,53 @@
+{
+    "os": "Windows-10-10.0.19045-SP0",
+    "python": "3.11.5",
+    "heartbeatAt": "2023-10-09T16:53:46.546245",
+    "startedAt": "2023-10-09T16:53:45.033341",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "c:\\Users\\LACMOR10\\Documents\\GitHub\\SOMN\\Treinamento.py",
+    "codePathLocal": "Treinamento.py",
+    "codePath": "Treinamento.py",
+    "git": {
+        "remote": "https://github.com/fredericmenezes/SOMN.git",
+        "commit": "b9a7a920b8994a1ad47d0d32209c5846eeaf726c"
+    },
+    "email": "fredericmenezes@gmail.com",
+    "root": "C:/Users/LACMOR10/Documents/GitHub/SOMN",
+    "host": "DESKTOP-RGEFF34",
+    "username": "LACMOR10",
+    "executable": "C:\\ProgramData\\Anaconda3\\envs\\sintonia\\python.exe",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 3192.0,
+        "min": 0.0,
+        "max": 3192.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3192.0,
+            "min": 0.0,
+            "max": 3192.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 754.1234130859375,
+            "used": 628.3797035217285
+        }
+    },
+    "gpu": "NVIDIA GeForce GTX 1050 Ti",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce GTX 1050 Ti",
+            "memory_total": 4294967296
+        }
+    ],
+    "memory": {
+        "total": 15.807819366455078
+    }
+}
