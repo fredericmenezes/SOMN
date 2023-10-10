@@ -213,7 +213,7 @@ class Somn(Env):
                 for j in range(Demand.M):
                     # print('Y(y,j):', y,j, 'Y x D:', self.YA[y].yard[j],self.DE[i].FT[j], 'cont:', Yard.cont, 'l x m:', limiar, match)
                     if self.DE[i].FT[j] > 0:
-                        if self.DE[i].FT[j] <= self.YA[y].yard[j]:
+                        if self.DE[i].FT[j] == self.YA[y].yard[j]: #mudança de <= para ==
                             match = match + 1
                     # se for ZERO então não pode ter a caracteristica
                     else:
@@ -314,6 +314,9 @@ class Somn(Env):
                         else:
                             self.DE[i].ST = -2  ## NAO CABE ... REJEITADO COM GERAÇÃO DE LIXO (CASO MAIS GRAVE)
                             Demand.reject_w_waste = Demand.reject_w_waste + 1
+                            print(f'\n\n\n\nReject total: {Demand.reject_w_waste} \n\n\n\n')
+
+    
 
     def stock_covers_demand(self):
         covered = True
@@ -369,9 +372,10 @@ class Somn(Env):
                 totPenalty += self.DE[i].AM * self.DE[i].CO
                 # print('PREJUIZO $$$$$$$$$$$$$$$$$$$$$$$$$')
             if self.DE[i].ST == 4:
-                totPenalty += totReward / (
-                    Yard.space - Yard.cont + 1
-                )  ### penalidade inversamente proporcional ao espaço remanescente
+                totPenalty += 0
+                # totPenalty += totReward / (
+                #     Yard.space - Yard.cont + 1
+                # )  ### penalidade inversamente proporcional ao espaço remanescente
                 # print('STORED <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
             if self.DE[i].ST == 5:
 ## ACMO AJUSTAR O REWARD DE ACORDO COM A PRIORIDADE
@@ -388,6 +392,7 @@ class Somn(Env):
                 # print('REWARD ******************************')
                 totReward += self.DE[i].AM * self.DE[i].PR
         self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
+        # totReward -= totPenalty
         return totReward, totPenalty
 
     

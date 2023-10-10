@@ -34,9 +34,9 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
     }
 
     for x in range(1):    #### ACMO NUMEROS DE EXECUÇÕES COMPETIDORAS
-        run1 = wandb.init(project='YARD', #NOME DO PROJETO
+        run1 = wandb.init(project='VISÃO REJECT WASTE', #NOME DO PROJETO
                           config=config_PPO,
-                          group=f'NovosTestes{atraso:02d}', #GRUPOS A SEREM ADCIONADOS NO WANDB
+                          group=f'2 step', #GRUPOS A SEREM ADCIONADOS NO WANDB
 #                          name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
                           name=f'teste{atraso:02d}', #NOME DA EXECUÇÃO
                           save_code=True,
@@ -63,12 +63,12 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
             #stats_window_size=config.stats_window_size,
             verbose=0,
             #seed = 2023,
-            device='cuda',
+            device='cpu',
             #tensorboard_log=f"/content/drive/MyDrive/SOMN2/runs/{run1.id}"
             tensorboard_log=f"runs/{run1.id}"
         )
 
-        model.learn(total_timesteps=3328*1000)
+        model.learn(total_timesteps=10000000)
         
         # 1000 e verificar o tempo
         model.save(os.path.join(wandb.run.dir, f"model_custom_PPO_atraso_{atraso:02d}"))
