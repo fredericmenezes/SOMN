@@ -314,7 +314,7 @@ class Somn(Env):
                         else:
                             self.DE[i].ST = -2  ## NAO CABE ... REJEITADO COM GERAÇÃO DE LIXO (CASO MAIS GRAVE)
                             Demand.reject_w_waste = Demand.reject_w_waste + 1
-                            print(f'\n\n\n\nReject total: {Demand.reject_w_waste} \n\n\n\n')
+                            # print(f'\n\n\n\nReject total: {Demand.reject_w_waste} \n\n\n\n')
 
     
 
