@@ -208,25 +208,26 @@ class Somn(Env):
         matched = False
         for i in range(Demand.N):
           if self.DE[i].ST == 0: ## SÓ PODE DAR MATCH DEMANDAS CHEGADAS
-            for y in range(Yard.cont):
-                match = 0
-                # print('Y...', y, 'YA=', YA[y].yard,Yard.cont, 'l=', limiar)
-                for j in range(Demand.M):
-                    # print('Y(y,j):', y,j, 'Y x D:', self.YA[y].yard[j],self.DE[i].FT[j], 'cont:', Yard.cont, 'l x m:', limiar, match)
-                    if self.DE[i].FT[j] > 0:
-                        if self.DE[i].FT[j] == self.YA[y].yard[j]: #mudança de <= para == 
-                            match = match + 1
-                    # se for ZERO então não pode ter a caracteristica
-                    else:
-                        if self.YA[y].yard[j] == 0:
-                            match = match + 1
+            if self.Y > 0: # ALTERAÇÃO PARA TESTE DE YARD == 0
+                for y in range(Yard.cont):
+                    match = 0
+                    # print('Y...', y, 'YA=', YA[y].yard,Yard.cont, 'l=', limiar)
+                    for j in range(Demand.M):
+                        # print('Y(y,j):', y,j, 'Y x D:', self.YA[y].yard[j],self.DE[i].FT[j], 'cont:', Yard.cont, 'l x m:', limiar, match)
+                        if self.DE[i].FT[j] > 0:
+                            if self.DE[i].FT[j] == self.YA[y].yard[j]: #mudança de <= para == 
+                                match = match + 1
+                        # se for ZERO então não pode ter a caracteristica
+                        else:
+                            if self.YA[y].yard[j] == 0:
+                                match = match + 1
 
-                if match >= limiar:
-                    # print("\n Match: Casou", Yard.cont)
-                    self.YA[y].yard = self.YA[Yard.cont - 1].yard  ## apaga o registro de match com o último da lista
-                    Yard.cont -= 1    ### FRED NAO DEIXAR BAIXAR DE ZERO
-                    self.DE[i].ST = 5  ## delivered p/ contar lucro
-                    matched = True
+                    if match >= limiar:
+                        # print("\n Match: Casou", Yard.cont)
+                        self.YA[y].yard = self.YA[Yard.cont - 1].yard  ## apaga o registro de match com o último da lista
+                        Yard.cont -= 1    ### FRED NAO DEIXAR BAIXAR DE ZERO
+                        self.DE[i].ST = 5  ## delivered p/ contar lucro
+                        matched = True
 
         return matched
 
@@ -308,7 +309,14 @@ class Somn(Env):
                         # print("\n Destination: Enviou", Yard.cont)
                     else:
                         self.DE[i].ST = 4  ## stored status
-                        if Yard.cont < Yard.Y:
+                        
+                        # VALIDAÇÃO DE TESTE PARA YARD = 0 #####################################################
+                        if self.Y == 0:
+                            self.DE[i].ST = -2  ## NAO CABE ... REJEITADO COM GERAÇÃO DE LIXO (CASO MAIS GRAVE)
+                            Demand.reject_w_waste = Demand.reject_w_waste + 1
+                        ##########################################################################
+
+                        elif Yard.cont < Yard.Y:
                             self.YA[Yard.cont].yard = self.DE[i].FT
                             Yard.cont += 1
                             # print("\n Destination: Armazenou no YARD", Yard.cont)
@@ -470,10 +478,15 @@ class Somn(Env):
         # Gera grafico do Yard (by_frederic)
 
         #INFORMAÇÃO APENAS DE COMO ACABA O EPISÓDIO, BUSCAR LOCAL PARA RECEBER MELHOR INFORMAÇÃO
-        wandb.log({
-            'Yard Somn': (Yard.cont/Yard.Y)*100,           
-        })
+        if self.Y > 0:
+            wandb.log({
+                'Yard': (Yard.cont/Yard.Y)*100,           
+            })
 
+        else: #APENAS MOSTRANDO O YARD COMPLETAMENTE CHEIO CASO ELE SEJA 0
+            wandb.log({
+                'Yard' : 100,
+            })
 
         # 3 FINAL CONDITION
         done = False
