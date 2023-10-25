@@ -29,6 +29,7 @@ import wandb
 
 
 class Somn(Env):
+
     """Custom Environment that follows gym interface."""
     def __init__(
         self,
@@ -213,7 +214,7 @@ class Somn(Env):
                 for j in range(Demand.M):
                     # print('Y(y,j):', y,j, 'Y x D:', self.YA[y].yard[j],self.DE[i].FT[j], 'cont:', Yard.cont, 'l x m:', limiar, match)
                     if self.DE[i].FT[j] > 0:
-                        if self.DE[i].FT[j] == self.YA[y].yard[j]: #mudança de <= para ==  
+                        if self.DE[i].FT[j] == self.YA[y].yard[j]: #mudança de <= para == 
                             match = match + 1
                     # se for ZERO então não pode ter a caracteristica
                     else:
@@ -315,7 +316,6 @@ class Somn(Env):
                             self.DE[i].ST = -2  ## NAO CABE ... REJEITADO COM GERAÇÃO DE LIXO (CASO MAIS GRAVE)
                             Demand.reject_w_waste = Demand.reject_w_waste + 1
                             # print(f'\n\n\n\nReject total: {Demand.reject_w_waste} \n\n\n\n')
-
     
 
     def stock_covers_demand(self):
@@ -369,7 +369,7 @@ class Somn(Env):
                 totPenalty += 0
                 # print('REJECTED vvvvvvvvvvvvvvvvvvvvvvvvvvvv')
             if self.DE[i].ST == -2:
-                totPenalty += self.DE[i].AM * self.DE[i].CO
+                totPenalty += self.DE[i].AM * self.DE[i].CO         # PENALIDADE PELO DESCARTE
                 # print('PREJUIZO $$$$$$$$$$$$$$$$$$$$$$$$$')
             if self.DE[i].ST == 4:
                 totPenalty += 0
@@ -392,10 +392,10 @@ class Somn(Env):
                 # print('REWARD ******************************')
                 totReward += self.DE[i].AM * self.DE[i].PR
         self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
-        # totReward -= totPenalty
-        return totReward, totPenalty
+        totReward -= totPenalty #RECOMPENSA COM A PENALIDADE INSERIDA NELA
 
-    
+        return totReward, totPenalty 
+
 
     ######################
     #       step         #
@@ -463,7 +463,16 @@ class Somn(Env):
             penalty
         ) = self.eval_final_states()  # aqui vai a função que calcula a recompensa
 
+        #GRÁFICO PENALIDADE
+        wandb.log({
+            'Penalidade' : penalty,
+        })
         # Gera grafico do Yard (by_frederic)
+
+        #INFORMAÇÃO APENAS DE COMO ACABA O EPISÓDIO, BUSCAR LOCAL PARA RECEBER MELHOR INFORMAÇÃO
+        wandb.log({
+            'Yard Somn': (Yard.cont/Yard.Y)*100,           
+        })
 
 
         # 3 FINAL CONDITION
@@ -518,6 +527,13 @@ class Somn(Env):
         self.BA = np.random.randint(0, self.MAXFT, self.M)
         self.IN = np.random.randint(0, self.MAXFT, self.M)
         self.OU = np.random.randint(0, self.MAXFT, self.M)
+        
+        #LOGS PONTUAIS
+        wandb.log({
+            'reject_w_waste Somn' : Demand.reject_w_waste
+        })
+
+
         Somn.time = 1
         Demand.load = 1
         Demand.reject = 0

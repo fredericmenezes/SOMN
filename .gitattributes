@@ -6,7 +6,3 @@
 .venv/pyvenv.cfg filter=lfs diff=lfs merge=lfs -text
 .venv/share filter=lfs diff=lfs merge=lfs -text
 .venv/Include filter=lfs diff=lfs merge=lfs -text
-wandb/* filter=lfs diff=lfs merge=lfs -text
-wandb/run-20231010_143652-puvdjxa2/logs/debug-internal.log filter=lfs diff=lfs merge=lfs -text
-wandb/run-20231010_143652-puvdjxa2/run-puvdjxa2.wandb filter=lfs diff=lfs merge=lfs -text
-wandb/run-20231010_141010-eo9b20ea/logs/debug-internal.log filter=lfs diff=lfs merge=lfs -text

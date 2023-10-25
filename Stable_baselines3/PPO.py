@@ -15,6 +15,7 @@ from stable_baselines3.common.utils import explained_variance, get_schedule_fn
 from stable_baselines3.common.utils import obs_as_tensor, safe_mean
 
 from Ambiente_SOMN.Demand import Demand
+from Ambiente_SOMN.Somn import Somn
 from Ambiente_SOMN.Yard import Yard
 from stable_baselines3.common.base_class import BaseAlgorithm
 
@@ -336,13 +337,13 @@ class PPO(OnPolicyAlgorithm):
                    }
         )
 
-        wandb.log({'Yard': (Yard.cont/Yard.Y)*100,
-                   'timesteps': self.num_timesteps,
-                   'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
-                   'value_loss': np.mean(value_losses),
-                   'loss': loss.item()
-                   }
-        )
+        # wandb.log({'Yard PPO': (Yard.cont/Yard.Y)*100,
+        #            'timesteps': self.num_timesteps,
+        #            'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
+        #            'value_loss': np.mean(value_losses),
+        #            'loss': loss.item()
+        #            }
+        # )
 
 
         wandb.log({'Load': Demand.load,
@@ -367,16 +368,16 @@ class PPO(OnPolicyAlgorithm):
                    }
         )
 
-        wandb.log({'Reject with waste': Demand.reject_w_waste,
-                   'Reject': Demand.reject,
-                   'Reject Total': Demand.reject_w_waste + Demand.reject,
-                   'Load': Demand.load,
-                   'timesteps': self.num_timesteps,
-                   'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
-                   'value_loss': np.mean(value_losses),
-                   'loss': loss.item()
-                   }
-        )
+        # wandb.log({'Reject with waste': Demand.reject_w_waste,
+        #            'Reject': Demand.reject,
+        #            'Reject Total': Demand.reject_w_waste + Demand.reject,
+        #            'Load': Demand.load,
+        #            'timesteps': self.num_timesteps,
+        #            'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
+        #            'value_loss': np.mean(value_losses),
+        #            'loss': loss.item()
+        #            }
+        # )
 
         wandb.log({'Reject Total': Demand.reject_w_waste + Demand.reject,
                    'Reject with waste': Demand.reject_w_waste,
