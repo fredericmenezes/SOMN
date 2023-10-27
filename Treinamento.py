@@ -36,9 +36,9 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
     for x in range(1):    #### ACMO NUMEROS DE EXECUÇÕES COMPETIDORAS
         run1 = wandb.init(project='Reward - Yard', #NOME DO PROJETO
                           config=config_PPO,
-                          group=f'Yard = 3', #GRUPOS A SEREM ADCIONADOS NO WANDB
+                          group=f'Yard = 1', #GRUPOS A SEREM ADCIONADOS NO WANDB
 #                          name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
-                          name=f'Case 1', #NOME DA EXECUÇÃO
+                          name=f'Case 2', #NOME DA EXECUÇÃO
                           save_code=True,
                           reinit=True
         )
