@@ -1,3 +1,4 @@
 wandb/
 .venv/
 runs/
+*/__pycache__/

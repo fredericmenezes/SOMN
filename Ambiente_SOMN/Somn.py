@@ -1,7 +1,7 @@
 from JobShop.JobShop import JobShop
 from Ambiente_SOMN.Demand import Demand
 from Ambiente_SOMN.Yard import Yard
-from Stable_baselines3.OnPolicyAlgirithm import OnPolicyAlgorithm
+from Stablebaselines3.OnPolicyAlgirithm import OnPolicyAlgorithm
 import matplotlib.pyplot as plt
 
 from numpy.random.mtrand import seed
