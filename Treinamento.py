@@ -35,11 +35,11 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
     }
 
     for x in range(1):    #### ACMO NUMEROS DE EXECUÇÕES COMPETIDORAS
-        run1 = wandb.init(project='Reward - Yard', #NOME DO PROJETO
+        run1 = wandb.init(project='fred_test_pequena_instancia', #NOME DO PROJETO
                           config=config_PPO,
-                          group=f'Yard = 3', #GRUPOS A SEREM ADCIONADOS NO WANDB
+                          group=f'Instancia_pequena', #GRUPOS A SEREM ADCIONADOS NO WANDB
 #                          name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
-                          name=f'Case 3', #NOME DA EXECUÇÃO
+                          name=f'run (M=3 N=5)', #NOME DA EXECUÇÃO
                           save_code=True,
                           reinit=True
         )
@@ -70,7 +70,7 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
         )
         
 
-        model.learn(total_timesteps=3328*400)
+        model.learn(total_timesteps=3328*10)
         
         # 1000 e verificar o tempo
         model.save(os.path.join(wandb.run.dir, f"model_custom_PPO_atraso_{atraso:02d}"))
