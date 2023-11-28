@@ -50,14 +50,43 @@ class Demand:
         self.AM = random.randrange(1,Demand.MAXAM)
         self.PE = random.randint(1,Demand.MAXPE)
         self.ST = int(0)                  ###received0, ready1, rejected2, produced3, stored4 and delivered5
+        
+        # Escolhe aleatoriamente as features (tempos para cada maquina)
+        # Exemplo: self.FT = array([2, 4, 0, 1, 3]) #valores de: 0 a (MAXFT -1)
         self.FT = np.random.randint(0,Demand.MAXFT,self.M)
-        if not np.any(self.FT):
-            self.FT[0] = 1      ## by_frederic
 
-        ### Tempo ###
-        self.F = 0
-        for i in range(self.M):
-            self.F += int(self.FT[i]>0)
+        # enquanto der tudo zero, escolhe randomicamente novamente
+        # self.FT = array([0, 0, 0, 0, 0]) #np.any(self.FT) == False
+        while not np.any(self.FT):
+            self.FT = np.random.randint(0,Demand.MAXFT,self.M)
+
+        # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
+        # Exemplo: self.mask_FT = array([1, 1, 0, 1, 1])
+        self.mask_FT = self.FT.copy()
+        self.mask_FT[self.mask_FT > 0] = 1
+
+        # contar quantas Features estao sendo usadas (total de maquinas usadas)
+        self.F = self.mask_FT.sum()
+
+        # jogar a moeda pra decidir se mudar ou nao quando F == M (usando todas as maquinas)
+        # o objetivo disso é equilibrar a base de dados
+        # porque a probabilidade de (F==M) é muito alta.
+        joga_moeda = bool(random.randint(0,1))
+        if self.F == self.M and joga_moeda:
+
+            # mask_clear multiplica self.FT para apagar alguns valores
+            mask_clear = np.random.randint(2, size=self.M)
+            # enquanto der tudo zero ou tudo um, escolhe randomicamente novamente
+            while mask_clear.sum() == self.M or mask_clear.sum() == 0:
+                mask_clear = np.random.randint(2, size=self.M)
+            
+            self.FT = self.FT * mask_clear
+            
+            self.mask_FT = self.FT.copy()
+            self.mask_FT[self.mask_FT > 0] = 1
+
+        # contar quantas Features estao sendo usadas (total de maquinas usadas)
+        self.F = self.mask_FT.sum()
 
         # self.LT = int(self.F/2) + 2                      ###  --- 1.0*self.fun_tau() * self.F
         self.LT = self.fun_tau()
@@ -77,7 +106,7 @@ class Demand:
         self.SP = self.fun_gamma() ####* 'cpu'.Y   #SPACE CONSUMPTION FACTOR
         self.VA = self.fun_upsilon() ### [0low 1up]
         self.SU = 1- self.fun_sigma() ### [0low 1up]
-        self.TP = self.real_LT
+        self.TP = self.DO - t
 
 
     def fun_gamma(self) -> float:

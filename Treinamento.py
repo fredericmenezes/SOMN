@@ -1,13 +1,15 @@
 import os
 import wandb
 import time
+import random
+import numpy as np
 #import gym
 
 #from stable_baselines3 import PPO
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.vec_env import DummyVecEnv, VecVideoRecorder
 
-from Ambiente_SOMN.custom_make_env import custom_make_env
+from Ambiente_SOMN.make_env import make_env
 from Stablebaselines3.PPO import PPO
 from Ambiente_SOMN.Yard import Yard
 
@@ -17,12 +19,16 @@ if len(wandb.patched["tensorboard"]) > 0:
 #wandb.tensorboard.patch(root_logdir="/content/drive/MyDrive/SOMN2/runs")
 wandb.tensorboard.patch(root_logdir="./runs")
 
+# seed
+random.seed(10)
+np.random.seed(1)
 
 #atraso:int=None
 
 for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
 #    atraso = None
     config_PPO = {
+        'objetivo': 0, # 0: lucro, 1: variabilidade, 2: sustentabilidade
         'atraso': atraso,
         'batch_size': 256,
         'ent_coef': 0.001641577520175419,
@@ -45,7 +51,7 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
         )
 
         config = wandb.config
-        env1 = DummyVecEnv([lambda: custom_make_env(atraso)])
+        env1 = DummyVecEnv([lambda: make_env(config.atraso, config.objetivo)])
 
         model = PPO(
             policy="MultiInputPolicy",

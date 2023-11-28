@@ -9,10 +9,12 @@ MAXFT = 5
 
 FT = np.random.randint(0, MAXFT, M)
 
+# vetor de zeros e uns indicando quais features estao ativas
+mask_FT = FT
+mask_FT[mask_FT > 0] = 1
+
 # contar quantas Features
-F = 0
-for i in range(M):
-    F += int(FT[i]>0)
+F = mask_FT.sum()
 
 # jogar a moeda pra decidir se mudar ou nao quando F == M
 joga_moeda = bool(random.randint(0,1))
@@ -24,7 +26,7 @@ print(joga_moeda)
 if F == M and joga_moeda:
     mask = np.random.randint(2, size=M)
     print(mask)
-    while mask.sum() == M:
+    while mask.sum() == M or mask.sum() == 0:
         mask = np.random.randint(2, size=M)
     
     print(mask)

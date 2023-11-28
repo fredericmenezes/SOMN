@@ -27,8 +27,7 @@ from scipy.stats import poisson
 import torch
 import wandb
 
-random.seed(10)
-seed(1)
+
 class Somn(Env):
 
     """Custom Environment that follows gym interface."""
@@ -46,13 +45,14 @@ class Somn(Env):
         MAXTI: int,
         MAXEU: int,
         #seed: int,
-        atraso: int = None
+        atraso: int,
+        objetivo: int
     ):
         super(Somn).__init__()
 
         Somn.obj_list = ['pr', 'va', 'su']
         Somn.priorq = [heapdict() for objetivo in Somn.obj_list]
-        Somn.objetivo = 0
+        Somn.objetivo = objetivo
         # Somn.instance = JobShop()
         # Somn.priorqsu = heapdict()
         # Somn.priorqva = heapdict()
@@ -207,7 +207,7 @@ class Somn(Env):
         # accept to produce or reject
         # self.action_space = spaces.Box(0, 4, shape=(1,)) # usar o TD3
         #self.action_space = spaces.Discrete(self.MAXDO)  # usar com o PPO, DQN, A2C
-        self.action_space = spaces.Discrete(self.ub_TP)
+        self.action_space = spaces.Discrete(self.ub_time)
         
 
         # Espaco de observacao (como ficam as demandas depois da acao)
@@ -295,6 +295,9 @@ class Somn(Env):
                         Yard.cont -= 1    ### FRED NAO DEIXAR BAIXAR DE ZERO
                         self.DE[i].ST = 5  ## delivered p/ contar lucro
                         matched = True
+                    
+                    #mask_FT = self.DE[i].FT.copy()
+                    #mask_FT = 
 
         return matched
 
@@ -503,7 +506,7 @@ class Somn(Env):
         self.readDemand()
 
         # IF PREVIOUS ORDERS INVENTORY AVAILABLE, PLEASE DISPATCH
-        self.match_demand_with_inventory(self.MAXFT)
+        self.match_demand_with_inventory(self.M)
         #    self.product_destination(Somn.time)
 
         # ANYWAY, UPDATE BALANCE AND INCOME RAW MATERIAL REGARDING MT RECEIVED
