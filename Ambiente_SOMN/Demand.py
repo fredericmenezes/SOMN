@@ -37,13 +37,15 @@ class Demand:
         Demand.MAXEU=MAXEU
         Demand.EU = np.random.random(M)*MAXEU
         self.ST = int(-1)                  ### free(-1) received(0), ready(1), rejected(2), produced(3), stored(4) and delivered(5)
+        
         Demand.cont +=1
+        self.CU = Demand.cont
         Demand.atraso=atraso
 
 
     def __call__(self, t:int):
 
-        self.CU = Demand.cont
+        
     #   self.PR = random.randrange(3,Demand.MAXPR)  below -----------------
         self.AM = random.randrange(1,Demand.MAXAM)
         self.PE = random.randint(1,Demand.MAXPE)
@@ -57,7 +59,8 @@ class Demand:
         for i in range(self.M):
             self.F += int(self.FT[i]>0)
 
-        self.LT = int(self.F/2) + 2                      ###  --- 1.0*self.fun_tau() * self.F
+        # self.LT = int(self.F/2) + 2                      ###  --- 1.0*self.fun_tau() * self.F
+        self.LT = self.fun_tau()
         if self.atraso >=0:   ### Não é mais None (-1 para habilitar poisson)
             self.real_LT = self.LT + self.atraso
         else:
@@ -74,16 +77,19 @@ class Demand:
         self.SP = self.fun_gamma() ####* 'cpu'.Y   #SPACE CONSUMPTION FACTOR
         self.VA = self.fun_upsilon() ### [0low 1up]
         self.SU = 1- self.fun_sigma() ### [0low 1up]
-        self.TP = self.DO - t
+        self.TP = self.real_LT
 
 
     def fun_gamma(self) -> float:
-        x = (self.AM*self.F)/(Demand.MAXAM * self.M)
+        x = (self.AM*self.F)/((Demand.MAXAM -1) * self.M)
         return x
 
+    # def fun_tau(self) -> float:
+    #     x = (self.AM*self.F)/((Demand.MAXAM-1) * self.M)
+    #     return x
     def fun_tau(self) -> float:
-        x = (self.AM*self.F)/(Demand.MAXAM * self.M)
-        return x
+        x = self.AM * self.FT
+        return x.sum()
 
     def fun_upsilon(self) -> float:
         x = self.F/self.M

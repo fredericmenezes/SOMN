@@ -27,7 +27,8 @@ from scipy.stats import poisson
 import torch
 import wandb
 
-
+random.seed(10)
+seed(1)
 class Somn(Env):
 
     """Custom Environment that follows gym interface."""
@@ -49,12 +50,14 @@ class Somn(Env):
     ):
         super(Somn).__init__()
 
-        Somn.priorqpr = heapdict()
+        Somn.obj_list = ['pr', 'va', 'su']
+        Somn.priorq = [heapdict() for objetivo in Somn.obj_list]
+        Somn.objetivo = 0
         # Somn.instance = JobShop()
         # Somn.priorqsu = heapdict()
         # Somn.priorqva = heapdict()
         Somn.time = 1
-        Somn.objetivo = 1
+        
 
         self.M = M
         self.N = N
@@ -68,13 +71,15 @@ class Somn(Env):
         self.MAXTI = MAXTI
         self.MAXEU = MAXEU
         # self.MT = np.random.randint(0,MAXFT,M)
+
+       
         self.EU = np.random.random(M) * MAXEU
         self.BA = np.random.randint(0, MAXFT, M)
         self.IN = np.random.randint(0, MAXFT, M)
         self.OU = np.random.randint(0, MAXFT, M)
         #self.seed = seed
         self.atraso = atraso # (by_frederic)
-        # self.state = np.zeros((N,5))
+        # self.DE_state = np.zeros((N,5))
 
         # print('Inicializado', M, N , Y)
 
@@ -96,38 +101,90 @@ class Somn(Env):
         # ST varia de -2 a 5
         self.lb_ST = -2
         self.ub_ST = 5
-        # time varia de 1 a (10*MAXDO + M)
+
+        # time varia de 1 a 100 (era de 1 ate 10*MAXDO + M)
         self.lb_time = 1
-        self.ub_time = 10 * self.MAXDO + self.M
+        # self.ub_time = 10 * self.MAXDO + self.M
+        self.ub_time = 100
+
         # LT varia de 2 a (M/2 + 2)
-        self.lb_LT = 2
-#        self.ub_LT = int(self.M / 2) + 2    #### ACMO LT AFETADO POR LT(M) + CARGA(N)
-        self.ub_LT = self.M + self.N
+        self.lb_LT = 1
+        # self.ub_LT = int(self.M / 2) + 2    #### ACMO LT AFETADO POR LT(M) + CARGA(N)
+        #self.ub_LT = self.M + self.N
+        self.ub_LT = self.M * (self.MAXFT - 1) * (self.MAXAM - 1)
+
         # DO varia de 3 a (ub_time + ub_LT + MAXDO)
         self.lb_DO = 3
         self.ub_DO = self.ub_time + self.ub_LT + self.MAXDO
+        # DI varia de 1 a (ub_time + ub_LT + MAXDO)
+        self.lb_DI = 1
+        self.ub_DI = self.ub_time
 
         # TP varia de 2 a (ub_time + ub_LT + 2) onde 2 e um ruido (troquei 2 pela distribuicao de poisson)
         self.lb_TP = 2
         p = [poisson.rvs(mu=self.ub_LT) for _ in range(10000)]
         self.ub_TP = self.ub_time + self.ub_LT + max(p)
 
+        # CO varia de 0 a (M * (MAXFT-1) * MAXEU)
+        self.lb_CO = 0
+        self.ub_CO = self.M * (self.MAXFT-1) * self.MAXEU
+
+        # PR varia de 0 a (M * (MAXFT-1) * MAXEU) * MAXPR
+        self.lb_PR = 0
+        self.ub_PR = self.M * (self.MAXFT-1) * self.MAXEU * self.MAXPR
+
+        
+
+        # AM varia de 1 a MAXAM - 1
+        self.lb_AM = 1
+        self.ub_AM = self.MAXAM - 1
+
+        # SP varia de 0 a 1
+        self.lb_SP = 0
+        self.ub_SP = 1
+
+        # PE varia de 0 a MAXPE
+        self.lb_PE = 0
+        self.ub_PE = self.MAXPE
+
+        # VA varia de 0 a 1
+        self.lb_VA = 0
+        self.ub_VA = 1
+
+        # SU varia de 0 a 1
+        self.lb_SU = 0
+        self.ub_SU = 1
+
+
+
 
         # MT varia de 0 a MAXFT
         self.lb_MT = np.array([0 for _ in range(self.M)]).astype(np.int64)
-        self.ub_MT = np.array([MAXFT for _ in range(self.M)]).astype(np.int64)
+        self.ub_MT = np.array([MAXFT-1 for _ in range(self.M)]).astype(np.int64)
         # EU varia de 0 a MAXEU
         self.lb_EU = np.array([0 for _ in range(self.M)]).astype(np.float64)
-        self.ub_EU = np.array([MAXEU for _ in range(self.M)]).astype(np.float64)
+        self.ub_EU = np.array([self.MAXEU for _ in range(self.M)]).astype(np.float64)
         # BA varia de 0 a MAXFT
         self.lb_BA = np.array([0 for _ in range(self.M)]).astype(np.int64)
-        self.ub_BA = np.array([MAXFT for _ in range(self.M)]).astype(np.int64)
+        self.ub_BA = np.array([self.MAXFT-1 for _ in range(self.M)]).astype(np.int64)
         # IN varia de 0 a MAXFT
         self.lb_IN = np.array([0 for _ in range(self.M)]).astype(np.int64)
-        self.ub_IN = np.array([MAXFT for _ in range(self.M)]).astype(np.int64)
+        self.ub_IN = np.array([self.MAXFT-1 for _ in range(self.M)]).astype(np.int64)
         # OU varia de 0 a MAXFT
         self.lb_OU = np.array([0 for _ in range(self.M)]).astype(np.int64)
-        self.ub_OU = np.array([MAXFT for _ in range(self.M)]).astype(np.int64)
+        self.ub_OU = np.array([self.MAXFT-1 for _ in range(self.M)]).astype(np.int64)
+
+        # OU varia de 0 a MAXFT
+        self.lb_FT = np.array([0 for _ in range(self.M)]).astype(np.int64)
+        self.ub_FT = np.array([self.MAXFT-1 for _ in range(self.M)]).astype(np.int64)
+
+        # yard varia de 1 a self.Y
+        self.lb_yard = 0
+        self.ub_yard = self.Y
+
+        # yard varia de 1 a self.Y
+        self.lb_load = 0
+        self.ub_load = 100
 
         # lb e ub--- segunda versao (sem a coluna com os valores de Somn.time)
         # self.lb = np.array([[self.lb_ST, self.lb_LT, self.lb_DO, self.lb_TP] for _ in range(self.N)])
@@ -149,7 +206,9 @@ class Somn(Env):
 
         # accept to produce or reject
         # self.action_space = spaces.Box(0, 4, shape=(1,)) # usar o TD3
-        self.action_space = spaces.Discrete(self.MAXDO)  # usar com o PPO, DQN, A2C
+        #self.action_space = spaces.Discrete(self.MAXDO)  # usar com o PPO, DQN, A2C
+        self.action_space = spaces.Discrete(self.ub_TP)
+        
 
         # Espaco de observacao (como ficam as demandas depois da acao)
         # self.observation_space = spaces.Box(self.lb, self.ub, dtype=int)
@@ -171,9 +230,12 @@ class Somn(Env):
                 "BA": spaces.Box(low=0.0, high=1.0, shape=(self.M,), dtype=np.float64),
                 "IN": spaces.Box(low=0.0, high=1.0, shape=(self.M,), dtype=np.float64),
                 "OU": spaces.Box(low=0.0, high=1.0, shape=(self.M,), dtype=np.float64),
-                "state": spaces.Box(
-                    low=0.0, high=1.0, shape=(self.N, 4), dtype=np.float64
+                "DE_state": spaces.Box(
+                    low=0.0, high=1.0, shape=(self.N, 12), dtype=np.float64
                 ),
+                "FT_state": spaces.Box(low=0.0, high=1.0, shape=(self.N,self.M), dtype=np.float64),
+                "yard": spaces.Box(low=0.0, high=1.0, shape=(1,), dtype=np.float64),
+                "load": spaces.Box(low=0.0, high=1.0, shape=(1,), dtype=np.float64),
             }
         )  # versao para MultiInputPolicy Normalizada
 
@@ -194,6 +256,11 @@ class Somn(Env):
 
     # Normaliza o valor dentro do range passado como parametro
     def normaliza(self, x, min, max):
+        # verificar se eh um escalar ou um np.array
+        # se for um escalar evitar a divisao por zero.
+        if type(x).__module__ != np.__name__:
+            if max == min: return 1
+
         x_norm = np.array((x - min) / (max - min)).astype(np.float64)
         return x_norm
 
@@ -268,9 +335,12 @@ class Somn(Env):
                     # print('\n **** REJECTED by DO', self.DE[i].DO, ' <= DI+LT+act', t , self.DE[i].LT , action)
 
     def product_scheduling(self, t: int, action):
-        flag = 0
-        for _ in range(len(Somn.priorqpr)):  ### ACMO UTILIZAR 3 FILAS E ESCOLHER UMA DELAS AQUI
-            obj = Somn.priorqpr.popitem()
+        
+        for _ in range(len(Somn.priorq[self.objetivo])):  ### ACMO UTILIZAR 3 FILAS E ESCOLHER UMA DELAS AQUI
+            # objetivo  0: price, 
+            #           1: variabilidade, 
+            #           2: sustentabilidade
+            obj = Somn.priorq[self.objetivo].popitem()
             i = obj[0]
             if i > 0:
                 if self.DE[i].ST == 1:  ## DE[I].ST VAI SER SEMPRE 1 PORQUE VEM DA FILAP
@@ -354,7 +424,13 @@ class Somn(Env):
 # STOCK ISSUES
 
  #                   Somn.priorqpr[i] = (1 - self.DE[i].SU)
-                    Somn.priorqpr[i] = 1/(self.DE[i].AM * self.DE[i].PR)
+                    # fila de prioridade 0 = price
+                    Somn.priorq[0][i] = 1/(self.DE[i].AM * self.DE[i].PR)
+                    # fila de prioridade 1 = variabilidade
+                    Somn.priorq[1][i] = 1 - self.DE[i].VA
+                    # fila de prioridade 2 = sustentabilidade
+                    Somn.priorq[2][i] = 1 - self.DE[i].SU
+
                     # print ((1 - self.DE[i].SU))
                     self.BA -= np.array(DF)  ### ATUALIZA O SALDO
                     self.OU += np.array(DF)  ### ATUALIZA A SAÍDA
@@ -447,23 +523,31 @@ class Somn(Env):
 
         # ORDINARY PROCEDURES IN STEP METHOD INCLUDING REWARD BY INSPECTING FINAL STATES
         # 1 STATE
-        arrayState = []
-
+        DE_arrayState = []
         for i in range(self.N):
             aux_row = [
+                self.normaliza(x=self.DE[i].DI, min=self.lb_DI, max=self.ub_DI),
+                self.normaliza(x=self.DE[i].DO, min=self.lb_DO, max=self.ub_DO),
+                self.normaliza(x=self.DE[i].TP, min=self.lb_TP, max=self.ub_TP),
+                self.normaliza(x=self.DE[i].PR, min=self.lb_PR, max=self.ub_PR),
+                self.normaliza(x=self.DE[i].CO, min=self.lb_CO, max=self.ub_CO),
+                self.normaliza(x=self.DE[i].AM, min=self.lb_AM, max=self.ub_AM),
+                self.normaliza(x=self.DE[i].SP, min=self.lb_SP, max=self.ub_SP),
+                self.normaliza(x=self.DE[i].PE, min=self.lb_PE, max=self.ub_PE),
+                self.normaliza(x=self.DE[i].LT, min=self.lb_LT, max=self.ub_LT),
+                self.normaliza(x=self.DE[i].VA, min=self.lb_VA, max=self.ub_VA),
+                self.normaliza(x=self.DE[i].SU, min=self.lb_SU, max=self.ub_SU),
                 self.normaliza(x=self.DE[i].ST, min=self.lb_ST, max=self.ub_ST),
-                # Somn.time,
-                # self.DE[i].SP,
-                self.normaliza(self.DE[i].LT, self.lb_LT, self.ub_LT),
-                # self.DE[i].VA,
-                # self.DE[i].SU,
-                # self.DE[i].PR,
-                self.normaliza(self.DE[i].DO, self.lb_DO, self.ub_DO),
-                self.normaliza(self.DE[i].TP, self.lb_TP, self.ub_TP),
+                
             ]
-            arrayState.append(aux_row)
+            DE_arrayState.append(aux_row)
+        self.DE_state = np.array(DE_arrayState)
 
-        self.state = np.array(arrayState)
+        FT_arrayState = []
+        for i in range(self.N):
+            aux_FT = self.normaliza(x=self.DE[i].FT, min=self.lb_FT, max=self.ub_FT)
+            FT_arrayState.append(aux_FT)
+        self.FT_state = np.array(FT_arrayState)
 
         # 2 REWARD
         (
@@ -493,21 +577,29 @@ class Somn(Env):
         truncated = False
         # if penalty>0:
         # reward =0
-        # print('\n D -- O -- N -- E --', self.state)
+        # print('\n D -- O -- N -- E --', self.DE_state)
         # done = True
 
         if Somn.time >= self.ub_time:  # 10*Demand.MAXDO + Demand.M   (TEMPOMAX)
-            # print('\n D -- O -- N -- E --', self.state)
+            # print('\n D -- O -- N -- E --', self.DE_state)
             done = True
 
         # Atualiza o upper bounds
+        if np.amax(self.ub_MT) <= np.amax(self.MT):
+            self.ub_MT = np.full(self.M, np.amax(self.MT)) 
 
-        self.ub_MT = max(self.MAXFT, np.amax(self.MT))
-        self.ub_BA = max(self.MAXFT, np.amax(self.BA))
-        self.ub_IN = max(self.MAXFT, np.amax(self.IN))
+        if np.amax(self.ub_BA) <= np.amax(self.BA):
+            self.ub_BA = np.full(self.M, np.amax(self.BA))
+
+        if np.amax(self.ub_IN) <= np.amax(self.IN):
+            self.ub_IN = np.full(self.M, np.amax(self.IN))
+        
+        if np.amax(self.ub_OU) <= np.amax(self.OU):
+            self.ub_OU = np.full(self.M, np.amax(self.OU))
+       
 
         info = {}  # Informações adicionais
-        # observation = self.state  #by_frederic: retorna quando e um tipo Box
+        # observation = self.DE_state  #by_frederic: retorna quando e um tipo Box
         observation = {
             "time": np.array([self.normaliza(self.time, self.lb_time, self.ub_time)]),
             "MT": self.normaliza(self.MT, self.lb_MT, self.ub_MT),
@@ -515,7 +607,11 @@ class Somn(Env):
             "BA": self.normaliza(self.BA, self.lb_BA, self.ub_BA),
             "IN": self.normaliza(self.IN, self.lb_IN, self.ub_IN),
             "OU": self.normaliza(self.OU, self.lb_OU, self.ub_OU),
-            "state": self.state,
+            "DE_state": self.DE_state,
+            "FT_state": self.FT_state,
+            "yard": np.array([self.normaliza(Yard.cont, self.lb_yard, self.ub_yard)]),
+            "load": np.array([self.normaliza(Demand.load, self.lb_load, self.ub_load)]),
+
         }  # by_frederic: retorna quando e um tipo Dict
 
         return (
@@ -532,7 +628,8 @@ class Somn(Env):
 
     def reset(self, *, seed=None, options=None):
         #super().reset(seed=None)
-        Somn.priorqpr = heapdict()
+        
+        Somn.priorq = [heapdict() for objetivo in Somn.obj_list]
         # Somn.priorqsu = heapdict()
         # Somn.priorqva = heapdict()
         self.MT = np.random.randint(0, self.MAXFT, self.M)
@@ -548,32 +645,41 @@ class Somn(Env):
 
 
         Somn.time = 1
-        Demand.load = 1
+        Demand.load = 0
         Demand.reject = 0
         Demand.reject_w_waste=0
 
         self.YA = [Yard(self.Y, self.M, self.MAXFT) for _ in range(self.Y)]
 
-        arrayState = []
+        DE_arrayState = []
         for i in range(self.N):
             self.DE[i](Somn.time)
             aux_row = [
-                self.normaliza(x=self.DE[i].ST, min=self.lb_ST, max=self.ub_ST),
-                # Somn.time,
-                # self.DE[i].SP,
-                self.normaliza(x=self.DE[i].LT, min=self.lb_LT, max=self.ub_LT),
-                # self.DE[i].VA,
-                # self.DE[i].SU,
-                # self.DE[i].PR,
+                self.normaliza(x=self.DE[i].DI, min=self.lb_DI, max=self.ub_DI),
                 self.normaliza(x=self.DE[i].DO, min=self.lb_DO, max=self.ub_DO),
                 self.normaliza(x=self.DE[i].TP, min=self.lb_TP, max=self.ub_TP),
+                self.normaliza(x=self.DE[i].PR, min=self.lb_PR, max=self.ub_PR),
+                self.normaliza(x=self.DE[i].CO, min=self.lb_CO, max=self.ub_CO),
+                self.normaliza(x=self.DE[i].AM, min=self.lb_AM, max=self.ub_AM),
+                self.normaliza(x=self.DE[i].SP, min=self.lb_SP, max=self.ub_SP),
+                self.normaliza(x=self.DE[i].PE, min=self.lb_PE, max=self.ub_PE),
+                self.normaliza(x=self.DE[i].LT, min=self.lb_LT, max=self.ub_LT),
+                self.normaliza(x=self.DE[i].VA, min=self.lb_VA, max=self.ub_VA),
+                self.normaliza(x=self.DE[i].SU, min=self.lb_SU, max=self.ub_SU),
+                self.normaliza(x=self.DE[i].ST, min=self.lb_ST, max=self.ub_ST),
+                
             ]
-            arrayState.append(aux_row)
+            DE_arrayState.append(aux_row)
+        self.DE_state = np.array(DE_arrayState)
 
-        self.state = np.array(arrayState)
+        FT_arrayState = []
+        for i in range(self.N):
+            aux_FT = self.normaliza(x=self.DE[i].FT, min=self.lb_FT, max=self.ub_FT)
+            FT_arrayState.append(aux_FT)
+        self.FT_state = np.array(FT_arrayState)
 
         info = dict()
-        # observation = (self.state, info)  # by_frederic: retorna quando o tipo é Box
+        # observation = (self.DE_state, info)  # by_frederic: retorna quando o tipo é Box
         observation = {
             "time": np.array([self.normaliza(self.time, self.lb_time, self.ub_time)]),
             "MT": self.normaliza(self.MT, self.lb_MT, self.ub_MT),
@@ -581,7 +687,10 @@ class Somn(Env):
             "BA": self.normaliza(self.BA, self.lb_BA, self.ub_BA),
             "IN": self.normaliza(self.IN, self.lb_IN, self.ub_IN),
             "OU": self.normaliza(self.OU, self.lb_OU, self.ub_OU),
-            "state": self.state,
+            "DE_state": self.DE_state,
+            "FT_state": self.FT_state,
+            "yard": np.array([self.normaliza(Yard.cont, self.lb_yard, self.ub_yard)]),
+            "load": np.array([self.normaliza(Demand.load, self.lb_load, self.ub_load)]),
         }  # by_frederic: retorna quando e um tipo Dict
 
         return (observation, info)  # by_frederic: para se adequar ao Gymnasium
@@ -591,7 +700,7 @@ class Somn(Env):
     ######################
 
     def render(self):
-        # print("Current state (RENDER): \n", self.state)
+        # print("Current state (RENDER): \n", self.DE_state)
         pass
 
     ######################
