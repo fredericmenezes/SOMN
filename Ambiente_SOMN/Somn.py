@@ -74,7 +74,7 @@ class Somn(Env):
 
        
         self.EU = np.random.random(M) * MAXEU
-        self.BA = np.random.randint(0, MAXFT, M)
+        self.BA = np.random.randint(50, 100*MAXFT, M)
         self.IN = np.random.randint(0, MAXFT, M)
         self.OU = np.random.randint(0, MAXFT, M)
         #self.seed = seed
@@ -89,7 +89,7 @@ class Somn(Env):
             )
             for _ in range(N)
         ]
-        self.YA = [Yard(Y, M, MAXFT) for _ in range(Y)]
+        self.YA = Yard(self.Y)
 
         ######################
         #      lb e ub       #
@@ -166,7 +166,7 @@ class Somn(Env):
         self.ub_EU = np.array([self.MAXEU for _ in range(self.M)]).astype(np.float64)
         # BA varia de 0 a MAXFT
         self.lb_BA = np.array([0 for _ in range(self.M)]).astype(np.int64)
-        self.ub_BA = np.array([self.MAXFT-1 for _ in range(self.M)]).astype(np.int64)
+        self.ub_BA = np.array([100*self.MAXFT-1 for _ in range(self.M)]).astype(np.int64)
         # IN varia de 0 a MAXFT
         self.lb_IN = np.array([0 for _ in range(self.M)]).astype(np.int64)
         self.ub_IN = np.array([self.MAXFT-1 for _ in range(self.M)]).astype(np.int64)
@@ -271,39 +271,47 @@ class Somn(Env):
             ):  # or self.DE[i].ST == 0: ZERO não pode ser status de livre
                 self.DE[i](Somn.time)
 
-    def match_demand_with_inventory(self, limiar: float) -> bool:
+    def match_demand_with_inventory(self) -> bool:
         matched = False
         for i in range(Demand.N):
           if self.DE[i].ST == 0: ## SÓ PODE DAR MATCH DEMANDAS CHEGADAS
             if self.Y > 0: # ALTERAÇÃO PARA TESTE DE YARD == 0
-                for y in range(Yard.cont):
-                    match = 0
-                    # print('Y...', y, 'YA=', YA[y].yard,Yard.cont, 'l=', limiar)
-                    for j in range(Demand.M):
-                        # print('Y(y,j):', y,j, 'Y x D:', self.YA[y].yard[j],self.DE[i].FT[j], 'cont:', Yard.cont, 'l x m:', limiar, match)
-                        if self.DE[i].FT[j] > 0:
-                            if self.DE[i].FT[j] == self.YA[y].yard[j]: #mudança de <= para == 
-                                match = match + 1
-                        # se for ZERO então não pode ter a caracteristica
-                        else:
-                            if self.YA[y].yard[j] == 0:
-                                match = match + 1
+                if self.YA.inYard(self.DE[i].FT):
 
-                    if match >= limiar:
-                        # print("\n Match: Casou", Yard.cont)
-                        self.YA[y].yard = self.YA[Yard.cont - 1].yard  ## apaga o registro de match com o último da lista
-                        Yard.cont -= 1    ### FRED NAO DEIXAR BAIXAR DE ZERO
-                        self.DE[i].ST = 5  ## delivered p/ contar lucro
-                        matched = True
-                    
-                    #mask_FT = self.DE[i].FT.copy()
-                    #mask_FT = 
+                    self.YA.remove_yard(self.DE[i].FT)
+
+                    self.DE[i].ST = 5  ## delivered p/ contar lucro
+                    matched = True
+
+                
+                # for y in range(Yard.cont):
+                #     match = 0
+                #     # print('Y...', y, 'YA=', YA[y].yard,Yard.cont, 'l=', limiar)
+                #     for j in range(Demand.M):
+                #         # print('Y(y,j):', y,j, 'Y x D:', self.YA[y].yard[j],self.DE[i].FT[j], 'cont:', Yard.cont, 'l x m:', limiar, match)
+                #         if self.DE[i].FT[j] > 0:
+                #             if self.DE[i].FT[j] == self.YA[y].yard[j]: #mudança de <= para == 
+                #                 match = match + 1
+                #         # se for ZERO então não pode ter a caracteristica
+                #         else:
+                #             if self.YA[y].yard[j] == 0:
+                #                 match = match + 1
+
+                #     if match >= limiar:
+                #         # print("\n Match: Casou", Yard.cont)
+                #         self.YA[y].yard = self.YA[Yard.cont - 1].yard  ## apaga o registro de match com o último da lista
+                #         Yard.cont -= 1    ### FRED NAO DEIXAR BAIXAR DE ZERO
+                #         self.DE[i].ST = 5  ## delivered p/ contar lucro
+                #         matched = True
+
+                
 
         return matched
 
     def product_schedulingold(self, t: int, action):
         for i in range(self.N):
             if self.DE[i].ST == 1:
+                self.DE[i].action = action
                 if self.DE[i].DO > (t + self.DE[i].LT + action):
                     self.DE[i].ST = 3  ## produced status --- remember to run time for each case
                     self.OU -= self.DE[i].FT  ## CONSOME OS RECURSOS
@@ -389,10 +397,21 @@ class Somn(Env):
                             Demand.reject_w_waste = Demand.reject_w_waste + 1
                         ##########################################################################
 
-                        elif Yard.cont < Yard.Y:
-                            self.YA[Yard.cont].yard = self.DE[i].FT
-                            Yard.cont += 1
+                        elif self.YA.cont < self.YA.Y:
+                            self.YA.yard.append(self.DE[i].FT)
+
+                            mask_YA = self.DE[i].FT.copy()
+                            mask_YA[mask_YA > 0] = 1
+
+                            self.YA.mask_YA.append(mask_YA)
+                            self.YA.cont = len(self.YA.yard)
+                            
+
+                            # self.YA[Yard.cont].yard = self.DE[i].FT
+                            # self.YA[Yard.cont].mask_YA = self.DE[i].mask_FT
+                            # Yard.cont += 1
                             # print("\n Destination: Armazenou no YARD", Yard.cont)
+
                         else:
                             self.DE[i].ST = -2  ## NAO CABE ... REJEITADO COM GERAÇÃO DE LIXO (CASO MAIS GRAVE)
                             Demand.reject_w_waste = Demand.reject_w_waste + 1
@@ -453,13 +472,23 @@ class Somn(Env):
         totPenalty = 0.0
         for i in range(self.N):
             if self.DE[i].ST == 2:
+                
                 totPenalty += 0
+                if totReward > 0:
+                    totPenalty += abs(self.DE[i].action - self.DE[i].real_LT)
+                self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
                 # print('REJECTED vvvvvvvvvvvvvvvvvvvvvvvvvvvv')
             if self.DE[i].ST == -2:
                 totPenalty += self.DE[i].AM * self.DE[i].CO         # PENALIDADE PELO DESCARTE
+                if totReward > 0:
+                    totPenalty += abs(self.DE[i].action - self.DE[i].real_LT)
+                self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
                 # print('PREJUIZO $$$$$$$$$$$$$$$$$$$$$$$$$')
             if self.DE[i].ST == 4:
-                totPenalty += 0
+                totPenalty += self.YA.cont
+                if totReward > 0:
+                    totPenalty += abs(self.DE[i].action - self.DE[i].real_LT)
+                self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
                 # totPenalty += totReward / (
                 #     Yard.space - Yard.cont + 1
                 # )  ### penalidade inversamente proporcional ao espaço remanescente
@@ -469,16 +498,25 @@ class Somn(Env):
 #                totReward += self.DE[i].AM * self.DE[i].PR
 #                totReward += self.DE[i].AM * self.DE[i].SU
 #                totReward += self.DE[i].AM * self.DE[i].VA
-#                 if self.object == 1:
-#                   totReward += self.DE[i].AM * self.DE[i].PR
-#                 elif self.object == 2:
-#                   totReward += self.DE[i].AM * self.DE[i].PR
-# #                    totReward += self.DE[i].AM * self.DE[i].SU
-#                 else:
-#                   totReward += self.DE[i].AM * self.DE[i].VA
+
+                if self.objetivo == 0: # lucro
+                    totReward += self.DE[i].AM * self.DE[i].PR
+
+                if self.objetivo == 1: # variabilidade
+                    totReward += self.DE[i].AM * self.DE[i].PR * self.DE[i].VA
+                    #totPenalty += self.DE[i].AM * self.DE[i].SU
+
+                if self.objetivo == 2: # sustentabilidade
+                    totReward += self.DE[i].AM * self.DE[i].PR * self.DE[i].SU
+                    #totPenalty += self.DE[i].AM * self.DE[i].VA
+
+                self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
+                if totReward > 0:
+                    totPenalty += abs(self.DE[i].action - self.DE[i].real_LT)
                 # print('REWARD ******************************')
-                totReward += self.DE[i].AM * self.DE[i].PR
-        self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
+                # totReward += self.DE[i].AM * self.DE[i].PR
+        
+        
         totReward -= totPenalty #RECOMPENSA COM A PENALIDADE INSERIDA NELA
 
         return totReward, totPenalty 
@@ -506,7 +544,7 @@ class Somn(Env):
         self.readDemand()
 
         # IF PREVIOUS ORDERS INVENTORY AVAILABLE, PLEASE DISPATCH
-        self.match_demand_with_inventory(self.M)
+        self.match_demand_with_inventory()
         #    self.product_destination(Somn.time)
 
         # ANYWAY, UPDATE BALANCE AND INCOME RAW MATERIAL REGARDING MT RECEIVED
@@ -567,7 +605,7 @@ class Somn(Env):
         #INFORMAÇÃO APENAS DE COMO ACABA O EPISÓDIO, BUSCAR LOCAL PARA RECEBER MELHOR INFORMAÇÃO
         if self.Y > 0:
             wandb.log({
-                'Yard': (Yard.cont/Yard.Y)*100,           
+                'Yard': (self.YA.cont/self.YA.Y)*100,           
             })
 
         else: #APENAS MOSTRANDO O YARD COMPLETAMENTE CHEIO CASO ELE SEJA 0
@@ -612,7 +650,7 @@ class Somn(Env):
             "OU": self.normaliza(self.OU, self.lb_OU, self.ub_OU),
             "DE_state": self.DE_state,
             "FT_state": self.FT_state,
-            "yard": np.array([self.normaliza(Yard.cont, self.lb_yard, self.ub_yard)]),
+            "yard": np.array([self.normaliza(self.YA.cont, self.lb_yard, self.ub_yard)]),
             "load": np.array([self.normaliza(Demand.load, self.lb_load, self.ub_load)]),
 
         }  # by_frederic: retorna quando e um tipo Dict
@@ -637,7 +675,7 @@ class Somn(Env):
         # Somn.priorqva = heapdict()
         self.MT = np.random.randint(0, self.MAXFT, self.M)
         self.EU = np.random.random(self.M) * self.MAXEU
-        self.BA = np.random.randint(0, self.MAXFT, self.M)
+        self.BA = np.random.randint(50, 100*self.MAXFT, self.M)
         self.IN = np.random.randint(0, self.MAXFT, self.M)
         self.OU = np.random.randint(0, self.MAXFT, self.M)
         
@@ -652,7 +690,7 @@ class Somn(Env):
         Demand.reject = 0
         Demand.reject_w_waste=0
 
-        self.YA = [Yard(self.Y, self.M, self.MAXFT) for _ in range(self.Y)]
+        self.YA = Yard(self.Y)
 
         DE_arrayState = []
         for i in range(self.N):
@@ -692,7 +730,7 @@ class Somn(Env):
             "OU": self.normaliza(self.OU, self.lb_OU, self.ub_OU),
             "DE_state": self.DE_state,
             "FT_state": self.FT_state,
-            "yard": np.array([self.normaliza(Yard.cont, self.lb_yard, self.ub_yard)]),
+            "yard": np.array([self.normaliza(self.YA.cont, self.lb_yard, self.ub_yard)]),
             "load": np.array([self.normaliza(Demand.load, self.lb_load, self.ub_load)]),
         }  # by_frederic: retorna quando e um tipo Dict
 

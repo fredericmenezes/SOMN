@@ -20,15 +20,18 @@ if len(wandb.patched["tensorboard"]) > 0:
 wandb.tensorboard.patch(root_logdir="./runs")
 
 # seed
-random.seed(10)
-np.random.seed(1)
+#random.seed(10)
+#np.random.seed(1)
+from Seed.Seed import seed_everything
+
+seed_everything(2023)
 
 #atraso:int=None
 
 for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
 #    atraso = None
     config_PPO = {
-        'objetivo': 0, # 0: lucro, 1: variabilidade, 2: sustentabilidade
+        'objetivo': 2, # 0: lucro, 1: variabilidade, 2: sustentabilidade
         'atraso': atraso,
         'batch_size': 256,
         'ent_coef': 0.001641577520175419,
@@ -41,11 +44,11 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
     }
 
     for x in range(1):    #### ACMO NUMEROS DE EXECUÇÕES COMPETIDORAS
-        run1 = wandb.init(project='fred_test2_pequena_instancia', #NOME DO PROJETO
+        run1 = wandb.init(project='Fred_test3', #NOME DO PROJETO
                           config=config_PPO,
-                          group=f'Instancia_pequena', #GRUPOS A SEREM ADCIONADOS NO WANDB
+                          group=f'PR x SU x VA', #GRUPOS A SEREM ADCIONADOS NO WANDB
 #                          name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
-                          name=f'Lucro', #NOME DA EXECUÇÃO
+                          name=f'Sustentabilidade', #NOME DA EXECUÇÃO
                           save_code=True,
                           reinit=True
         )

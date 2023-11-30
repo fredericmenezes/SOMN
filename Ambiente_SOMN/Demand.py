@@ -37,6 +37,7 @@ class Demand:
         Demand.MAXEU=MAXEU
         Demand.EU = np.random.random(M)*MAXEU
         self.ST = int(-1)                  ### free(-1) received(0), ready(1), rejected(2), produced(3), stored(4) and delivered(5)
+        self.action = 0
         
         Demand.cont +=1
         self.CU = Demand.cont
@@ -85,8 +86,8 @@ class Demand:
             self.mask_FT = self.FT.copy()
             self.mask_FT[self.mask_FT > 0] = 1
 
-        # contar quantas Features estao sendo usadas (total de maquinas usadas)
-        self.F = self.mask_FT.sum()
+            # contar quantas Features estao sendo usadas (total de maquinas usadas)
+            self.F = self.mask_FT.sum()
 
         # self.LT = int(self.F/2) + 2                      ###  --- 1.0*self.fun_tau() * self.F
         self.LT = self.fun_tau()
