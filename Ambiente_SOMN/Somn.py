@@ -72,9 +72,11 @@ class Somn(Env):
         self.MAXEU = MAXEU
         # self.MT = np.random.randint(0,MAXFT,M)
 
+
+
        
         self.EU = np.random.random(M) * MAXEU
-        self.BA = np.random.randint(50, 100*MAXFT, M)
+        self.BA = np.random.randint(10, 10*MAXFT, M)
         self.IN = np.random.randint(0, MAXFT, M)
         self.OU = np.random.randint(0, MAXFT, M)
         #self.seed = seed
@@ -475,19 +477,19 @@ class Somn(Env):
                 
                 totPenalty += 0
                 if totReward > 0:
-                    totPenalty += abs(self.DE[i].action - self.DE[i].real_LT)
+                    totPenalty += abs(self.DE[i].action - abs(self.DE[i].real_LT - self.DE[i].LT))
                 self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
                 # print('REJECTED vvvvvvvvvvvvvvvvvvvvvvvvvvvv')
             if self.DE[i].ST == -2:
                 totPenalty += self.DE[i].AM * self.DE[i].CO         # PENALIDADE PELO DESCARTE
                 if totReward > 0:
-                    totPenalty += abs(self.DE[i].action - self.DE[i].real_LT)
+                    totPenalty += abs(self.DE[i].action - abs(self.DE[i].real_LT - self.DE[i].LT))
                 self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
                 # print('PREJUIZO $$$$$$$$$$$$$$$$$$$$$$$$$')
             if self.DE[i].ST == 4:
-                totPenalty += self.YA.cont
+                totPenalty += self.YA.cont/self.YA.space * self.DE[i].AM * self.DE[i].CO
                 if totReward > 0:
-                    totPenalty += abs(self.DE[i].action - self.DE[i].real_LT)
+                    totPenalty += abs(self.DE[i].action - abs(self.DE[i].real_LT - self.DE[i].LT))
                 self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
                 # totPenalty += totReward / (
                 #     Yard.space - Yard.cont + 1
@@ -503,19 +505,17 @@ class Somn(Env):
                     totReward += self.DE[i].AM * self.DE[i].PR
 
                 if self.objetivo == 1: # variabilidade
-                    totReward += self.DE[i].AM * self.DE[i].PR * self.DE[i].VA
-                    #totPenalty += self.DE[i].AM * self.DE[i].SU
+                    totReward += self.DE[i].AM * self.DE[i].PR - self.DE[i].AM * self.DE[i].CO * self.DE[i].SU
 
                 if self.objetivo == 2: # sustentabilidade
-                    totReward += self.DE[i].AM * self.DE[i].PR * self.DE[i].SU
-                    #totPenalty += self.DE[i].AM * self.DE[i].VA
+                    totReward += self.DE[i].AM * self.DE[i].PR - self.DE[i].AM * self.DE[i].CO * self.DE[i].VA
 
-                self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
+                
                 if totReward > 0:
-                    totPenalty += abs(self.DE[i].action - self.DE[i].real_LT)
+                    totPenalty += abs(self.DE[i].action - abs(self.DE[i].real_LT - self.DE[i].LT))
                 # print('REWARD ******************************')
                 # totReward += self.DE[i].AM * self.DE[i].PR
-        
+                self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
         
         totReward -= totPenalty #RECOMPENSA COM A PENALIDADE INSERIDA NELA
 
@@ -675,7 +675,7 @@ class Somn(Env):
         # Somn.priorqva = heapdict()
         self.MT = np.random.randint(0, self.MAXFT, self.M)
         self.EU = np.random.random(self.M) * self.MAXEU
-        self.BA = np.random.randint(50, 100*self.MAXFT, self.M)
+        self.BA = np.random.randint(10, 10*self.MAXFT, self.M)
         self.IN = np.random.randint(0, self.MAXFT, self.M)
         self.OU = np.random.randint(0, self.MAXFT, self.M)
         
