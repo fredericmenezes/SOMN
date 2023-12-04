@@ -1,0 +1,18 @@
+{
+    "jupyter.debugJustMyCode": false,
+    "launch": {
+
+
+
+
+        "configurations": [
+            {
+                "name": "Python: RL",
+                "type": "python",
+                "request": "launch",
+                "justMyCode": false,
+            }
+        ],
+        "compounds": []
+    }
+}

@@ -329,6 +329,12 @@ class PPO(OnPolicyAlgorithm):
         acoes = actions.tolist()
         is_None = lambda lista: lista if any(lista) else 0
 
+
+        # wandb.log({'recompensa': np.mean(self.env.env_method('get_reward')),
+        #            'timesteps': self.num_timesteps,
+        #            }
+        # )
+
         wandb.log({'Actions':  np.mean(acoes),
                    'timesteps': self.num_timesteps,
                    'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),

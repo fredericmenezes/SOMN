@@ -277,8 +277,48 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     self.logger.record("rollout/ep_rew_mean", safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]))
                     self.logger.record("rollout/ep_len_mean", safe_mean([ep_info["l"] for ep_info in self.ep_info_buffer]))
                     # --------- WandB Log ----------- #
+                    # para lembrar como estão as variaveis em info
+                    # info = {"rw": reward,
+                    #         "rw_lu": rw_lu,                   # reward lucro
+                    #         "rw_va": rw_va,                   # reward variabilidade
+                    #         "rw_su": rw_su,                   # reward sustentabilidade
+                    #         "VA": variabilidade,
+                    #         "SU": sustentabilidade,
+                    #         "F": F,                           # numero de features (maquinas)
+                    #         "acoes": acoes,
+                    #         "atrasos_reais": atrasos_reais}   # atrasos para comparar com acoes
                     wandb.log({"mean_reward_test": safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
                     wandb.log({"ep_len_mean": safe_mean([ep_info["l"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
+                    wandb.log({"recompensa": safe_mean([ep_info["rw"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
+                    wandb.log({"recompensa_lucro": safe_mean([ep_info["rw_lu"] for ep_info in self.ep_info_buffer]),
+                               "recompensa_variabilidade": safe_mean([ep_info["rw_va"] for ep_info in self.ep_info_buffer]),
+                               "recompensa_sustentabilidade": safe_mean([ep_info["rw_su"] for ep_info in self.ep_info_buffer]),
+                               'timesteps': self.num_timesteps})
+                    wandb.log({"variabilidade": safe_mean([ep_info["VA"] for ep_info in self.ep_info_buffer]),
+                               "sustentabilidade": safe_mean([ep_info["SU"] for ep_info in self.ep_info_buffer]),
+                               'timesteps': self.num_timesteps})
+                    # if self.num_timesteps == 1000000:
+                    #     F = []
+                    #     F = [num_features for ep_info in self.ep_info_buffer for num_features in ep_info["F"]]
+                    #     hist_F = np.histogram(F)
+                    #     wandb.log({"numero_de_Features": wandb.Histogram(np_histogram=hist_F, num_bins=10),'timesteps': self.num_timesteps})
+                    wandb.log({"numero_de_Features": safe_mean([ep_info["F"] for ep_info in self.ep_info_buffer]), 'timesteps': self.num_timesteps})
+
+                    if self.num_timesteps == 1 or\
+                       self.num_timesteps == 5000 or\
+                       self.num_timesteps == 100000 or\
+                       self.num_timesteps == 250000 or\
+                       self.num_timesteps == 500000 or\
+                       self.num_timesteps == 1000000:
+                        acoes = []
+                        atrasos = []
+                        acoes = [acao for ep_info in self.ep_info_buffer for acao in ep_info["acoes"]]
+                        atrasos = [atraso for ep_info in self.ep_info_buffer for atraso in ep_info["atrasos_reais"]]
+                        hist_acoes = np.histogram(acoes)
+                        hist_atrasos = np.histogram(atrasos)
+                        wandb.log({f"acoes (timesteps = {self.num_timesteps})": wandb.Histogram(np_histogram=hist_acoes, num_bins=100),'timesteps': self.num_timesteps})
+                        wandb.log({f"atrasos (timesteps = {self.num_timesteps})": wandb.Histogram(np_histogram=hist_atrasos, num_bins=100),'timesteps': self.num_timesteps})
+                    
                 self.logger.record("time/fps", fps)
                 self.logger.record("time/time_elapsed", int(time_elapsed), exclude="tensorboard")
                 self.logger.record("time/total_timesteps", self.num_timesteps, exclude="tensorboard")
