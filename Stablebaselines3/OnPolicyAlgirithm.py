@@ -304,11 +304,12 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     #     wandb.log({"numero_de_Features": wandb.Histogram(np_histogram=hist_F, num_bins=10),'timesteps': self.num_timesteps})
                     wandb.log({"numero_de_Features": safe_mean([ep_info["F"] for ep_info in self.ep_info_buffer]), 'timesteps': self.num_timesteps})
 
-                    if self.num_timesteps == 1 or\
-                       self.num_timesteps == 5000 or\
-                       self.num_timesteps == 100000 or\
-                       self.num_timesteps == 250000 or\
-                       self.num_timesteps == 500000 or\
+                    if self.num_timesteps > 1 and self.num_timesteps < 5000 or\
+                       self.num_timesteps > 9000 and self.num_timesteps < 10000 or\
+                       self.num_timesteps > 49000 and self.num_timesteps < 50000 or\
+                       self.num_timesteps > 99000 and self.num_timesteps < 100000 or\
+                       self.num_timesteps > 249000 and self.num_timesteps < 250000 or\
+                       self.num_timesteps > 499000 and self.num_timesteps < 500000 or\
                        self.num_timesteps == 1000000:
                         acoes = []
                         atrasos = []
@@ -316,8 +317,11 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                         atrasos = [atraso for ep_info in self.ep_info_buffer for atraso in ep_info["atrasos_reais"]]
                         hist_acoes = np.histogram(acoes)
                         hist_atrasos = np.histogram(atrasos)
-                        wandb.log({f"acoes (timesteps = {self.num_timesteps})": wandb.Histogram(np_histogram=hist_acoes, num_bins=100),'timesteps': self.num_timesteps})
-                        wandb.log({f"atrasos (timesteps = {self.num_timesteps})": wandb.Histogram(np_histogram=hist_atrasos, num_bins=100),'timesteps': self.num_timesteps})
+                        wandb.log({f"acoes (timesteps = {self.num_timesteps})": wandb.Histogram(np_histogram=hist_acoes, num_bins=100),
+                                   f"atrasos (timesteps = {self.num_timesteps})": wandb.Histogram(np_histogram=hist_atrasos, num_bins=100),
+                                    'timesteps': self.num_timesteps}
+                        )
+                        #wandb.log({f"atrasos (timesteps = {self.num_timesteps})": wandb.Histogram(np_histogram=hist_atrasos, num_bins=100),'timesteps': self.num_timesteps})
                     
                 self.logger.record("time/fps", fps)
                 self.logger.record("time/time_elapsed", int(time_elapsed), exclude="tensorboard")

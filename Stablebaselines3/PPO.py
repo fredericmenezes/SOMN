@@ -354,8 +354,8 @@ class PPO(OnPolicyAlgorithm):
 
         wandb.log({'Load': Demand.load,
                    'Reject': Demand.reject,
-                   'Reject with waste': Demand.reject_w_waste,
-                   'Reject Total': Demand.reject_w_waste + Demand.reject,
+                   'Reject with waste': Demand.production_w_waste,
+                   'Reject Total': Demand.production_w_waste + Demand.reject,
                    'timesteps': self.num_timesteps,
                    'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
                    'value_loss': np.mean(value_losses),
@@ -364,8 +364,8 @@ class PPO(OnPolicyAlgorithm):
         )
 
         wandb.log({'Reject': Demand.reject,
-                   'Reject with waste': Demand.reject_w_waste,
-                   'Reject Total': Demand.reject_w_waste + Demand.reject,
+                   'Reject with waste': Demand.production_w_waste,
+                   'Reject Total': Demand.production_w_waste + Demand.reject,
                    'Load': Demand.load,
                    'timesteps': self.num_timesteps,
                    'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
@@ -385,8 +385,8 @@ class PPO(OnPolicyAlgorithm):
         #            }
         # )
 
-        wandb.log({'Reject Total': Demand.reject_w_waste + Demand.reject,
-                   'Reject with waste': Demand.reject_w_waste,
+        wandb.log({'Reject Total': Demand.production_w_waste + Demand.reject,
+                   'Reject with waste': Demand.production_w_waste,
                    'Reject': Demand.reject,
                    'Load': Demand.load,
                    'timesteps': self.num_timesteps,
@@ -417,20 +417,20 @@ class PPO(OnPolicyAlgorithm):
                    'loss': loss.item()
                    }
         )
-        atraso_log = self.env.env_method('get_atraso') if self.env.env_method('get_atraso') is not None else 0
-        wandb.log({'atraso': np.mean(atraso_log),
-                   'timesteps': self.num_timesteps,
-                   }
-        )
-        wandb.log({'atraso_demanda': np.mean(is_None(self.env.env_method('get_Demands_Attr','atraso'))),
-                   'timesteps': self.num_timesteps,
-                   }
-        )
-        atraso_Demanda_class = Demand.atraso if Demand.atraso is not None else 0
-        wandb.log({'atraso_Demanda_class': atraso_Demanda_class,
-                   'timesteps': self.num_timesteps
-                   }
-        )
+        # atraso_log = self.env.env_method('get_atraso') if self.env.env_method('get_atraso') is not None else 0
+        # wandb.log({'atraso': np.mean(atraso_log),
+        #            'timesteps': self.num_timesteps,
+        #            }
+        # )
+        # wandb.log({'atraso_demanda': np.mean(is_None(self.env.env_method('get_Demands_Attr','atraso'))),
+        #            'timesteps': self.num_timesteps,
+        #            }
+        # )
+        # atraso_Demanda_class = Demand.atraso if Demand.atraso is not None else 0
+        # wandb.log({'atraso_Demanda_class': atraso_Demanda_class,
+        #            'timesteps': self.num_timesteps
+        #            }
+        # )
 
 
         # --------- WandB Log ----------- #

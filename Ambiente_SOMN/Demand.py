@@ -6,8 +6,8 @@ class Demand:
 
     cont=0      # by_frederic ---> mudei de 1 para 0
     load=0
-    reject=0         # rejeitar
-    reject_w_waste=0 # rejeitar com lixo
+    reject=0         # rejeitada ST = 2
+    production_w_waste=0 # producao com lixo ST = -2
     #atraso=None
 
     # Somn(Y=10,M=10,N=10,MAXDO=10,MAXAM=3,MAXPR=2,MAXPE=10,MAXFT=5,MAXMT=3,MAXTI=2,MAXEU = 5, atraso=atraso)
@@ -36,17 +36,19 @@ class Demand:
         Demand.MAXTI=MAXTI
         Demand.MAXEU=MAXEU
         Demand.EU = np.random.random(M)*MAXEU
-        self.ST = int(-1)                  ### free(-1) received(0), ready(1), rejected(2), produced(3), stored(4) and delivered(5)
-        self.action = 0
+        self.ST = int(-1)   # free(-1) received(0), ready(1), rejected(2), producing(3), stored(4) and delivered(5)
         
-        Demand.cont +=1
-        self.CU = Demand.cont
+        self.action = int(-1)    # acao atribuida quando ST=1 (estado ready)
+                            # -1 significa que nenhuma acao foi atribuida ainda
+        
+       
         Demand.atraso=atraso
 
 
     def __call__(self, t:int):
 
-        
+        Demand.cont +=1
+        self.CU = Demand.cont
     #   self.PR = random.randrange(3,Demand.MAXPR)  below -----------------
         self.AM = random.randrange(1,Demand.MAXAM)
         self.PE = random.randint(1,Demand.MAXPE)

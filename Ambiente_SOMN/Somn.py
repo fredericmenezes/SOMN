@@ -62,6 +62,8 @@ class Somn(Env):
         # self.lucro = 0.0
         # self.variabilidade = 0.0
         # self.sustentabilidade = 0.0
+        self.patio_ST_1 = 0.0
+        self.acoes_ST_1 = 0
 
 
 
@@ -330,6 +332,7 @@ class Somn(Env):
     def product_schedulingold(self, t: int, action):
         for i in range(self.N):
             if self.DE[i].ST == 1:
+
                 
                 if self.DE[i].DO > (t + self.DE[i].LT + action):
                     self.DE[i].ST = 3  ## produced status --- remember to run time for each case
@@ -366,7 +369,11 @@ class Somn(Env):
 
     def product_scheduling(self, t: int, action):
         
-        for _ in range(len(Somn.priorq[self.objetivo])):  ### ACMO UTILIZAR 3 FILAS E ESCOLHER UMA DELAS AQUI
+        wandb.log({
+            'Tamanho da fila de prioridade' : len(Somn.priorq[self.objetivo]),
+        })
+        #for _ in range(len(Somn.priorq[self.objetivo])):  ### ACMO UTILIZAR 3 FILAS E ESCOLHER UMA DELAS AQUI
+        if len(Somn.priorq[self.objetivo]) > 0:
             # objetivo  0: price, 
             #           1: variabilidade, 
             #           2: sustentabilidade
@@ -380,7 +387,12 @@ class Somn(Env):
                 #     #   Somn.instance.InsertJobs(i, j, self.DE[i].FT[j])
                 #       flag = 1
 ###
+                    # salva o valor do patio antes da acao
+                    self.patio_ST_1 = (self.YA.cont/self.YA.Y)*100
+                    # salva o valor da acao antes de executar a acao
                     self.DE[i].action = action
+                    self.acoes_ST_1 = action
+                    # executa a acao
                     if self.DE[i].DO > (t + self.DE[i].LT + action):
                         self.DE[i].ST = 3  ## produced status --- remember to run time for each case
                         self.OU -= self.DE[i].FT  ## CONSOME OS RECURSOS
@@ -413,8 +425,9 @@ class Somn(Env):
                         
                         # VALIDAÇÃO DE TESTE PARA YARD = 0 #####################################################
                         if self.Y == 0:
-                            self.DE[i].ST = -2  ## NAO CABE ... REJEITADO COM GERAÇÃO DE LIXO (CASO MAIS GRAVE)
-                            Demand.reject_w_waste = Demand.reject_w_waste + 1
+                            self.DE[i].ST = -2  ## NAO CABE ... PRODUCAO COM GERAÇÃO DE LIXO (CASO MAIS GRAVE)
+                            # production with waste
+                            Demand.production_w_waste = Demand.production_w_waste + 1
                         ##########################################################################
 
                         elif self.YA.cont < self.YA.Y:
@@ -433,8 +446,9 @@ class Somn(Env):
                             # print("\n Destination: Armazenou no YARD", Yard.cont)
 
                         else:
-                            self.DE[i].ST = -2  ## NAO CABE ... REJEITADO COM GERAÇÃO DE LIXO (CASO MAIS GRAVE)
-                            Demand.reject_w_waste = Demand.reject_w_waste + 1
+                            self.DE[i].ST = -2  ## NAO CABE ... PRODUCAO COM GERAÇÃO DE LIXO (CASO MAIS GRAVE)
+                            # production with waste
+                            Demand.production_w_waste = Demand.production_w_waste + 1
                             # print(f'\n\n\n\nReject total: {Demand.reject_w_waste} \n\n\n\n')
     
 
@@ -500,7 +514,7 @@ class Somn(Env):
         acoes = []
         atrasos_reais = []
 
-        patio = (self.YA.cont/self.YA.Y)*100
+        
 
         totReward = 0.0
         totPenalty = 0.0
@@ -598,6 +612,8 @@ class Somn(Env):
         Primeira versão vai fazer uma iteração para cada episódio ...
         O Tempo t precisa ser controlado
         """
+        if len(Somn.priorq[self.objetivo]) > 0:
+            self.product_scheduling(Somn.time, action)
 
         # receive RAW MATERIAL AND ORDERS (DEMANDS)
         self.MT = np.array([random.randint(0, i) if i > 0 else 0 for i in self.IN])
@@ -620,7 +636,8 @@ class Somn(Env):
         # ANYWAY START PRODUCING AND DISPATCHING
         self.product_scheduling(Somn.time, action)
         self.product_destination(Somn.time)
-        Somn.time += 1
+        if len(Somn.priorq[self.objetivo]) == 0:
+            Somn.time += 1
 
         # ORDINARY PROCEDURES IN STEP METHOD INCLUDING REWARD BY INSPECTING FINAL STATES
         # 1 STATE
@@ -756,17 +773,23 @@ class Somn(Env):
         self.OU = np.random.randint(0, self.MAXFT, self.M)
         
         #LOGS PONTUAIS
-        wandb.log({
-            'reject_w_waste Somn' : Demand.reject_w_waste
-        })
+        # wandb.log({
+        #     'reject_w_waste Somn' : Demand.reject_w_waste
+        # })
 
 
         Somn.time = 1
         Demand.load = 0
         Demand.reject = 0
-        Demand.reject_w_waste=0
+        Demand.production_w_waste=0
 
         self.YA = Yard(self.Y)
+        self.DE = [
+            Demand(
+                self.M, self.N, self.MAXDO, self.MAXAM, self.MAXPR, self.MAXPE, self.MAXFT, self.MAXMT, self.MAXTI, self.MAXEU, Somn.time, self.atraso
+            )
+            for _ in range(self.N)
+        ]
 
         DE_arrayState = []
         for i in range(self.N):
