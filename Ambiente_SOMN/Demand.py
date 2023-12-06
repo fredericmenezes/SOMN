@@ -103,7 +103,10 @@ class Demand:
         self.CO = 0.0
         for j in range(Demand.M):
             self.CO += self.FT[j] * Demand.EU[j]
+        # sustentabilidade tem um custo maior    
+        self.CO = self.CO * float(self.M/self.F)
         #self.CO = self.AM * self.CO  -- custo sem o amount
+
         self.PR = Demand.MAXPR*self.CO  ### LUCRO EH 2X CUSTO  self.PR = Demand.MAXPE  (by fred)
 
         self.SP = self.fun_gamma() ####* 'cpu'.Y   #SPACE CONSUMPTION FACTOR

@@ -58,7 +58,7 @@ class Monitor(gym.Wrapper[ObsType, ActType, ObsType, ActType]):
         self.rewards: List[float] = []
 
         self.rw: List[float] = []
-        self.rw_lu: List[float] = []
+        self.rw_pr: List[float] = []
         self.rw_va: List[float] = []
         self.rw_su: List[float] = []
         self.VA: List[float] = []
@@ -66,17 +66,23 @@ class Monitor(gym.Wrapper[ObsType, ActType, ObsType, ActType]):
         self.F: List[float] = []
         self.acoes: List[int] = []
         self.atrasos_reais: List[int] = []
+        self.acao_ST_1: List[int] = []
+        self.carga_ST_1: List[int] = []
+        self.patio_ST_1: List[int] = []
 
-        # para lembrar como estão as variaveis em info
+        # para lembrar como estão as variaveis em info:
         # info = {"rw": reward,
-        #         "rw_lu": rw_lu,
-        #         "rw_va": rw_va,
-        #         "rw_su": rw_su,
+        #         "rw_pr": rw_pr,                   # reward lucro
+        #         "rw_va": rw_va,                   # reward variabilidade
+        #         "rw_su": rw_su,                   # reward sustentabilidade
         #         "VA": variabilidade,
         #         "SU": sustentabilidade,
-        #         "F": F,
+        #         "F": F,                           # numero de features (maquinas)
         #         "acoes": acoes,
-        #         "atrasos_reais": atrasos_reais}  # Informações adicionais
+        #         "atrasos_reais": atrasos_reais}   # atrasos para comparar com acoes
+        #         "acao_on_state_plan": self.acao_on_state_plan,
+        #         "carga_on_state_plan": self.carga_on_state_plan,
+        #         "patio_on_state_plan": self.patio_on_state_plan
 
         self.needs_reset = True
         self.episode_returns: List[float] = []
@@ -103,7 +109,7 @@ class Monitor(gym.Wrapper[ObsType, ActType, ObsType, ActType]):
         self.rewards = []
         
         self.rw = []
-        self.rw_lu = []
+        self.rw_pr = []
         self.rw_va = []
         self.rw_su = []
         self.VA = []
@@ -111,6 +117,9 @@ class Monitor(gym.Wrapper[ObsType, ActType, ObsType, ActType]):
         self.F = []
         self.acoes = []
         self.atrasos_reais = []
+        self.acao_ST_1 = []
+        self.carga_ST_1 = []
+        self.patio_ST_1 = []
 
         self.needs_reset = False
         for key in self.reset_keywords:
@@ -130,21 +139,25 @@ class Monitor(gym.Wrapper[ObsType, ActType, ObsType, ActType]):
         if self.needs_reset:
             raise RuntimeError("Tried to step environment that needs reset")
         observation, reward, terminated, truncated, info = self.env.step(action)
-        # para lembrar como estão as variaveis em info
+        # para lembrar como estão as variaveis em info:
         # info = {"rw": reward,
-        #         "rw_lu": rw_lu,                   # reward lucro
+        #         "rw_pr": rw_pr,                   # reward lucro
         #         "rw_va": rw_va,                   # reward variabilidade
         #         "rw_su": rw_su,                   # reward sustentabilidade
         #         "VA": variabilidade,
         #         "SU": sustentabilidade,
         #         "F": F,                           # numero de features (maquinas)
         #         "acoes": acoes,
-        #         "atrasos_reais": atrasos_reais}   # atrasos para comparar com acoes
+        #         "atrasos_reais": atrasos_reais   # atrasos para comparar com acoes
+        #         "acao_on_state_plan": self.acao_on_state_plan,
+        #         "carga_on_state_plan": self.carga_on_state_plan,
+        #         "patio_on_state_plan": self.patio_on_state_plan
+        #        }
         
         # variaveis para rastrear depois de step()
         self.rewards.append(float(reward))
         self.rw.append(float(info["rw"]))
-        self.rw_lu.append(float(info["rw_lu"]))
+        self.rw_pr.append(float(info["rw_pr"]))
         self.rw_va.append(float(info["rw_va"]))
         self.rw_su.append(float(info["rw_su"]))
         self.VA.append(float(info["VA"]))
@@ -152,13 +165,16 @@ class Monitor(gym.Wrapper[ObsType, ActType, ObsType, ActType]):
         self.F.append(float(info["F"]))
         self.acoes += info["acoes"]
         self.atrasos_reais += info["atrasos_reais"]
+        self.acao_ST_1 += info["acao_on_state_plan"]
+        self.carga_ST_1 += info["carga_on_state_plan"]
+        self.patio_ST_1 += info["patio_on_state_plan"]
 
         if terminated or truncated:
             self.needs_reset = True
             ep_reward = sum(self.rewards)
             ep_len = len(self.rewards)
             ep_rw = sum(self.rw)
-            ep_rw_lu = sum(self.rw_lu)
+            ep_rw_pr = sum(self.rw_pr)
             ep_rw_va = sum(self.rw_va)
             ep_rw_su = sum(self.rw_su)
             ep_VA = sum(self.VA)
@@ -166,18 +182,25 @@ class Monitor(gym.Wrapper[ObsType, ActType, ObsType, ActType]):
             ep_F = sum(self.F)
             ep_acoes = self.acoes
             ep_atrasos_reais = self.atrasos_reais
+            ep_acao_ST_1 = self.acao_ST_1
+            ep_carga_ST_1 = self.carga_ST_1
+            ep_patio_ST_1 = self.patio_ST_1
             ep_info = {"r": round(ep_reward, 6), 
                        "l": ep_len, 
                        "t": round(time.time() - self.t_start, 6),
                        "rw": round(ep_rw, 6),
-                       "rw_lu": round(ep_rw_lu, 6),
+                       "rw_pr": round(ep_rw_pr, 6),
                        "rw_va": round(ep_rw_va, 6),
                        "rw_su": round(ep_rw_su, 6),
                        "VA": round(ep_VA, 6),
                        "SU": round(ep_SU, 6),
                        "F": round(ep_F, 6),
                        "acoes": ep_acoes,
-                       "atrasos_reais": ep_atrasos_reais}
+                       "atrasos_reais": ep_atrasos_reais,
+                       "acao_on_state_plan": ep_acao_ST_1,
+                       "carga_on_state_plan": ep_carga_ST_1,
+                       "patio_on_state_plan": ep_patio_ST_1
+                       }
             for key in self.info_keywords:
                 ep_info[key] = info[key]
             self.episode_returns.append(ep_reward)

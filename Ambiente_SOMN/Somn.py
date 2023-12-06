@@ -62,8 +62,9 @@ class Somn(Env):
         # self.lucro = 0.0
         # self.variabilidade = 0.0
         # self.sustentabilidade = 0.0
-        self.patio_ST_1 = 0.0
-        self.acoes_ST_1 = 0
+        self.acao_on_state_plan = []
+        self.patio_on_state_plan = []
+        self.carga_on_state_plan = []
 
 
 
@@ -370,14 +371,14 @@ class Somn(Env):
     def product_scheduling(self, t: int, action):
         
         wandb.log({
-            'Tamanho da fila de prioridade' : len(Somn.priorq[self.objetivo]),
+            'Tamanho da fila de prioridade' : len(Somn.priorq[Somn.objetivo]),
         })
         #for _ in range(len(Somn.priorq[self.objetivo])):  ### ACMO UTILIZAR 3 FILAS E ESCOLHER UMA DELAS AQUI
-        if len(Somn.priorq[self.objetivo]) > 0:
+        if len(Somn.priorq[Somn.objetivo]) > 0:
             # objetivo  0: price, 
             #           1: variabilidade, 
             #           2: sustentabilidade
-            obj = Somn.priorq[self.objetivo].popitem()
+            obj = Somn.priorq[Somn.objetivo].popitem()
             i = obj[0]
             if i > 0:
                 if self.DE[i].ST == 1:  ## DE[I].ST VAI SER SEMPRE 1 PORQUE VEM DA FILAP
@@ -388,10 +389,12 @@ class Somn(Env):
                 #       flag = 1
 ###
                     # salva o valor do patio antes da acao
-                    self.patio_ST_1 = (self.YA.cont/self.YA.Y)*100
+                    self.patio_on_state_plan.append((self.YA.cont/self.YA.Y)*100)
                     # salva o valor da acao antes de executar a acao
                     self.DE[i].action = action
-                    self.acoes_ST_1 = action
+                    self.acao_on_state_plan.append(action)
+                    # salva o valor da carga antes da acao
+                    self.carga_on_state_plan.append(sum([self.DE[i].ST == 3 for i in range(self.N)]))
                     # executa a acao
                     if self.DE[i].DO > (t + self.DE[i].LT + action):
                         self.DE[i].ST = 3  ## produced status --- remember to run time for each case
@@ -502,7 +505,7 @@ class Somn(Env):
     # return self.IN
 
     def eval_final_states(self) -> float:
-        rw_lu = 0.0
+        rw_pr = 0.0
         rw_va = 0.0
         rw_su = 0.0
 
@@ -514,6 +517,11 @@ class Somn(Env):
         acoes = []
         atrasos_reais = []
 
+        # patios e cargas e acoes estão em:
+        #
+        #   self.acao_on_state_plan
+        #   self.carga_on_state_plan
+        #   self.carga_on_state_plan
         
 
         totReward = 0.0
@@ -542,7 +550,7 @@ class Somn(Env):
                 # print('PREJUIZO $$$$$$$$$$$$$$$$$$$$$$$$$')
 
             if self.DE[i].ST == 4:
-                totPenalty += self.YA.cont/self.YA.space * self.DE[i].AM * self.DE[i].CO
+                totPenalty += (self.YA.cont/self.YA.space) * self.DE[i].AM * self.DE[i].CO
                 acoes.append(self.DE[i].action)
                 atrasos_reais.append(abs(self.DE[i].real_LT - self.DE[i].LT))
                 # penalidade por estar no ambiente
@@ -560,10 +568,15 @@ class Somn(Env):
 #                totReward += self.DE[i].AM * self.DE[i].SU
 #                totReward += self.DE[i].AM * self.DE[i].VA
 
-                
-                rw_lu += self.DE[i].AM * self.DE[i].PR
-                rw_va += self.DE[i].AM * self.DE[i].PR * self.DE[i].VA
-                rw_su += self.DE[i].AM * self.DE[i].PR * self.DE[i].SU
+                tx_ambiente = abs(self.DE[i].action - abs(self.DE[i].real_LT - self.DE[i].LT))
+                rw_pr += self.DE[i].AM * self.DE[i].PR \
+                      - self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.01
+                rw_va += self.DE[i].AM * self.DE[i].PR \
+                      - self.DE[i].AM * self.DE[i].PR * self.DE[i].SU \
+                      - self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.01
+                rw_su += self.DE[i].AM * self.DE[i].PR \
+                      - self.DE[i].AM * self.DE[i].PR * self.DE[i].VA \
+                      - self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.01
 
                 variabilidade += self.DE[i].VA
                 sustentabilidade += self.DE[i].SU
@@ -574,14 +587,16 @@ class Somn(Env):
                 # contar quantas Features estao sendo usadas (total de maquinas usadas)
                 F = mask_FT.sum()
 
+
+
                 acoes.append(self.DE[i].action)
                 atrasos_reais.append(abs(self.DE[i].real_LT - self.DE[i].LT))
 
-                if self.objetivo == 0: # lucro
-                    totReward = rw_lu
-                if self.objetivo == 1: # variabilidade
+                if Somn.objetivo == 0: # lucro
+                    totReward = rw_pr
+                if Somn.objetivo == 1: # variabilidade
                     totReward = rw_va
-                if self.objetivo == 2: # sustentabilidade
+                if Somn.objetivo == 2: # sustentabilidade
                     totReward = rw_su
 
                 # penalidade por estar no ambiente
@@ -593,7 +608,8 @@ class Somn(Env):
         
         totReward -= totPenalty #RECOMPENSA COM A PENALIDADE INSERIDA NELA
 
-        return totReward, totPenalty, rw_lu, rw_va, rw_su, variabilidade, sustentabilidade, F, acoes, atrasos_reais
+        return totReward, totPenalty, rw_pr, rw_va, rw_su, \
+                variabilidade, sustentabilidade, F, acoes, atrasos_reais
 
 
     ######################
@@ -612,7 +628,7 @@ class Somn(Env):
         Primeira versão vai fazer uma iteração para cada episódio ...
         O Tempo t precisa ser controlado
         """
-        if len(Somn.priorq[self.objetivo]) > 0:
+        if len(Somn.priorq[Somn.objetivo]) > 0:
             self.product_scheduling(Somn.time, action)
 
         # receive RAW MATERIAL AND ORDERS (DEMANDS)
@@ -636,7 +652,7 @@ class Somn(Env):
         # ANYWAY START PRODUCING AND DISPATCHING
         self.product_scheduling(Somn.time, action)
         self.product_destination(Somn.time)
-        if len(Somn.priorq[self.objetivo]) == 0:
+        if len(Somn.priorq[Somn.objetivo]) == 0:
             Somn.time += 1
 
         # ORDINARY PROCEDURES IN STEP METHOD INCLUDING REWARD BY INSPECTING FINAL STATES
@@ -671,7 +687,7 @@ class Somn(Env):
         (
             reward,             # recompensa calculada com a penalidade aplicada
             penalty,            # penalidade que foi aplicada
-            rw_lu,              # recompensa para lucro
+            rw_pr,              # recompensa para lucro
             rw_va,              # recompensa para a variabilidade
             rw_su,              # recompensa para a sustentabilidade
             variabilidade,      # variabilidade de 0 a 1
@@ -725,14 +741,18 @@ class Somn(Env):
        
 
         info = {"rw": reward,
-                "rw_lu": rw_lu,
+                "rw_pr": rw_pr,
                 "rw_va": rw_va,
                 "rw_su": rw_su,
                 "VA": variabilidade,
                 "SU": sustentabilidade,
                 "F": F,
                 "acoes": acoes,
-                "atrasos_reais": atrasos_reais}  # Informações adicionais
+                "atrasos_reais": atrasos_reais,
+                "acao_on_state_plan": self.acao_on_state_plan,
+                "carga_on_state_plan": self.carga_on_state_plan,
+                "patio_on_state_plan": self.patio_on_state_plan
+                }  # Informações adicionais
         # observation = self.DE_state  #by_frederic: retorna quando e um tipo Box
         observation = {
             "time": np.array([self.normaliza(self.time, self.lb_time, self.ub_time)]),
@@ -779,6 +799,9 @@ class Somn(Env):
 
 
         Somn.time = 1
+        self.acao_on_state_plan = []
+        self.carga_on_state_plan = []
+        self.patio_on_state_plan = []
         Demand.load = 0
         Demand.reject = 0
         Demand.production_w_waste=0

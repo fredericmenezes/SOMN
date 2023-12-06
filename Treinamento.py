@@ -28,11 +28,11 @@ from Seed.Seed import seed_everything
 #seed_everything(2023)
 
 #atraso:int=None
-
+objetivo = ["Lucro", "Variabilidade", "Sustentabiliade"]
 for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
 #    atraso = None
     config_PPO = {
-        'objetivo': 1, # 0: lucro, 1: variabilidade, 2: sustentabilidade
+        'objetivo': 2, # 0: lucro, 1: variabilidade, 2: sustentabilidade
         'atraso': atraso,
         'batch_size': 256,
         'ent_coef': 0.001641577520175419,
@@ -49,7 +49,7 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
                           config=config_PPO,
                           group=f'PR x SU x VA', #GRUPOS A SEREM ADCIONADOS NO WANDB
 #                          name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
-                          name=f'Variabilidade', #NOME DA EXECUÇÃO
+                          name=f"{objetivo[config_PPO['objetivo']]}", #NOME DA EXECUÇÃO
                           save_code=True,
                           reinit=True
         )

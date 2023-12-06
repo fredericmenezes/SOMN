@@ -277,20 +277,24 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     self.logger.record("rollout/ep_rew_mean", safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]))
                     self.logger.record("rollout/ep_len_mean", safe_mean([ep_info["l"] for ep_info in self.ep_info_buffer]))
                     # --------- WandB Log ----------- #
-                    # para lembrar como estão as variaveis em info
+                    # para lembrar como estão as variaveis em info:
                     # info = {"rw": reward,
-                    #         "rw_lu": rw_lu,                   # reward lucro
+                    #         "rw_pr": rw_pr,                   # reward lucro
                     #         "rw_va": rw_va,                   # reward variabilidade
                     #         "rw_su": rw_su,                   # reward sustentabilidade
                     #         "VA": variabilidade,
                     #         "SU": sustentabilidade,
                     #         "F": F,                           # numero de features (maquinas)
                     #         "acoes": acoes,
-                    #         "atrasos_reais": atrasos_reais}   # atrasos para comparar com acoes
+                    #         "atrasos_reais": atrasos_reais,   # atrasos para comparar com acoes
+                    #         "acao_on_state_plan": self.acao_on_state_plan,
+                    #         "carga_on_state_plan": self.carga_on_state_plan,
+                    #         "patio_on_state_plan": self.patio_on_state_plan
+                    #        }
                     wandb.log({"mean_reward_test": safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
                     wandb.log({"ep_len_mean": safe_mean([ep_info["l"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
                     wandb.log({"recompensa": safe_mean([ep_info["rw"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
-                    wandb.log({"recompensa_lucro": safe_mean([ep_info["rw_lu"] for ep_info in self.ep_info_buffer]),
+                    wandb.log({"recompensa_lucro": safe_mean([ep_info["rw_pr"] for ep_info in self.ep_info_buffer]),
                                "recompensa_variabilidade": safe_mean([ep_info["rw_va"] for ep_info in self.ep_info_buffer]),
                                "recompensa_sustentabilidade": safe_mean([ep_info["rw_su"] for ep_info in self.ep_info_buffer]),
                                'timesteps': self.num_timesteps})
@@ -303,6 +307,15 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     #     hist_F = np.histogram(F)
                     #     wandb.log({"numero_de_Features": wandb.Histogram(np_histogram=hist_F, num_bins=10),'timesteps': self.num_timesteps})
                     wandb.log({"numero_de_Features": safe_mean([ep_info["F"] for ep_info in self.ep_info_buffer]), 'timesteps': self.num_timesteps})
+                    # cargas_on_state_plan = []
+                    # cargas_on_state_plan = [carga_on_state_plan for ep_info in self.ep_info_buffer for carga_on_state_plan in ep_info["carga_on_state_plan"]]
+                    # for carga in cargas_on_state_plan:
+                    #     wandb.log({"carga_on_state_plan": carga,"timesteps": self.num_timesteps})
+                    
+                    # patios_on_state_plan = []
+                    # patios_on_state_plan = [patio_on_state_plan for ep_info in self.ep_info_buffer for patio_on_state_plan in ep_info["patio_on_state_plan"]]
+                    # for patio in patios_on_state_plan:
+                    #     wandb.log({"patio_on_state_plan": patio,"timesteps": self.num_timesteps})
 
                     if self.num_timesteps > 1 and self.num_timesteps < 5000 or\
                        self.num_timesteps > 9000 and self.num_timesteps < 10000 or\
@@ -310,18 +323,60 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                        self.num_timesteps > 99000 and self.num_timesteps < 100000 or\
                        self.num_timesteps > 249000 and self.num_timesteps < 250000 or\
                        self.num_timesteps > 499000 and self.num_timesteps < 500000 or\
-                       self.num_timesteps == 1000000:
+                       self.num_timesteps > 990000 and self.num_timesteps < 1000000:
                         acoes = []
+                        acoes_on_state_plan = []
                         atrasos = []
                         acoes = [acao for ep_info in self.ep_info_buffer for acao in ep_info["acoes"]]
+                        acoes_on_state_plan = [acao_on_state_plan for ep_info in self.ep_info_buffer for acao_on_state_plan in ep_info["acao_on_state_plan"]]
                         atrasos = [atraso for ep_info in self.ep_info_buffer for atraso in ep_info["atrasos_reais"]]
-                        hist_acoes = np.histogram(acoes)
-                        hist_atrasos = np.histogram(atrasos)
-                        wandb.log({f"acoes (timesteps = {self.num_timesteps})": wandb.Histogram(np_histogram=hist_acoes, num_bins=100),
-                                   f"atrasos (timesteps = {self.num_timesteps})": wandb.Histogram(np_histogram=hist_atrasos, num_bins=100),
-                                    'timesteps': self.num_timesteps}
-                        )
+                        # hist_acoes = np.histogram(acoes)
+                        # hist_acoes_on_state_plan = np.histogram(acoes_on_state_plan)
+                        # hist_atrasos = np.histogram(atrasos)
+                        # wandb.log({f"acoes (timesteps = {self.num_timesteps})": wandb.Histogram(np_histogram=hist_acoes, num_bins=100),
+                        #            f"acoes_on_state_plan (timesteps = {self.num_timesteps})": wandb.Histogram(np_histogram=hist_acoes_on_state_plan, num_bins=100),
+                        #            f"atrasos (timesteps = {self.num_timesteps})": wandb.Histogram(np_histogram=hist_atrasos, num_bins=100),
+                        #             'timesteps': self.num_timesteps}
+                        # )
+                        # exemplo
+                        # data = [[s] for s in bird_scores]
+                        # table = wandb.Table(data=data, columns=["bird_scores"])
+                        # wandb.log({'my_histogram': wandb.plot.histogram(table, "bird_scores",
+                        #         title="Bird Confidence Scores")})
+                        data_acoes = [[i, acoes[i]] for i in range(len(acoes))]
+                        table_acoes = wandb.Table(data=data_acoes, columns=["step", "acoes"])
+                        fields_acoes = {"value" : "acoes",  "title" : "Ações timesteps = " + str(self.num_timesteps)}
+                        custom_acoes_histogram = wandb.plot_table(
+                            vega_spec_name="lacmor/histograma_preset_5",
+                            data_table = table_acoes,
+                            fields = fields_acoes)
+                        wandb.log({"acoes timesteps = " + str(self.num_timesteps): custom_acoes_histogram})
+
+                        # wandb.log({
+                        #             "acoes timesteps = " + self.num_timesteps: wandb.plot.histogram(table_acoes, "acoes",
+                        #             title="Ações timesteps = " + self.num_timesteps)
+                        #             }
+                        # )
+                        
+                        data_atrasos = [[i, acoes[i], atrasos[i]] for i in range(len(atrasos))]
+                        table_atrasos = wandb.Table(data=data_atrasos, columns=["step", "acoes", "atrasos"])
+                        fields_atrasos = {"value" : "atrasos",  "title" : "Atrasos reais timesteps = " + str(self.num_timesteps)}
+                        custom_atrasos_histogram = wandb.plot_table(
+                            vega_spec_name="lacmor/histograma_preset_5",
+                            data_table = table_atrasos,
+                            fields = fields_atrasos)
+                        wandb.log({"atrasos timesteps = " + str(self.num_timesteps): custom_atrasos_histogram})
+                        # wandb.log({
+                        #             "atrasos reais timesteps = " + self.num_timesteps: wandb.plot.histogram(table_atrasos, "atrasos",
+                        #             title="Atrasos reais timesteps = " + self.num_timesteps)
+                        #             #f"acoes (timesteps = {self.num_timesteps})": wandb.plot.histogram(table, "acoes",
+                        #             #title=f"Ações (timesteps = {self.num_timesteps})")
+                        #          }
+                        # )
+
                         #wandb.log({f"atrasos (timesteps = {self.num_timesteps})": wandb.Histogram(np_histogram=hist_atrasos, num_bins=100),'timesteps': self.num_timesteps})
+                        
+                        
                     
                 self.logger.record("time/fps", fps)
                 self.logger.record("time/time_elapsed", int(time_elapsed), exclude="tensorboard")
