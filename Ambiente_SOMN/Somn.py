@@ -508,22 +508,11 @@ class Somn(Env):
         rw_pr = 0.0
         rw_va = 0.0
         rw_su = 0.0
-
         variabilidade = 0.0
         sustentabilidade = 0.0
-
         F = 0
-
         acoes = []
         atrasos_reais = []
-
-        # patios e cargas e acoes estão em:
-        #
-        #   self.acao_on_state_plan
-        #   self.carga_on_state_plan
-        #   self.carga_on_state_plan
-        
-
         totReward = 0.0
         totPenalty = 0.0
 
