@@ -770,7 +770,7 @@ class Somn(Env):
 
         self.acoes = []
         self.atrasos_reais = []
-        
+
         self.totReward = 0.0
         self.totPenalty = 0.0
 
@@ -822,15 +822,15 @@ class Somn(Env):
         self.atualiza_upper_bounds()
        
         # Informações adicionais
-        info = {"rw": reward,
-                "rw_pr": rw_pr,
-                "rw_va": rw_va,
-                "rw_su": rw_su,
-                "VA": variabilidade,
-                "SU": sustentabilidade,
-                "F": F,
-                "acoes": acoes,
-                "atrasos_reais": atrasos_reais,
+        info = {"rw": self.reward,
+                "rw_pr": self.rw_pr,
+                "rw_va": self.rw_va,
+                "rw_su": self.rw_su,
+                "VA": self.variabilidade,
+                "SU": self.sustentabilidade,
+                "F": self.F,
+                "acoes": self.acoes,
+                "atrasos_reais": self.atrasos_reais,
                 "acao_on_state_plan": self.acao_on_state_plan,
                 "carga_on_state_plan": self.carga_on_state_plan,
                 "patio_on_state_plan": self.patio_on_state_plan
@@ -858,7 +858,7 @@ class Somn(Env):
 
         return (
             observation,
-            reward,
+            self.reward,
             done,
             truncated,
             info,
