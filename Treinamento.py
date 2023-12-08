@@ -49,7 +49,7 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
                           config=config_PPO,
                           group="priorizando sustentabilidade", #GRUPOS A SEREM ADCIONADOS NO WANDB
 #                          name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
-                          name="Lucro", #NOME DA EXECUÇÃO
+                          name="run_test4", #NOME DA EXECUÇÃO
                           save_code=True,
                           reinit=True
         )

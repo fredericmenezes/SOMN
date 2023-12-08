@@ -384,7 +384,7 @@ class Somn(Env):
             #           2: sustentabilidade
             obj = Somn.priorq[Somn.objetivo].popitem()
             i = obj[0]
-            if i > 0:
+            if i >= 0:
                 if self.DE[i].ST == 1:  ## DE[I].ST VAI SER SEMPRE 1 PORQUE VEM DA FILAP
 ### COPY JOB TO JOBSHOP SCHEDULING
                 #   for j in range(self.M):
