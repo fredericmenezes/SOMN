@@ -77,6 +77,8 @@ class Somn(Env):
         Somn.time = 1
         
         # variaveis para salvar os valores para avaliar cada passo
+        self.reward = 0.0
+        self.penalty = 0.0
         self.rw_pr = 0.0
         self.rw_va = 0.0
         self.rw_su = 0.0
@@ -302,7 +304,6 @@ class Somn(Env):
             ):  # or self.DE[i].ST == 0: ZERO não pode ser status de livre
                 self.DE[i](Somn.time)
                 self.match[i] = 0
-
     def match_demand_with_inventory(self, action) -> bool:
         #matched = False
         for i in range(Demand.N):
@@ -324,9 +325,6 @@ class Somn(Env):
                     self.DE[i].err = abs(self.DE[i].action - self.DE[i].atraso_real)
                     #matched = True
         #return matched
-
-    
-
     def stock_covers_demand(self):
         covered = True
         for i in range(self.N):
@@ -382,7 +380,6 @@ class Somn(Env):
             covered = True
 
         return covered
-
     def plan(self, t: int, action):
         
         wandb.log({
@@ -452,7 +449,6 @@ class Somn(Env):
                     else:
                         self.DE[i].ST = 4  ## stored status
                         
-                        
                         # VALIDAÇÃO DE TESTE PARA YARD = 0 #####################################################
                         if self.Y == 0:
                             self.DE[i].ST = -2  ## NAO CABE ... PRODUCAO COM GERAÇÃO DE LIXO (CASO MAIS GRAVE)
@@ -474,41 +470,38 @@ class Somn(Env):
                             # production with waste
                             Demand.production_w_waste = Demand.production_w_waste + 1
                             # print(f'\n\n\n\nReject total: {Demand.reject_w_waste} \n\n\n\n')
-        
-
     def dispatch(self):
         for i in range(self.N):
+             
              if self.DE[i].ST == 5:
                 tx_ambiente = self.DE[i].err
-                rw_pr += self.DE[i].AM * self.DE[i].PR \
+                self.rw_pr += self.DE[i].AM * self.DE[i].PR \
                     - self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.01
-                rw_va += self.DE[i].AM * self.DE[i].PR \
+                self.rw_va += self.DE[i].AM * self.DE[i].PR \
                     - self.DE[i].AM * self.DE[i].PR * self.DE[i].SU \
                     - self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.01
-                rw_su += self.DE[i].AM * self.DE[i].PR \
+                self.rw_su += self.DE[i].AM * self.DE[i].PR \
                     - self.DE[i].AM * self.DE[i].PR * self.DE[i].VA \
                     - self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.01
 
-                variabilidade += self.DE[i].VA
-                sustentabilidade += self.DE[i].SU
+                self.variabilidade += self.DE[i].VA
+                self.sustentabilidade += self.DE[i].SU
                 # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
                 # Exemplo: self.mask_FT = array([1, 1, 0, 1, 1])
                 mask_FT = self.DE[i].FT.copy()
                 mask_FT[mask_FT > 0] = 1
                 # contar quantas Features estao sendo usadas (total de maquinas usadas)
-                F = mask_FT.sum()
-
-
+                self.F = mask_FT.sum()
 
                 self.acoes.append(self.DE[i].action)
                 self.atrasos_reais.append(abs(self.DE[i].real_LT - self.DE[i].LT))
 
                 if Somn.objetivo == 0: # lucro
-                    totReward = rw_pr
+                    self.totReward = self.rw_pr
                 if Somn.objetivo == 1: # variabilidade
-                    totReward = rw_va
+                    self.totReward = self.rw_va
                 if Somn.objetivo == 2: # sustentabilidade
-                    totReward = rw_su
+                    self.totReward = self.rw_su
 
                 # penalidade por estar no ambiente
                 # if totReward > 0:
@@ -517,7 +510,72 @@ class Somn(Env):
                 # totReward += self.DE[i].AM * self.DE[i].PR
                 self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
                 self.match[i] = 0
+    def store(self):
+        for i in range(self.N):
+            if self.DE[i].ST == 4:
+                self.totPenalty += (self.YA.cont/self.YA.space) * self.DE[i].AM * self.DE[i].CO
+                self.variabilidade += self.DE[i].VA
+                self.sustentabilidade += self.DE[i].SU
+                # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
+                # Exemplo: self.mask_FT = array([1, 1, 0, 1, 1])
+                mask_FT = self.DE[i].FT.copy()
+                mask_FT[mask_FT > 0] = 1
+                # contar quantas Features estao sendo usadas (total de maquinas usadas)
+                self.F = mask_FT.sum()
 
+                self.acoes.append(self.DE[i].action)
+                self.atrasos_reais.append(abs(self.DE[i].real_LT - self.DE[i].LT))
+                # penalidade por estar no ambiente
+                # if totReward > 0:
+                #     totPenalty += abs(self.DE[i].action - abs(self.DE[i].real_LT - self.DE[i].LT))
+                self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
+                self.match[i] = 0
+                # totPenalty += totReward / (
+                #     Yard.space - Yard.cont + 1
+                # )  ### penalidade inversamente proporcional ao espaço remanescente
+                # print('STORED <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+    def reject(self):
+        for i in range(self.N):
+            if self.DE[i].ST == 2:
+                self.totPenalty += 0
+                self.variabilidade += self.DE[i].VA
+                self.sustentabilidade += self.DE[i].SU
+                # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
+                # Exemplo: self.mask_FT = array([1, 1, 0, 1, 1])
+                mask_FT = self.DE[i].FT.copy()
+                mask_FT[mask_FT > 0] = 1
+                # contar quantas Features estao sendo usadas (total de maquinas usadas)
+                self.F = mask_FT.sum()
+
+                self.acoes.append(self.DE[i].action)
+                self.atrasos_reais.append(abs(self.DE[i].real_LT - self.DE[i].LT))
+                # penalidade por estar no ambiente
+                # if totReward > 0:
+                #     totPenalty += abs(self.DE[i].action - abs(self.DE[i].real_LT - self.DE[i].LT))
+                self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
+                self.match[i] = 0
+                # print('REJECTED vvvvvvvvvvvvvvvvvvvvvvvvvvvv')
+    def reject_w_waste(self):
+        for i in range(self.N):
+            if self.DE[i].ST == -2:
+                self.totPenalty += self.DE[i].AM * self.DE[i].CO         # PENALIDADE PELO DESCARTE
+                self.variabilidade += self.DE[i].VA
+                self.sustentabilidade += self.DE[i].SU
+                # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
+                # Exemplo: self.mask_FT = array([1, 1, 0, 1, 1])
+                mask_FT = self.DE[i].FT.copy()
+                mask_FT[mask_FT > 0] = 1
+                # contar quantas Features estao sendo usadas (total de maquinas usadas)
+                self.F = mask_FT.sum()
+
+                self.acoes.append(self.DE[i].action)
+                self.atrasos_reais.append(abs(self.DE[i].real_LT - self.DE[i].LT))
+                # penalidade por estar no ambiente
+                # if totReward > 0:
+                #     totPenalty += abs(self.DE[i].action - abs(self.DE[i].real_LT - self.DE[i].LT))
+                self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
+                self.match[i] = 0
+                # print('PREJUIZO $$$$$$$$$$$$$$$$$$$$$$$$$')
 
     def eval_final_states(self) -> float:
         rw_pr = 0.0
@@ -531,12 +589,7 @@ class Somn(Env):
         totReward = 0.0
         totPenalty = 0.0
 
-        
-
-
         for i in range(self.N):
-
-            
 
             if self.DE[i].ST == 2:
                 totPenalty += 0
@@ -669,10 +722,10 @@ class Somn(Env):
         return self.DE_state, self.FT_state
     
 
-    def wandb_log_func(self, penalty=0.0):
+    def wandb_log_func(self):
                 #GRÁFICO PENALIDADE
         wandb.log({
-            'Penalidade' : penalty,
+            'Penalidade' : self.penalty,
         })
         # Gera grafico do Yard (by_frederic)
 
@@ -704,6 +757,24 @@ class Somn(Env):
         Primeira versão vai fazer uma iteração para cada episódio ...
         O Tempo t precisa ser controlado
         """
+        self.reward = 0.0
+        self.penalty = 0.0
+
+        self.rw_pr = 0.0                 
+        self.rw_va = 0.0
+        self.rw_su = 0.0
+
+        self.variabilidade = 0.0
+        self.sustentabilidade = 0.0
+        self.F = 0
+
+        self.acoes = []
+        self.atrasos_reais = []
+        
+        self.totReward = 0.0
+        self.totPenalty = 0.0
+
+
         # se ainda tiver demandas na fila de prioridade
         if len(Somn.priorq[Somn.objetivo]) > 0:
             self.plan(Somn.time, action)
@@ -715,24 +786,30 @@ class Somn(Env):
         # ANYWAY START PRODUCING AND DISPATCHING
         self.plan(Somn.time, action)
         self.produce(Somn.time)
+        self.dispatch()
+        self.store()
+        self.reject()
+        self.reject_w_waste()
         
+        self.reward = self.totReward - self.totPenalty
+        self.penalty = self.totPenalty
 
-        # avalia os estados finais
-        (
-            reward,             # recompensa calculada com a penalidade aplicada
-            penalty,            # penalidade que foi aplicada
-            rw_pr,              # recompensa para lucro
-            rw_va,              # recompensa para a variabilidade
-            rw_su,              # recompensa para a sustentabilidade
-            variabilidade,      # variabilidade de 0 a 1
-            sustentabilidade,   # sustentabilidade de 0 a 1
-            F,                  # numero de features utilizadas (numero de maquinas)
-            acoes,              # acoes no estado ready que geraram os estados finais contabilizados
-            atrasos_reais       # atrasos reais para compararar com as acoes
-        ) = self.eval_final_states()  # aqui vai a função que calcula a recompensa
+        # # avalia os estados finais
+        # (
+        #     reward,             # recompensa calculada com a penalidade aplicada
+        #     penalty,            # penalidade que foi aplicada
+        #     rw_pr,              # recompensa para lucro
+        #     rw_va,              # recompensa para a variabilidade
+        #     rw_su,              # recompensa para a sustentabilidade
+        #     variabilidade,      # variabilidade de 0 a 1
+        #     sustentabilidade,   # sustentabilidade de 0 a 1
+        #     F,                  # numero de features utilizadas (numero de maquinas)
+        #     acoes,              # acoes no estado ready que geraram os estados finais contabilizados
+        #     atrasos_reais       # atrasos reais para compararar com as acoes
+        # ) = self.eval_final_states()  # aqui vai a função que calcula a recompensa
 
         # logs pontuais Yard e Penalidade
-        self.wandb_log_func(penalty)
+        self.wandb_log_func()
 
         # condição de parada
         done = False
