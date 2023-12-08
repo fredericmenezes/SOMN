@@ -326,8 +326,8 @@ class PPO(OnPolicyAlgorithm):
         wandb.log({'explained_variance': explained_var, 'timesteps': self.num_timesteps})
 
         # Customizar um grafico para as acoes no tempo
-        acoes = actions.tolist()
-        is_None = lambda lista: lista if any(lista) else 0
+        # acoes = actions.tolist()
+        # is_None = lambda lista: lista if any(lista) else 0
 
 
         # wandb.log({'recompensa': np.mean(self.env.env_method('get_reward')),
@@ -335,13 +335,13 @@ class PPO(OnPolicyAlgorithm):
         #            }
         # )
 
-        wandb.log({'Actions':  np.mean(acoes),
-                   'timesteps': self.num_timesteps,
-                   'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
-                   'value_loss': np.mean(value_losses),
-                   'loss': loss.item()
-                   }
-        )
+        # wandb.log({'Actions':  np.mean(acoes),
+        #            'timesteps': self.num_timesteps,
+        #            'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
+        #            'value_loss': np.mean(value_losses),
+        #            'loss': loss.item()
+        #            }
+        # )
 
         # wandb.log({'Yard PPO': (Yard.cont/Yard.Y)*100,
         #            'timesteps': self.num_timesteps,
@@ -352,27 +352,27 @@ class PPO(OnPolicyAlgorithm):
         # )
 
 
-        wandb.log({'Load': Demand.load,
-                   'Reject': Demand.reject,
-                   'Reject with waste': Demand.production_w_waste,
-                   'Reject Total': Demand.production_w_waste + Demand.reject,
-                   'timesteps': self.num_timesteps,
-                   'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
-                   'value_loss': np.mean(value_losses),
-                   'loss': loss.item()
-                   }
-        )
+        # wandb.log({'Load': Demand.load,
+        #            'Reject': Demand.reject,
+        #            'Reject with waste': Demand.production_w_waste,
+        #            'Reject Total': Demand.production_w_waste + Demand.reject,
+        #            'timesteps': self.num_timesteps,
+        #            'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
+        #            'value_loss': np.mean(value_losses),
+        #            'loss': loss.item()
+        #            }
+        # )
 
-        wandb.log({'Reject': Demand.reject,
-                   'Reject with waste': Demand.production_w_waste,
-                   'Reject Total': Demand.production_w_waste + Demand.reject,
-                   'Load': Demand.load,
-                   'timesteps': self.num_timesteps,
-                   'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
-                   'value_loss': np.mean(value_losses),
-                   'loss': loss.item()
-                   }
-        )
+        # wandb.log({'Reject': Demand.reject,
+        #            'Reject with waste': Demand.production_w_waste,
+        #            'Reject Total': Demand.production_w_waste + Demand.reject,
+        #            'Load': Demand.load,
+        #            'timesteps': self.num_timesteps,
+        #            'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
+        #            'value_loss': np.mean(value_losses),
+        #            'loss': loss.item()
+        #            }
+        # )
 
         # wandb.log({'Reject with waste': Demand.reject_w_waste,
         #            'Reject': Demand.reject,
@@ -385,38 +385,38 @@ class PPO(OnPolicyAlgorithm):
         #            }
         # )
 
-        wandb.log({'Reject Total': Demand.production_w_waste + Demand.reject,
-                   'Reject with waste': Demand.production_w_waste,
-                   'Reject': Demand.reject,
-                   'Load': Demand.load,
-                   'timesteps': self.num_timesteps,
-                   'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
-                   'value_loss': np.mean(value_losses),
-                   'loss': loss.item()
-                   }
-        )
+        # wandb.log({'Reject Total': Demand.production_w_waste + Demand.reject,
+        #            'Reject with waste': Demand.production_w_waste,
+        #            'Reject': Demand.reject,
+        #            'Load': Demand.load,
+        #            'timesteps': self.num_timesteps,
+        #            'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
+        #            'value_loss': np.mean(value_losses),
+        #            'loss': loss.item()
+        #            }
+        # )
 
-        wandb.log({'Lead Time': np.mean(self.env.env_method('get_Demands_Attr','LT')),
-                   'timesteps': self.num_timesteps,
-                   'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
-                   'value_loss': np.mean(value_losses),
-                   'loss': loss.item()
-                   }
-        )
-        wandb.log({'Real Lead Time': np.mean(self.env.env_method('get_Demands_Attr','real_LT')),
-                   'timesteps': self.num_timesteps,
-                   'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
-                   'value_loss': np.mean(value_losses),
-                   'loss': loss.item()
-                   }
-        )
-        wandb.log({'Lead Time Variation': np.mean(np.array(self.env.env_method('get_Demands_Attr','real_LT')) - np.array(self.env.env_method('get_Demands_Attr','LT'))),
-                   'timesteps': self.num_timesteps,
-                   'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
-                   'value_loss': np.mean(value_losses),
-                   'loss': loss.item()
-                   }
-        )
+        # wandb.log({'Lead Time': np.mean(self.env.env_method('get_Demands_Attr','LT')),
+        #            'timesteps': self.num_timesteps,
+        #            'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
+        #            'value_loss': np.mean(value_losses),
+        #            'loss': loss.item()
+        #            }
+        # )
+        # wandb.log({'Real Lead Time': np.mean(self.env.env_method('get_Demands_Attr','real_LT')),
+        #            'timesteps': self.num_timesteps,
+        #            'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
+        #            'value_loss': np.mean(value_losses),
+        #            'loss': loss.item()
+        #            }
+        # )
+        # wandb.log({'Lead Time Variation': np.mean(np.array(self.env.env_method('get_Demands_Attr','real_LT')) - np.array(self.env.env_method('get_Demands_Attr','LT'))),
+        #            'timesteps': self.num_timesteps,
+        #            'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
+        #            'value_loss': np.mean(value_losses),
+        #            'loss': loss.item()
+        #            }
+        # )
         # atraso_log = self.env.env_method('get_atraso') if self.env.env_method('get_atraso') is not None else 0
         # wandb.log({'atraso': np.mean(atraso_log),
         #            'timesteps': self.num_timesteps,

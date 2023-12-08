@@ -256,7 +256,62 @@ class OnPolicyAlgorithm(BaseAlgorithm):
 
         assert self.env is not None
 
-        #todas_acoes = []    # (by_frederic)
+        config_PPO = {
+            'objetivo': 2, # 0: lucro, 1: variabilidade, 2: sustentabilidade
+            
+            'batch_size': 256,
+            'ent_coef': 0.001641577520175419,
+            'gae_lambda': 0.9142950466044,
+            'gamma': 0.918623650457886,
+            'learning_rate': 0.0003660144793262825,
+            'n_epochs': 21,
+            'n_steps': 3328,
+            'target_kl': 0.02113910446426361
+        }
+
+        wandb_run_PR = wandb.init(project='Fred_test4', #NOME DO PROJETO
+                          config=config_PPO,
+                          group="priorizando sustentabilidade", #GRUPOS A SEREM ADCIONADOS NO WANDB
+                        #   name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
+                          name="Lucro", #NOME DA EXECUÇÃO
+                          save_code=True,
+                          reinit=True
+        )
+
+        wandb_run_VA = wandb.init(project='Fred_test4', #NOME DO PROJETO
+                          config=config_PPO,
+                          group="priorizando sustentabilidade", #GRUPOS A SEREM ADCIONADOS NO WANDB
+                        #   name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
+                          name="Variabilidade", #NOME DA EXECUÇÃO
+                          save_code=True,
+                          reinit=True
+        )
+
+        wandb_run_SU = wandb.init(project='Fred_test4', #NOME DO PROJETO
+                          config=config_PPO,
+                          group="priorizando sustentabilidade", #GRUPOS A SEREM ADCIONADOS NO WANDB
+                        #   name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
+                          name="Sustentabilidade", #NOME DA EXECUÇÃO
+                          save_code=True,
+                          reinit=True
+        )
+        wandb_run_variabilidade = wandb.init(project='Fred_test4', #NOME DO PROJETO
+                          config=config_PPO,
+                          group="priorizando sustentabilidade", #GRUPOS A SEREM ADCIONADOS NO WANDB
+                        #   name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
+                          name="VA", #NOME DA EXECUÇÃO
+                          save_code=True,
+                          reinit=True
+        )
+        wandb_run_sustentabilidade = wandb.init(project='Fred_test4', #NOME DO PROJETO
+                          config=config_PPO,
+                          group="priorizando sustentabilidade", #GRUPOS A SEREM ADCIONADOS NO WANDB
+                        #   name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
+                          name="SU", #NOME DA EXECUÇÃO
+                          save_code=True,
+                          reinit=True
+        )
+
 
         while self.num_timesteps < total_timesteps:
             continue_training = self.collect_rollouts(self.env, callback, self.rollout_buffer, n_rollout_steps=self.n_steps)
@@ -293,14 +348,19 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     #        }
                     wandb.log({"mean_reward_test": safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
                     wandb.log({"ep_len_mean": safe_mean([ep_info["l"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
-                    wandb.log({"recompensa": safe_mean([ep_info["rw"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
+                    #wandb.log({"recompensa": safe_mean([ep_info["rw"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
                     wandb.log({"recompensa_lucro": safe_mean([ep_info["rw_pr"] for ep_info in self.ep_info_buffer]),
                                "recompensa_variabilidade": safe_mean([ep_info["rw_va"] for ep_info in self.ep_info_buffer]),
                                "recompensa_sustentabilidade": safe_mean([ep_info["rw_su"] for ep_info in self.ep_info_buffer]),
                                'timesteps': self.num_timesteps})
-                    wandb.log({"variabilidade": safe_mean([ep_info["VA"] for ep_info in self.ep_info_buffer]),
-                               "sustentabilidade": safe_mean([ep_info["SU"] for ep_info in self.ep_info_buffer]),
-                               'timesteps': self.num_timesteps})
+                    wandb_run_PR.log({"recompensa":safe_mean([ep_info["rw_pr"] for ep_info in self.ep_info_buffer]),"timesteps": self.num_timesteps})
+                    wandb_run_VA.log({"recompensa":safe_mean([ep_info["rw_va"] for ep_info in self.ep_info_buffer]),"timesteps": self.num_timesteps})
+                    wandb_run_SU.log({"recompensa":safe_mean([ep_info["rw_su"] for ep_info in self.ep_info_buffer]),"timesteps": self.num_timesteps})
+                    # wandb.log({"variabilidade": safe_mean([ep_info["VA"] for ep_info in self.ep_info_buffer]),
+                    #            "sustentabilidade": safe_mean([ep_info["SU"] for ep_info in self.ep_info_buffer]),
+                    #            'timesteps': self.num_timesteps})
+                    wandb_run_variabilidade.log({"VA vs. SU": safe_mean([ep_info["VA"] for ep_info in self.ep_info_buffer]), "timesteps": self.num_timesteps})
+                    wandb_run_sustentabilidade.log({"VA vs. SU": safe_mean([ep_info["SU"] for ep_info in self.ep_info_buffer]), "timesteps": self.num_timesteps})
                     # if self.num_timesteps == 1000000:
                     #     F = []
                     #     F = [num_features for ep_info in self.ep_info_buffer for num_features in ep_info["F"]]

@@ -299,36 +299,28 @@ class Somn(Env):
 
     def readDemand(self):
         for i in range(Demand.N):
-            if (
-                self.DE[i].ST == -1
-            ):  # or self.DE[i].ST == 0: ZERO não pode ser status de livre
+            if (self.DE[i].ST == -1):  # free(-1)
                 self.DE[i](Somn.time)
                 self.match[i] = 0
-    def match_demand_with_inventory(self, action) -> bool:
-        #matched = False
+    def match_demand_with_inventory(self) -> bool:
         for i in range(Demand.N):
           if self.DE[i].ST == 0: ## SÓ PODE DAR MATCH DEMANDAS CHEGADAS
             if self.Y > 0: # ALTERAÇÃO PARA TESTE DE YARD == 0
                 if self.YA.inYard(self.DE[i].FT):
 
                     self.YA.remove_yard(self.DE[i].FT)
+                    # adiciona a recompensa
+                    self.rw_pr += self.DE[i].AM * self.DE[i].PR
+                    self.rw_va += self.DE[i].AM * self.DE[i].PR - self.DE[i].AM * self.DE[i].PR * self.DE[i].SU
+                    self.rw_su += self.DE[i].AM * self.DE[i].PR - self.DE[i].AM * self.DE[i].PR * self.DE[i].VA
+                    # libera o espaço i para entrar outra demanda
+                    self.DE[i].ST = -1
+                    self.match[i] = 0
 
-                    self.DE[i].ST = 5  ## delivered p/ contar lucro
-                    self.match[i] = 1
-
-                    self.DE[i].action = action
-
-                    self.DE[i].real_LT += action
-                    self.DE[i].TP += action
-                    self.DE[i].DO += action
-                    self.DE[i].atraso_real = max(0, self.DE[i].real_LT - self.DE[i].LT)
-                    self.DE[i].err = abs(self.DE[i].action - self.DE[i].atraso_real)
-                    #matched = True
-        #return matched
     def stock_covers_demand(self):
         covered = True
         for i in range(self.N):
-            if self.DE[i].ST == 0:
+            if self.DE[i].ST == 0: # status RECEIVED
                 DF = self.BA - self.DE[i].FT
                 OR = np.array(
                     [abs(i) if i < 0 else 0 for i in DF]
@@ -355,7 +347,7 @@ class Somn(Env):
                     # print('\n balance: ', self.BA, 'because buying',OR, 'accumulating', self.IN)
         return covered
 
-    def order_receive_and_match(self, action):
+    def order_receive_and_match(self):
         covered = False
         
         # receive RAW MATERIAL AND ORDERS (DEMANDS)
@@ -363,7 +355,7 @@ class Somn(Env):
         self.readDemand()
 
         # IF PREVIOUS ORDERS INVENTORY AVAILABLE, PLEASE DISPATCH
-        self.match_demand_with_inventory(action)
+        self.match_demand_with_inventory()
         
 
         # ANYWAY, UPDATE BALANCE AND INCOME RAW MATERIAL REGARDING MT RECEIVED
@@ -400,6 +392,14 @@ class Somn(Env):
                 #     #   Somn.instance.InsertJobs(i, j, self.DE[i].FT[j])
                 #       flag = 1
 ###
+                    self.variabilidade += self.DE[i].VA
+                    self.sustentabilidade += self.DE[i].SU
+                    # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
+                    # Exemplo: self.mask_FT = array([1, 1, 0, 1, 1])
+                    mask_FT = self.DE[i].FT.copy()
+                    mask_FT[mask_FT > 0] = 1
+                    # contar quantas Features estao sendo usadas (total de maquinas usadas)
+                    self.F = mask_FT.sum()
                     # salva o valor do patio depois da acao
                     self.patio_on_state_plan.append((self.YA.cont/self.YA.Y)*100)
                     # salva o valor da carga depois da acao
@@ -407,6 +407,7 @@ class Somn(Env):
                     # salva a acao
                     self.DE[i].action = action
                     self.acao_on_state_plan.append(action)
+                    self.acoes.append(self.DE[i].action)
                     # executa a acao
                     if self.DE[i].DO > (t + self.DE[i].LT + action):
                         self.DE[i].ST = 3  ## produced status --- remember to run time for each case
@@ -416,6 +417,8 @@ class Somn(Env):
                         self.DE[i].TP = t + self.DE[i].real_LT
                         self.DE[i].atraso_real = max(0, self.DE[i].real_LT - self.DE[i].LT)
                         self.DE[i].err = abs(self.DE[i].action - self.DE[i].atraso_real)
+                        
+                        self.atrasos_reais.append(self.DE[i].atraso_real)
                     else:
                         Demand.reject = Demand.reject + 1
                         self.DE[i].ST = 2  ## rejected status
@@ -428,6 +431,9 @@ class Somn(Env):
                         self.DE[i].TP = t + self.DE[i].real_LT
                         self.DE[i].atraso_real = max(0, self.DE[i].real_LT - self.DE[i].LT)
                         self.DE[i].err = abs(self.DE[i].action - self.DE[i].atraso_real)
+
+                        self.atrasos_reais.append(self.DE[i].atraso_real)
+                    
 
 ## se formou buffer, resolve para comparar depois
         # if flag ==1:
@@ -484,17 +490,17 @@ class Somn(Env):
                     - self.DE[i].AM * self.DE[i].PR * self.DE[i].VA \
                     - self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.01
 
-                self.variabilidade += self.DE[i].VA
-                self.sustentabilidade += self.DE[i].SU
-                # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
-                # Exemplo: self.mask_FT = array([1, 1, 0, 1, 1])
-                mask_FT = self.DE[i].FT.copy()
-                mask_FT[mask_FT > 0] = 1
-                # contar quantas Features estao sendo usadas (total de maquinas usadas)
-                self.F = mask_FT.sum()
+                # self.variabilidade += self.DE[i].VA
+                # self.sustentabilidade += self.DE[i].SU
+                # # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
+                # # Exemplo: self.mask_FT = array([1, 1, 0, 1, 1])
+                # mask_FT = self.DE[i].FT.copy()
+                # mask_FT[mask_FT > 0] = 1
+                # # contar quantas Features estao sendo usadas (total de maquinas usadas)
+                # self.F = mask_FT.sum()
 
-                self.acoes.append(self.DE[i].action)
-                self.atrasos_reais.append(abs(self.DE[i].real_LT - self.DE[i].LT))
+                # self.acoes.append(self.DE[i].action)
+                # self.atrasos_reais.append(abs(self.DE[i].real_LT - self.DE[i].LT))
 
                 if Somn.objetivo == 0: # lucro
                     self.totReward = self.rw_pr
@@ -514,17 +520,17 @@ class Somn(Env):
         for i in range(self.N):
             if self.DE[i].ST == 4:
                 self.totPenalty += (self.YA.cont/self.YA.space) * self.DE[i].AM * self.DE[i].CO
-                self.variabilidade += self.DE[i].VA
-                self.sustentabilidade += self.DE[i].SU
-                # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
-                # Exemplo: self.mask_FT = array([1, 1, 0, 1, 1])
-                mask_FT = self.DE[i].FT.copy()
-                mask_FT[mask_FT > 0] = 1
-                # contar quantas Features estao sendo usadas (total de maquinas usadas)
-                self.F = mask_FT.sum()
+                # self.variabilidade += self.DE[i].VA
+                # self.sustentabilidade += self.DE[i].SU
+                # # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
+                # # Exemplo: self.mask_FT = array([1, 1, 0, 1, 1])
+                # mask_FT = self.DE[i].FT.copy()
+                # mask_FT[mask_FT > 0] = 1
+                # # contar quantas Features estao sendo usadas (total de maquinas usadas)
+                # self.F = mask_FT.sum()
 
-                self.acoes.append(self.DE[i].action)
-                self.atrasos_reais.append(abs(self.DE[i].real_LT - self.DE[i].LT))
+                # self.acoes.append(self.DE[i].action)
+                # self.atrasos_reais.append(abs(self.DE[i].real_LT - self.DE[i].LT))
                 # penalidade por estar no ambiente
                 # if totReward > 0:
                 #     totPenalty += abs(self.DE[i].action - abs(self.DE[i].real_LT - self.DE[i].LT))
@@ -538,17 +544,17 @@ class Somn(Env):
         for i in range(self.N):
             if self.DE[i].ST == 2:
                 self.totPenalty += 0
-                self.variabilidade += self.DE[i].VA
-                self.sustentabilidade += self.DE[i].SU
-                # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
-                # Exemplo: self.mask_FT = array([1, 1, 0, 1, 1])
-                mask_FT = self.DE[i].FT.copy()
-                mask_FT[mask_FT > 0] = 1
-                # contar quantas Features estao sendo usadas (total de maquinas usadas)
-                self.F = mask_FT.sum()
+                # self.variabilidade += self.DE[i].VA
+                # self.sustentabilidade += self.DE[i].SU
+                # # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
+                # # Exemplo: self.mask_FT = array([1, 1, 0, 1, 1])
+                # mask_FT = self.DE[i].FT.copy()
+                # mask_FT[mask_FT > 0] = 1
+                # # contar quantas Features estao sendo usadas (total de maquinas usadas)
+                # self.F = mask_FT.sum()
 
-                self.acoes.append(self.DE[i].action)
-                self.atrasos_reais.append(abs(self.DE[i].real_LT - self.DE[i].LT))
+                # self.acoes.append(self.DE[i].action)
+                # self.atrasos_reais.append(abs(self.DE[i].real_LT - self.DE[i].LT))
                 # penalidade por estar no ambiente
                 # if totReward > 0:
                 #     totPenalty += abs(self.DE[i].action - abs(self.DE[i].real_LT - self.DE[i].LT))
@@ -559,17 +565,17 @@ class Somn(Env):
         for i in range(self.N):
             if self.DE[i].ST == -2:
                 self.totPenalty += self.DE[i].AM * self.DE[i].CO         # PENALIDADE PELO DESCARTE
-                self.variabilidade += self.DE[i].VA
-                self.sustentabilidade += self.DE[i].SU
-                # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
-                # Exemplo: self.mask_FT = array([1, 1, 0, 1, 1])
-                mask_FT = self.DE[i].FT.copy()
-                mask_FT[mask_FT > 0] = 1
-                # contar quantas Features estao sendo usadas (total de maquinas usadas)
-                self.F = mask_FT.sum()
+                # self.variabilidade += self.DE[i].VA
+                # self.sustentabilidade += self.DE[i].SU
+                # # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
+                # # Exemplo: self.mask_FT = array([1, 1, 0, 1, 1])
+                # mask_FT = self.DE[i].FT.copy()
+                # mask_FT[mask_FT > 0] = 1
+                # # contar quantas Features estao sendo usadas (total de maquinas usadas)
+                # self.F = mask_FT.sum()
 
-                self.acoes.append(self.DE[i].action)
-                self.atrasos_reais.append(abs(self.DE[i].real_LT - self.DE[i].LT))
+                # self.acoes.append(self.DE[i].action)
+                # self.atrasos_reais.append(abs(self.DE[i].real_LT - self.DE[i].LT))
                 # penalidade por estar no ambiente
                 # if totReward > 0:
                 #     totPenalty += abs(self.DE[i].action - abs(self.DE[i].real_LT - self.DE[i].LT))
@@ -757,9 +763,7 @@ class Somn(Env):
         Primeira versão vai fazer uma iteração para cada episódio ...
         O Tempo t precisa ser controlado
         """
-        self.reward = 0.0
-        self.penalty = 0.0
-
+        
         self.rw_pr = 0.0                 
         self.rw_va = 0.0
         self.rw_su = 0.0
@@ -771,26 +775,24 @@ class Somn(Env):
         self.acoes = []
         self.atrasos_reais = []
 
-        self.totReward = 0.0
-        self.totPenalty = 0.0
+        #self.totReward = 0.0
+        #self.totPenalty = 0.0
 
 
-        # se ainda tiver demandas na fila de prioridade
-        if len(Somn.priorq[Somn.objetivo]) > 0:
+        # se a fila de prioridade estiver vazia 
+        # entra em order_receive_and_match() senao pula para plan()
+        if len(Somn.priorq[Somn.objetivo]) == 0:
+            covered = False
+            while not covered:
+                covered = self.order_receive_and_match()
+        else:
             self.plan(Somn.time, action)
-
-        covered = False
-        while not covered:
-            covered = self.order_receive_and_match(action)
-
-        # ANYWAY START PRODUCING AND DISPATCHING
-        self.plan(Somn.time, action)
-        self.produce(Somn.time)
-        self.dispatch()
-        self.store()
-        self.reject()
-        self.reject_w_waste()
-        
+            self.produce(Somn.time)
+            self.dispatch()
+            self.store()
+            self.reject()
+            self.reject_w_waste()
+            
         self.reward = self.totReward - self.totPenalty
         self.penalty = self.totPenalty
 
@@ -853,8 +855,8 @@ class Somn(Env):
         }  # by_frederic: retorna quando e um tipo Dict
 
         # se não tiver mais demandas na fila de prioridade atualiza o tempo
-        if len(Somn.priorq[Somn.objetivo]) == 0:
-            Somn.time += 1
+        #if len(Somn.priorq[Somn.objetivo]) == 0:
+        Somn.time += 1
 
         return (
             observation,
@@ -890,9 +892,15 @@ class Somn(Env):
 
 
         Somn.time = 1
+        self.reward = 0.0
+        self.penalty = 0.0
+        self.totReward = 0.0
+        self.totPenalty = 0.0
+        
         self.acao_on_state_plan = []
         self.carga_on_state_plan = []
         self.patio_on_state_plan = []
+
         Demand.load = 0
         Demand.reject = 0
         Demand.production_w_waste=0
@@ -905,35 +913,13 @@ class Somn(Env):
             for _ in range(self.N)
         ]
 
-        DE_arrayState = []
+        # tira todas as demandas de FREE(-1) para READY(0)
         for i in range(self.N):
             self.DE[i](Somn.time)
-            aux_row = [
-                self.normaliza(x=self.DE[i].DI, min=self.lb_DI, max=self.ub_DI),
-                self.normaliza(x=self.DE[i].DO, min=self.lb_DO, max=self.ub_DO),
-                self.normaliza(x=self.DE[i].TP, min=self.lb_TP, max=self.ub_TP),
-                self.normaliza(x=self.DE[i].PR, min=self.lb_PR, max=self.ub_PR),
-                self.normaliza(x=self.DE[i].CO, min=self.lb_CO, max=self.ub_CO),
-                self.normaliza(x=self.DE[i].AM, min=self.lb_AM, max=self.ub_AM),
-                self.normaliza(x=self.DE[i].SP, min=self.lb_SP, max=self.ub_SP),
-                self.normaliza(x=self.DE[i].PE, min=self.lb_PE, max=self.ub_PE),
-                self.normaliza(x=self.DE[i].LT, min=self.lb_LT, max=self.ub_LT),
-                self.normaliza(x=self.DE[i].VA, min=self.lb_VA, max=self.ub_VA),
-                self.normaliza(x=self.DE[i].SU, min=self.lb_SU, max=self.ub_SU),
-                self.normaliza(x=self.DE[i].ST, min=self.lb_ST, max=self.ub_ST),
-                
-            ]
-            DE_arrayState.append(aux_row)
-        self.DE_state = np.array(DE_arrayState)
-
-        FT_arrayState = []
-        for i in range(self.N):
-            aux_FT = self.normaliza(x=self.DE[i].FT, min=self.lb_FT, max=self.ub_FT)
-            FT_arrayState.append(aux_FT)
-        self.FT_state = np.array(FT_arrayState)
-
+            
         info = dict()
         # observation = (self.DE_state, info)  # by_frederic: retorna quando o tipo é Box
+        self.DE_state, self.FT_state = self.observa_demanda()
         observation = {
             "time": np.array([self.normaliza(self.time, self.lb_time, self.ub_time)]),
             "MT": self.normaliza(self.MT, self.lb_MT, self.ub_MT),

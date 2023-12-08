@@ -45,7 +45,7 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
     }
 
     for x in range(1):    #### ACMO NUMEROS DE EXECUÇÕES COMPETIDORAS
-        runO = wandb.init(project='Fred_test3', #NOME DO PROJETO
+        run1 = wandb.init(project='Fred_test4', #NOME DO PROJETO
                           config=config_PPO,
                           group="priorizando sustentabilidade", #GRUPOS A SEREM ADCIONADOS NO WANDB
 #                          name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
@@ -54,23 +54,6 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
                           reinit=True
         )
 
-        run1 = wandb.init(project='Fred_test3', #NOME DO PROJETO
-                          config=config_PPO,
-                          group="priorizando sustentabilidade", #GRUPOS A SEREM ADCIONADOS NO WANDB
-#                          name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
-                          name="Variabilidade", #NOME DA EXECUÇÃO
-                          save_code=True,
-                          reinit=True
-        )
-
-        run2 = wandb.init(project='Fred_test3', #NOME DO PROJETO
-                          config=config_PPO,
-                          group="priorizando sustentabilidade", #GRUPOS A SEREM ADCIONADOS NO WANDB
-#                          name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
-                          name="Sustentabilidade", #NOME DA EXECUÇÃO
-                          save_code=True,
-                          reinit=True
-        )
 
         config = wandb.config
         env1 = DummyVecEnv([lambda: make_env(config.atraso, config.objetivo)])
