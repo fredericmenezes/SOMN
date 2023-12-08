@@ -36,11 +36,12 @@ class Demand:
         Demand.MAXTI=MAXTI
         Demand.MAXEU=MAXEU
         Demand.EU = np.random.random(M)*MAXEU
-        self.ST = int(-1)   # free(-1) received(0), ready(1), rejected(2), producing(3), stored(4) and delivered(5)
+        self.ST = int(-1)   # reject_w_wast(-2) free(-1) received(0), ready(1), rejected(2), producing(3), stored(4) and delivered(5)
         
         self.action = int(-1)    # acao atribuida quando ST=1 (estado ready)
                             # -1 significa que nenhuma acao foi atribuida ainda
-        
+        self.atraso_real = int(-1)    # atraso real da demanda (real_LT - LT)
+        self.err = int(-1)    # diferença entra o atraso real e a acao atribuida
        
         Demand.atraso=atraso
 
@@ -93,10 +94,12 @@ class Demand:
 
         # self.LT = int(self.F/2) + 2                      ###  --- 1.0*self.fun_tau() * self.F
         self.LT = self.fun_tau()
-        if self.atraso >=0:   ### Não é mais None (-1 para habilitar poisson)
-            self.real_LT = self.LT + self.atraso
-        else:
-            self.real_LT = poisson.rvs(mu=self.LT) # by_frederic
+        self.real_LT = self.LT
+        self.TP = t + self.real_LT
+        self.atraso_real = max(0, self.real_LT - self.LT)
+        self.action = abs(self.real_LT - self.LT)
+        self.err = abs(self.action - self.atraso_real)
+
         self.DI = t
         self.DO = t + self.LT + random.randint(0,Demand.MAXDO)
 
@@ -112,7 +115,7 @@ class Demand:
         self.SP = self.fun_gamma() ####* 'cpu'.Y   #SPACE CONSUMPTION FACTOR
         self.VA = self.fun_upsilon() ### [0low 1up]
         self.SU = 1- self.fun_sigma() ### [0low 1up]
-        self.TP = self.DO - t
+        
 
 
     def fun_gamma(self) -> float:
