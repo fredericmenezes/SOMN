@@ -5,7 +5,7 @@ from scipy.stats import poisson
 class Demand:
 
     cont=0      # by_frederic ---> mudei de 1 para 0
-    load=0
+    load=10
     reject=0         # rejeitada ST = 2
     production_w_waste=0 # producao com lixo ST = -2
     #atraso=None
@@ -38,10 +38,10 @@ class Demand:
         Demand.EU = np.random.random(M)*MAXEU
         self.ST = int(-1)   # reject_w_wast(-2) free(-1) received(0), ready(1), rejected(2), producing(3), stored(4) and delivered(5)
         
-        self.action = int(-1)    # acao atribuida quando ST=1 (estado ready)
-                            # -1 significa que nenhuma acao foi atribuida ainda
-        self.atraso_real = int(-1)    # atraso real da demanda (real_LT - LT)
-        self.err = int(-1)    # diferença entra o atraso real e a acao atribuida
+        self.action = int(-1)       # acao atribuida quando ST=1 (estado ready)
+                                    # -1 significa que nenhuma acao foi atribuida ainda
+        self.atraso_real = int(-1)  # atraso real da demanda (real_LT - LT)
+        self.err = int(-1)          # diferença entra o atraso real e a acao atribuida
        
         Demand.atraso=atraso
 
@@ -58,47 +58,49 @@ class Demand:
         # Escolhe aleatoriamente as features (tempos para cada maquina)
         # Exemplo: self.FT = array([2, 4, 0, 1, 3]) #valores de: 0 a (MAXFT -1)
         self.FT = np.random.randint(0,Demand.MAXFT,self.M)
+        self.F, self.FT, self.mask_FT = self.gera_features()
 
-        # enquanto der tudo zero, escolhe randomicamente novamente
-        # self.FT = array([0, 0, 0, 0, 0]) #np.any(self.FT) == False
-        while not np.any(self.FT):
-            self.FT = np.random.randint(0,Demand.MAXFT,self.M)
+        # # enquanto der tudo zero, escolhe randomicamente novamente
+        # # self.FT = array([0, 0, 0, 0, 0]) #np.any(self.FT) == False
+        # while not np.any(self.FT):
+        #     self.FT = np.random.randint(0,Demand.MAXFT,self.M)
 
-        # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
-        # Exemplo: self.mask_FT = array([1, 1, 0, 1, 1])
-        self.mask_FT = self.FT.copy()
-        self.mask_FT[self.mask_FT > 0] = 1
+        # # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
+        # # Exemplo: self.mask_FT = array([1, 1, 0, 1, 1])
+        # self.mask_FT = self.FT.copy()
+        # self.mask_FT[self.mask_FT > 0] = 1
 
-        # contar quantas Features estao sendo usadas (total de maquinas usadas)
-        self.F = self.mask_FT.sum()
+        # # contar quantas Features estao sendo usadas (total de maquinas usadas)
+        # self.F = self.mask_FT.sum()
 
-        # jogar a moeda pra decidir se mudar ou nao quando F == M (usando todas as maquinas)
-        # o objetivo disso é equilibrar a base de dados
-        # porque a probabilidade de (F==M) é muito alta.
-        joga_moeda = bool(random.randint(0,1))
-        if self.F == self.M and joga_moeda:
+        # # jogar a moeda pra decidir se mudar ou nao quando F == M (usando todas as maquinas)
+        # # o objetivo disso é equilibrar a base de dados
+        # # porque a probabilidade de (F==M) é muito alta.
+        # joga_moeda = bool(random.randint(0,1))
+        # if self.F == self.M and joga_moeda:
 
-            # mask_clear multiplica self.FT para apagar alguns valores
-            mask_clear = np.random.randint(2, size=self.M)
-            # enquanto der tudo zero ou tudo um, escolhe randomicamente novamente
-            while mask_clear.sum() == self.M or mask_clear.sum() == 0:
-                mask_clear = np.random.randint(2, size=self.M)
+        #     # mask_clear multiplica self.FT para apagar alguns valores
+        #     mask_clear = np.random.randint(2, size=self.M)
+        #     # enquanto der tudo zero ou tudo um, escolhe randomicamente novamente
+        #     while mask_clear.sum() == self.M or mask_clear.sum() == 0:
+        #         mask_clear = np.random.randint(2, size=self.M)
             
-            self.FT = self.FT * mask_clear
+        #     self.FT = self.FT * mask_clear
             
-            self.mask_FT = self.FT.copy()
-            self.mask_FT[self.mask_FT > 0] = 1
+        #     self.mask_FT = self.FT.copy()
+        #     self.mask_FT[self.mask_FT > 0] = 1
 
-            # contar quantas Features estao sendo usadas (total de maquinas usadas)
-            self.F = self.mask_FT.sum()
+        #     # contar quantas Features estao sendo usadas (total de maquinas usadas)
+        #     self.F = self.mask_FT.sum()
 
         # self.LT = int(self.F/2) + 2                      ###  --- 1.0*self.fun_tau() * self.F
         self.LT = self.fun_tau()
-        self.real_LT = self.LT
+        self.real_LT = poisson.rvs(mu=(self.LT + Demand.load))
         self.TP = t + self.real_LT
-        self.atraso_real = max(0, self.real_LT - self.LT)
-        self.action = abs(self.real_LT - self.LT)
-        self.err = abs(self.action - self.atraso_real)
+        
+        self.atraso_real = abs(self.real_LT - self.LT)
+        self.action = self.atraso_real                  # action = atraso_real
+        self.err = abs(self.action - self.atraso_real)  # err = 0
 
         self.DI = t
         self.DO = t + self.LT + random.randint(0,Demand.MAXDO)
@@ -136,6 +138,21 @@ class Demand:
     def fun_sigma(self) -> float:
         x = self.F/self.M
         return x
+    
+    def gera_features(self) -> np.ndarray:
+
+        # joga a moeda para decidir entre variabilidade alta ou baixa
+        joga_moeda = bool(random.randint(0,1))
+        if joga_moeda:
+            F = random.randint(1,int(Demand.M*0.3))
+        else:
+            F = random.randint(int(Demand.M*0.8),Demand.M)
+
+        posicoes = sorted(random.sample(range(0, Demand.M), F))
+        mask = np.zeros(Demand.M)
+        mask[posicoes] = 1
+        return F, np.random.randint(1,Demand.MAXFT,Demand.M) * mask, mask
+
 
 #  def fun_beta(self, IN, OU) -> float:
 #    x=0

@@ -77,6 +77,8 @@ class Somn(Env):
         Somn.time = 1
         
         # variaveis para salvar os valores para avaliar cada passo
+        self.totReward = 0.0
+        self.totPenalty = 0.0
         self.reward = 0.0
         self.penalty = 0.0
         self.rw_pr = 0.0
@@ -87,8 +89,7 @@ class Somn(Env):
         self.F = 0
         self.acoes = []
         self.atrasos_reais = []
-        self.totReward = 0.0
-        self.totPenalty = 0.0
+        
         self.acao_on_state_plan = []
         self.patio_on_state_plan = []
         self.carga_on_state_plan = []
@@ -142,7 +143,7 @@ class Somn(Env):
         # time varia de 1 a 100 (era de 1 ate 10*MAXDO + M)
         self.lb_time = 1
         # self.ub_time = 10 * self.MAXDO + self.M
-        self.ub_time = 100
+        self.ub_time = 200
 
         # LT varia de 2 a (M/2 + 2)
         self.lb_LT = 1
@@ -242,7 +243,7 @@ class Somn(Env):
         # accept to produce or reject
         # self.action_space = spaces.Box(0, 4, shape=(1,)) # usar o TD3
         #self.action_space = spaces.Discrete(self.MAXDO)  # usar com o PPO, DQN, A2C
-        self.action_space = spaces.Discrete(self.ub_time)
+        self.action_space = spaces.Discrete(30)
 
         self.observation_space = spaces.Dict(
             {
