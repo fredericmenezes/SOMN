@@ -763,7 +763,9 @@ class Somn(Env):
         Primeira versão vai fazer uma iteração para cada episódio ...
         O Tempo t precisa ser controlado
         """
-        
+        self.totReward = 0.0
+        self.totPenalty = 0.0
+
         self.rw_pr = 0.0                 
         self.rw_va = 0.0
         self.rw_su = 0.0
@@ -775,8 +777,9 @@ class Somn(Env):
         self.acoes = []
         self.atrasos_reais = []
 
-        #self.totReward = 0.0
-        #self.totPenalty = 0.0
+        self.acao_on_state_plan = []
+        self.carga_on_state_plan = []
+        self.patio_on_state_plan = []
 
 
         # se a fila de prioridade estiver vazia 
@@ -785,6 +788,12 @@ class Somn(Env):
             covered = False
             while not covered:
                 covered = self.order_receive_and_match()
+            self.plan(Somn.time, action)
+            self.produce(Somn.time)
+            self.dispatch()
+            self.store()
+            self.reject()
+            self.reject_w_waste()
         else:
             self.plan(Somn.time, action)
             self.produce(Somn.time)
