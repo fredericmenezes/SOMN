@@ -393,8 +393,8 @@ class Somn(Env):
                 #     #   Somn.instance.InsertJobs(i, j, self.DE[i].FT[j])
                 #       flag = 1
 ###
-                    self.variabilidade += self.DE[i].VA
-                    self.sustentabilidade += self.DE[i].SU
+                    self.variabilidade = self.DE[i].VA
+                    self.sustentabilidade = self.DE[i].SU
                     # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
                     # Exemplo: self.mask_FT = array([1, 1, 0, 1, 1])
                     mask_FT = self.DE[i].FT.copy()
@@ -416,23 +416,21 @@ class Somn(Env):
                         Demand.load = Demand.load + 1
                         self.DE[i].real_LT = poisson.rvs(mu=(self.DE[i].LT+Demand.load)) # by_frederic
                         self.DE[i].TP = t + self.DE[i].real_LT
-                        self.DE[i].atraso_real = max(0, self.DE[i].real_LT - self.DE[i].LT)
+                        self.DE[i].atraso_real = abs(self.DE[i].real_LT - self.DE[i].LT)
                         self.DE[i].err = abs(self.DE[i].action - self.DE[i].atraso_real)
-                        
                         self.atrasos_reais.append(self.DE[i].atraso_real)
                     else:
-                        Demand.reject = Demand.reject + 1
+                        
                         self.DE[i].ST = 2  ## rejected status
                         self.OU -= self.DE[i].FT  ### libera do buffer de produção
                         self.BA += self.DE[i].FT  ## devolve para o saldo para os próximos
-
+                        Demand.reject = Demand.reject + 1
                         # se a demanda tivesse sido produzida, teria tido esse real_LT, TP, atraso_real e err abaixo
                         # valores calculados só para salvar no log e avaliar o modelo
-                        self.DE[i].real_LT = poisson.rvs(mu=(self.DE[i].LT+Demand.load))
+                        self.DE[i].real_LT = poisson.rvs(mu=(self.DE[i].LT + Demand.load))
                         self.DE[i].TP = t + self.DE[i].real_LT
-                        self.DE[i].atraso_real = max(0, self.DE[i].real_LT - self.DE[i].LT)
+                        self.DE[i].atraso_real = abs(self.DE[i].real_LT - self.DE[i].LT)
                         self.DE[i].err = abs(self.DE[i].action - self.DE[i].atraso_real)
-
                         self.atrasos_reais.append(self.DE[i].atraso_real)
                     
 
