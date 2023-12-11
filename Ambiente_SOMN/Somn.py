@@ -27,6 +27,9 @@ from scipy.stats import poisson
 import torch
 import wandb
 
+# LOAD
+MAX_LOAD = 30
+
 # STATUS
 REJECTED_W_WASTE = -2
 FREE = -1
@@ -136,49 +139,40 @@ class Somn(Env):
         (lb=lowerbound ub=upperbound) para o espaco de Observacao e Acao
         """
 
-        # ST varia de -2 a 5
-        self.lb_ST = -2
-        self.ub_ST = 5
-
         # time varia de 1 a 100 (era de 1 ate 10*MAXDO + M)
         self.lb_time = 1
         # self.ub_time = 10 * self.MAXDO + self.M
         self.ub_time = 200
 
+        # ST varia de -2 a 5
+        self.lb_ST = -2
+        self.ub_ST = 5
         # LT varia de 2 a (M/2 + 2)
-        self.lb_LT = 1
-        # self.ub_LT = int(self.M / 2) + 2    #### ACMO LT AFETADO POR LT(M) + CARGA(N)
-        #self.ub_LT = self.M + self.N
-        self.ub_LT = self.M * (self.MAXFT - 1) * (self.MAXAM - 1)
-
-        # DO varia de 3 a (ub_time + ub_LT + MAXDO)
-        self.lb_DO = 3
-        self.ub_DO = self.ub_time + self.ub_LT + self.MAXDO
+        
         # DI varia de 1 a (ub_time + ub_LT + MAXDO)
         self.lb_DI = 1
         self.ub_DI = self.ub_time
-
+        # DO varia de 3 a (ub_time + ub_LT + MAXDO)
+        self.lb_DO = 3
+        self.ub_DO = self.ub_time + self.ub_LT + self.MAXDO
         # TP varia de 2 a (ub_time + ub_LT + 2) onde 2 e um ruido (troquei 2 pela distribuicao de poisson)
         self.lb_TP = 2
-        p = [poisson.rvs(mu=self.ub_LT) for _ in range(10000)]
-        self.ub_TP = self.ub_time + self.ub_LT + max(p)
-
-        # CO varia de 0 a (M * (MAXFT-1) * MAXEU)
-        self.lb_CO = 0
-        self.ub_CO = self.M * (self.MAXFT-1) * self.MAXEU
-
+        p = [poisson.rvs(mu=self.ub_LT + MAX_LOAD) for _ in range(10000)]
+        MAX_ATRASO = max(p)
+        self.ub_TP = self.ub_time + self.ub_LT + MAX_ATRASO
+        
         # PR varia de 0 a (M * (MAXFT-1) * MAXEU) * MAXPR
         self.lb_PR = 0
         self.ub_PR = self.M * (self.MAXFT-1) * self.MAXEU * self.MAXPR
-
+        # CO varia de 0 a (M * (MAXFT-1) * MAXEU)
+        self.lb_CO = 0
+        self.ub_CO = self.M * (self.MAXFT-1) * self.MAXEU
         # AM varia de 1 a MAXAM - 1
         self.lb_AM = 1
         self.ub_AM = self.MAXAM - 1
-
         # SP varia de 0 a 1
         self.lb_SP = 0
         self.ub_SP = 1
-
         # PE varia de 0 a MAXPE
         self.lb_PE = 0
         self.ub_PE = self.MAXPE
@@ -186,12 +180,24 @@ class Somn(Env):
         # VA varia de 0 a 1
         self.lb_VA = 0
         self.ub_VA = 1
-
         # SU varia de 0 a 1
         self.lb_SU = 0
         self.ub_SU = 1
+        self.lb_F = 1
+        self.ub_F = self.M
 
-
+        self.lb_LT = 1
+        # self.ub_LT = int(self.M / 2) + 2    #### ACMO LT AFETADO POR LT(M) + CARGA(N)
+        #self.ub_LT = self.M + self.N
+        self.ub_LT = self.M * (self.MAXFT - 1) * (self.MAXAM - 1)
+        self.lb_real_LT = 0
+        self.ub_real_LT = self.ub_LT + MAX_ATRASO
+        self.lb_atraso_real = 0
+        self.ub_atraso_real = MAX_ATRASO
+        self.lb_action = 0
+        self.ub_action = MAX_ATRASO
+        self.lb_err = 0
+        self.ub_err = MAX_ATRASO
 
 
         # MT varia de 0 a MAXFT
@@ -222,6 +228,8 @@ class Somn(Env):
         self.lb_load = 0
         self.ub_load = 100
 
+
+
         # lb e ub--- segunda versao (sem a coluna com os valores de Somn.time)
         # self.lb = np.array([[self.lb_ST, self.lb_LT, self.lb_DO, self.lb_TP] for _ in range(self.N)])
         # self.ub = np.array([[self.ub_ST, self.ub_LT, self.ub_DO, self.ub_TP] for _ in range(self.N)])
@@ -243,7 +251,7 @@ class Somn(Env):
         # accept to produce or reject
         # self.action_space = spaces.Box(0, 4, shape=(1,)) # usar o TD3
         #self.action_space = spaces.Discrete(self.MAXDO)  # usar com o PPO, DQN, A2C
-        self.action_space = spaces.Discrete(30)
+        self.action_space = spaces.Discrete(MAX_ATRASO)
 
         self.observation_space = spaces.Dict(
             {
@@ -254,7 +262,7 @@ class Somn(Env):
                 "IN": spaces.Box(low=0.0, high=1.0, shape=(self.M,), dtype=np.float64),
                 "OU": spaces.Box(low=0.0, high=1.0, shape=(self.M,), dtype=np.float64),
                 "DE_state": spaces.Box(
-                    low=0.0, high=1.0, shape=(self.N, 12), dtype=np.float64
+                    low=0.0, high=1.0, shape=(self.N, 17), dtype=np.float64
                 ),
                 "FT_state": spaces.Box(low=0.0, high=1.0, shape=(self.N,self.M), dtype=np.float64),
                 "yard": spaces.Box(low=0.0, high=1.0, shape=(1,), dtype=np.float64),
@@ -397,10 +405,10 @@ class Somn(Env):
                     self.sustentabilidade = self.DE[i].SU
                     # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
                     # Exemplo: self.mask_FT = array([1, 1, 0, 1, 1])
-                    mask_FT = self.DE[i].FT.copy()
-                    mask_FT[mask_FT > 0] = 1
+                    # mask_FT = self.DE[i].FT.copy()
+                    # mask_FT[mask_FT > 0] = 1
                     # contar quantas Features estao sendo usadas (total de maquinas usadas)
-                    self.F = mask_FT.sum()
+                    self.F = self.DE[i].F
                     # salva o valor do patio depois da acao
                     self.patio_on_state_plan.append((self.YA.cont/self.YA.Y)*100)
                     # salva o valor da carga depois da acao
@@ -703,18 +711,28 @@ class Somn(Env):
 
         for i in range(self.N):
             aux_row = [
+                self.normaliza(x=self.DE[i].ST, min=self.lb_ST, max=self.ub_ST),
+
                 self.normaliza(x=self.DE[i].DI, min=self.lb_DI, max=self.ub_DI),
                 self.normaliza(x=self.DE[i].DO, min=self.lb_DO, max=self.ub_DO),
                 self.normaliza(x=self.DE[i].TP, min=self.lb_TP, max=self.ub_TP),
+
                 self.normaliza(x=self.DE[i].PR, min=self.lb_PR, max=self.ub_PR),
                 self.normaliza(x=self.DE[i].CO, min=self.lb_CO, max=self.ub_CO),
                 self.normaliza(x=self.DE[i].AM, min=self.lb_AM, max=self.ub_AM),
                 self.normaliza(x=self.DE[i].SP, min=self.lb_SP, max=self.ub_SP),
                 self.normaliza(x=self.DE[i].PE, min=self.lb_PE, max=self.ub_PE),
-                self.normaliza(x=self.DE[i].LT, min=self.lb_LT, max=self.ub_LT),
+
                 self.normaliza(x=self.DE[i].VA, min=self.lb_VA, max=self.ub_VA),
                 self.normaliza(x=self.DE[i].SU, min=self.lb_SU, max=self.ub_SU),
-                self.normaliza(x=self.DE[i].ST, min=self.lb_ST, max=self.ub_ST), 
+                self.normaliza(x=self.DE[i].F, min=self.lb_F, max=self.ub_F), 
+                
+                self.normaliza(x=self.DE[i].LT, min=self.lb_LT, max=self.ub_LT),
+                self.normaliza(x=self.DE[i].real_LT, min=self.lb_real_LT, max=self.ub_real_LT), 
+                self.normaliza(x=self.DE[i].atraso_real, min=self.lb_atraso_real, max=self.ub_atraso_real), 
+                self.normaliza(x=self.DE[i].action, min=self.lb_action, max=self.ub_action), 
+                self.normaliza(x=self.DE[i].err, min=self.lb_err, max=self.ub_err), 
+
             ]
             DE_arrayState.append(aux_row)
         for i in range(self.N):
@@ -787,20 +805,13 @@ class Somn(Env):
             covered = False
             while not covered:
                 covered = self.order_receive_and_match()
-            self.plan(Somn.time, action)
-            self.produce(Somn.time)
-            self.dispatch()
-            self.store()
-            self.reject()
-            self.reject_w_waste()
-        else:
-            self.plan(Somn.time, action)
-            self.produce(Somn.time)
-            self.dispatch()
-            self.store()
-            self.reject()
-            self.reject_w_waste()
-            
+        self.plan(Somn.time, action)
+        self.produce(Somn.time)
+        self.dispatch()
+        self.store()
+        self.reject()
+        self.reject_w_waste()
+        
         self.reward = self.totReward - self.totPenalty
         self.penalty = self.totPenalty
 
