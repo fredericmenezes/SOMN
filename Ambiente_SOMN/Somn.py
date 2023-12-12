@@ -142,12 +142,17 @@ class Somn(Env):
         # time varia de 1 a 100 (era de 1 ate 10*MAXDO + M)
         self.lb_time = 1
         # self.ub_time = 10 * self.MAXDO + self.M
-        self.ub_time = 200
+        self.ub_time = 100
 
         # ST varia de -2 a 5
         self.lb_ST = -2
         self.ub_ST = 5
         # LT varia de 2 a (M/2 + 2)
+
+        self.lb_LT = 1
+        # self.ub_LT = int(self.M / 2) + 2    #### ACMO LT AFETADO POR LT(M) + CARGA(N)
+        #self.ub_LT = self.M + self.N
+        self.ub_LT = self.M * (self.MAXFT - 1) * (self.MAXAM - 1)
         
         # DI varia de 1 a (ub_time + ub_LT + MAXDO)
         self.lb_DI = 1
@@ -158,8 +163,8 @@ class Somn(Env):
         # TP varia de 2 a (ub_time + ub_LT + 2) onde 2 e um ruido (troquei 2 pela distribuicao de poisson)
         self.lb_TP = 2
         p = [poisson.rvs(mu=self.ub_LT + MAX_LOAD) for _ in range(10000)]
-        MAX_ATRASO = max(p)
-        self.ub_TP = self.ub_time + self.ub_LT + MAX_ATRASO
+        self.MAX_ATRASO = max(p)
+        self.ub_TP = self.ub_time + self.ub_LT + self.MAX_ATRASO
         
         # PR varia de 0 a (M * (MAXFT-1) * MAXEU) * MAXPR
         self.lb_PR = 0
@@ -186,18 +191,15 @@ class Somn(Env):
         self.lb_F = 1
         self.ub_F = self.M
 
-        self.lb_LT = 1
-        # self.ub_LT = int(self.M / 2) + 2    #### ACMO LT AFETADO POR LT(M) + CARGA(N)
-        #self.ub_LT = self.M + self.N
-        self.ub_LT = self.M * (self.MAXFT - 1) * (self.MAXAM - 1)
+        
         self.lb_real_LT = 0
-        self.ub_real_LT = self.ub_LT + MAX_ATRASO
+        self.ub_real_LT = self.ub_LT + self.MAX_ATRASO
         self.lb_atraso_real = 0
-        self.ub_atraso_real = MAX_ATRASO
+        self.ub_atraso_real = self.MAX_ATRASO
         self.lb_action = 0
-        self.ub_action = MAX_ATRASO
+        self.ub_action = self.MAX_ATRASO
         self.lb_err = 0
-        self.ub_err = MAX_ATRASO
+        self.ub_err = self.MAX_ATRASO
 
 
         # MT varia de 0 a MAXFT
@@ -251,7 +253,7 @@ class Somn(Env):
         # accept to produce or reject
         # self.action_space = spaces.Box(0, 4, shape=(1,)) # usar o TD3
         #self.action_space = spaces.Discrete(self.MAXDO)  # usar com o PPO, DQN, A2C
-        self.action_space = spaces.Discrete(MAX_ATRASO)
+        self.action_space = spaces.Discrete(self.MAX_ATRASO)
 
         self.observation_space = spaces.Dict(
             {
@@ -315,13 +317,27 @@ class Somn(Env):
         for i in range(Demand.N):
           if self.DE[i].ST == 0: ## SÓ PODE DAR MATCH DEMANDAS CHEGADAS
             if self.Y > 0: # ALTERAÇÃO PARA TESTE DE YARD == 0
-                if self.YA.inYard(self.DE[i].FT):
-
-                    self.YA.remove_yard(self.DE[i].FT)
+                
+                # idx é a posição se mask_FT deu match no Yard
+                # -1 se não tiver dado match com nada no Yard
+                idx = self.YA.inYard(self.DE[i].mask_FT)
+                if idx >= 0:
+                    self.YA.remove_yard(idx)
                     # adiciona a recompensa
-                    self.rw_pr += self.DE[i].AM * self.DE[i].PR
-                    self.rw_va += self.DE[i].AM * self.DE[i].PR - self.DE[i].AM * self.DE[i].PR * self.DE[i].SU
-                    self.rw_su += self.DE[i].AM * self.DE[i].PR - self.DE[i].AM * self.DE[i].PR * self.DE[i].VA
+                    # self.rw_pr += self.DE[i].AM * self.DE[i].PR
+                    # self.rw_va += self.DE[i].AM * self.DE[i].PR - self.DE[i].AM * self.DE[i].PR * self.DE[i].SU
+                    # self.rw_su += self.DE[i].AM * self.DE[i].PR - self.DE[i].AM * self.DE[i].PR * self.DE[i].VA
+
+                    tx_ambiente = self.DE[i].err
+                    self.rw_pr += self.DE[i].AM * self.DE[i].PR \
+                    - self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.1
+                    self.rw_va += self.DE[i].AM * self.DE[i].PR \
+                    - self.DE[i].AM * self.DE[i].PR * self.DE[i].SU \
+                    - self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.1
+                    self.rw_su += self.DE[i].AM * self.DE[i].PR \
+                    - self.DE[i].AM * self.DE[i].PR * self.DE[i].VA \
+                    - self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.1
+
                     # libera o espaço i para entrar outra demanda
                     self.DE[i].ST = -1
                     self.match[i] = 0
@@ -351,7 +367,7 @@ class Somn(Env):
                     self.match[i] = 1
                 else:
                     covered = False
-                    self.IN += np.array(OR)  ## ATUALIZA O TOTAL DE COMPRAVEIS
+                    self.IN += np.array(OR)  ## ATUALIZA O TOTAL DE COMPRAVEIScl
                     self.match[i] = 0
                     # print('\n balance: ', self.BA, 'because buying',OR, 'accumulating', self.IN)
         return covered
@@ -420,13 +436,14 @@ class Somn(Env):
                     # executa a acao
                     if self.DE[i].DO > (t + self.DE[i].LT + action):
                         self.DE[i].ST = 3  ## produced status --- remember to run time for each case
-                        self.OU -= self.DE[i].FT  ## CONSOME OS RECURSOS
+                        self.OU = np.int32(self.OU + self.DE[i].FT)  ## CONSOME OS RECURSOS
                         Demand.load = Demand.load + 1
                         self.DE[i].real_LT = poisson.rvs(mu=(self.DE[i].LT+Demand.load)) # by_frederic
                         self.DE[i].TP = t + self.DE[i].real_LT
                         self.DE[i].atraso_real = abs(self.DE[i].real_LT - self.DE[i].LT)
                         self.DE[i].err = abs(self.DE[i].action - self.DE[i].atraso_real)
                         self.atrasos_reais.append(self.DE[i].atraso_real)
+                        
                     else:
                         
                         self.DE[i].ST = 2  ## rejected status
@@ -440,6 +457,7 @@ class Somn(Env):
                         self.DE[i].atraso_real = abs(self.DE[i].real_LT - self.DE[i].LT)
                         self.DE[i].err = abs(self.DE[i].action - self.DE[i].atraso_real)
                         self.atrasos_reais.append(self.DE[i].atraso_real)
+                        
                     
 
 ## se formou buffer, resolve para comparar depois
@@ -509,12 +527,7 @@ class Somn(Env):
                 # self.acoes.append(self.DE[i].action)
                 # self.atrasos_reais.append(abs(self.DE[i].real_LT - self.DE[i].LT))
 
-                if Somn.objetivo == 0: # lucro
-                    self.totReward = self.rw_pr
-                if Somn.objetivo == 1: # variabilidade
-                    self.totReward = self.rw_va
-                if Somn.objetivo == 2: # sustentabilidade
-                    self.totReward = self.rw_su
+               
 
                 # penalidade por estar no ambiente
                 # if totReward > 0:
@@ -527,6 +540,9 @@ class Somn(Env):
         for i in range(self.N):
             if self.DE[i].ST == 4:
                 self.totPenalty += (self.YA.cont/self.YA.space) * self.DE[i].AM * self.DE[i].CO
+                tx_ambiente = self.DE[i].err
+                self.totPenalty += self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.01
+                    
                 # self.variabilidade += self.DE[i].VA
                 # self.sustentabilidade += self.DE[i].SU
                 # # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
@@ -551,6 +567,8 @@ class Somn(Env):
         for i in range(self.N):
             if self.DE[i].ST == 2:
                 self.totPenalty += 0
+                tx_ambiente = self.DE[i].err
+                self.totPenalty += self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.01
                 # self.variabilidade += self.DE[i].VA
                 # self.sustentabilidade += self.DE[i].SU
                 # # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
@@ -572,6 +590,8 @@ class Somn(Env):
         for i in range(self.N):
             if self.DE[i].ST == -2:
                 self.totPenalty += self.DE[i].AM * self.DE[i].CO         # PENALIDADE PELO DESCARTE
+                tx_ambiente = self.DE[i].err
+                self.totPenalty += self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.1
                 # self.variabilidade += self.DE[i].VA
                 # self.sustentabilidade += self.DE[i].SU
                 # # mask_FT eh um vetor de zeros e uns indicando quais features estao ativas (maquinas usadas)
@@ -811,8 +831,20 @@ class Somn(Env):
         self.store()
         self.reject()
         self.reject_w_waste()
+
+        if Somn.objetivo == 0: # lucro
+            self.totReward = self.rw_pr
+        if Somn.objetivo == 1: # variabilidade
+            self.totReward = self.rw_va
+        if Somn.objetivo == 2: # sustentabilidade
+            self.totReward = self.rw_su
         
         self.reward = self.totReward - self.totPenalty
+
+        self.rw_pr -= self.totPenalty
+        self.rw_va -= self.totPenalty * 0.1
+        self.rw_su -= self.totPenalty * 0.1
+
         self.penalty = self.totPenalty
 
         # # avalia os estados finais
@@ -920,7 +952,7 @@ class Somn(Env):
         self.carga_on_state_plan = []
         self.patio_on_state_plan = []
 
-        Demand.load = 0
+        Demand.load = 10
         Demand.reject = 0
         Demand.production_w_waste=0
 

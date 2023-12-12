@@ -11,15 +11,14 @@ class Yard:
         self.cont = 0
 
     def inYard(self, array):
-        for element in self.mask_YA:
+        for idx, element in enumerate(self.mask_YA):
             if np.array_equal(element, array):
-                return True
-        return False
+                return idx
+        return -1
     
-    def remove_yard(self, array):
-        mask = array.copy()
-        mask[mask > 0] = 1
+    def remove_yard(self, idx):
 
-        self.yard.remove(array)
-        self.mask_YA.remove(mask)
+        self.yard.pop(idx)
+        self.mask_YA.pop(idx)
         self.cont = len(self.yard)
+        

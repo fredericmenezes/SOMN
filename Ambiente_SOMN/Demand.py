@@ -57,7 +57,7 @@ class Demand:
         
         # Escolhe aleatoriamente as features (tempos para cada maquina)
         # Exemplo: self.FT = array([2, 4, 0, 1, 3]) #valores de: 0 a (MAXFT -1)
-        self.FT = np.random.randint(0,Demand.MAXFT,self.M)
+        #self.FT = np.random.randint(0,Demand.MAXFT,self.M)
         self.F, self.FT, self.mask_FT = self.gera_features()
 
         # # enquanto der tudo zero, escolhe randomicamente novamente
@@ -149,9 +149,9 @@ class Demand:
             F = random.randint(int(Demand.M*0.8),Demand.M)
 
         posicoes = sorted(random.sample(range(0, Demand.M), F))
-        mask = np.zeros(Demand.M)
+        mask = np.zeros(Demand.M).astype(np.int32)
         mask[posicoes] = 1
-        return F, np.random.randint(1,Demand.MAXFT,Demand.M) * mask, mask
+        return F, np.random.randint(1,Demand.MAXFT,Demand.M).astype(np.int32) * mask, mask
 
 
 #  def fun_beta(self, IN, OU) -> float:

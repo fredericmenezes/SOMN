@@ -9,7 +9,7 @@ def make_env(atraso: int, objetivo: int):
                 Y=10,
                 M=10,
                 N=10,
-                MAXDO=10,
+                MAXDO=100,
                 MAXAM=2,
                 MAXPR=2,
                 MAXPE=10,
