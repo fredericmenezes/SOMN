@@ -501,7 +501,7 @@ class Somn(Env):
             self.totPenalty += 0
             tx_ambiente = self.DE[i].err
             self.totPenalty += self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.01
-            self.totPenalty2 += self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.01
+            self.totPenalty2 += self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.005
             
             self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
             self.match[i] = 0
