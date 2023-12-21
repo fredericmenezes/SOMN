@@ -304,14 +304,14 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     # wandb.log({"variabilidade": safe_mean([ep_info["VA"] for ep_info in self.ep_info_buffer]),
                     #            "sustentabilidade": safe_mean([ep_info["SU"] for ep_info in self.ep_info_buffer]),
                     #            'timesteps': self.num_timesteps})
-                    wandb.log({"VA": safe_mean([ep_info["VA"] for ep_info in self.ep_info_buffer]), "timesteps": self.num_timesteps})
-                    wandb.log({"SU": safe_mean([ep_info["SU"] for ep_info in self.ep_info_buffer]), "timesteps": self.num_timesteps})
+                    wandb.log({"VA": safe_mean([va for ep_info in self.ep_info_buffer for va in ep_info["VA"]]), "timesteps": self.num_timesteps})
+                    wandb.log({"SU": safe_mean([su for ep_info in self.ep_info_buffer for su in ep_info["SU"]]), "timesteps": self.num_timesteps})
                     # if self.num_timesteps == 1000000:
                     #     F = []
                     #     F = [num_features for ep_info in self.ep_info_buffer for num_features in ep_info["F"]]
                     #     hist_F = np.histogram(F)
                     #     wandb.log({"numero_de_Features": wandb.Histogram(np_histogram=hist_F, num_bins=10),'timesteps': self.num_timesteps})
-                    wandb.log({"numero_de_Features": safe_mean([ep_info["F"] for ep_info in self.ep_info_buffer]), 'timesteps': self.num_timesteps})
+                    wandb.log({"numero_de_Features": safe_mean([f for ep_info in self.ep_info_buffer for f in ep_info["F"]]), 'timesteps': self.num_timesteps})
                     # cargas_on_state_plan = []
                     # cargas_on_state_plan = [carga_on_state_plan for ep_info in self.ep_info_buffer for carga_on_state_plan in ep_info["carga_on_state_plan"]]
                     # for carga in cargas_on_state_plan:
@@ -352,10 +352,10 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                         table_acoes = wandb.Table(data=data_acoes, columns=["step", "acoes"])
                         fields_acoes = {"value" : "acoes",  "title" : "Ações timesteps = " + str(self.num_timesteps)}
                         custom_acoes_histogram = wandb.plot_table(
-                            vega_spec_name="lacmor/histograma_preset_5",
+                            vega_spec_name="lacmor/histograma_preset_9",
                             data_table = table_acoes,
                             fields = fields_acoes)
-                        wandb.log({"acoes timesteps = " + str(self.num_timesteps): custom_acoes_histogram})
+                        wandb.log({"acoes (timesteps = " + str(self.num_timesteps) + ")": custom_acoes_histogram})
 
                         # wandb.log({
                         #             "acoes timesteps = " + self.num_timesteps: wandb.plot.histogram(table_acoes, "acoes",
@@ -366,11 +366,15 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                         data_atrasos = [[i, acoes[i], atrasos[i]] for i in range(len(atrasos))]
                         table_atrasos = wandb.Table(data=data_atrasos, columns=["step", "acoes", "atrasos"])
                         fields_atrasos = {"value" : "atrasos",  "title" : "Atrasos reais timesteps = " + str(self.num_timesteps)}
-                        custom_atrasos_histogram = wandb.plot_table(
-                            vega_spec_name="lacmor/histograma_preset_5",
+                        custom_atrasos_histogram1 = wandb.plot_table(
+                            vega_spec_name="lacmor/histograma_preset_9",
                             data_table = table_atrasos,
                             fields = fields_atrasos)
-                        wandb.log({"atrasos timesteps = " + str(self.num_timesteps): custom_atrasos_histogram})
+                        custom_atrasos_histogram2 = wandb.plot_table(
+                            vega_spec_name="lacmor/histograma_preset_9",
+                            data_table = table_atrasos,
+                            fields = fields_acoes)
+                        wandb.log({"atrasos (timesteps = " + str(self.num_timesteps) + ")": custom_atrasos_histogram1, "acoes (timesteps = " + str(self.num_timesteps) + ")": custom_atrasos_histogram2})
                         # wandb.log({
                         #             "atrasos reais timesteps = " + self.num_timesteps: wandb.plot.histogram(table_atrasos, "atrasos",
                         #             title="Atrasos reais timesteps = " + self.num_timesteps)

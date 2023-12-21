@@ -88,15 +88,17 @@ class Somn(Env):
         self.rw_pr = 0.0
         self.rw_va = 0.0
         self.rw_su = 0.0
-        self.variabilidade = 0.0
-        self.sustentabilidade = 0.0
-        self.F = 0
+        self.variabilidade = []
+        self.sustentabilidade = []
+        self.F = []
         self.acoes = []
         self.atrasos_reais = []
         
         self.acao_on_state_plan = []
         self.patio_on_state_plan = []
         self.carga_on_state_plan = []
+        
+        self.match = np.zeros(N)
 
         self.M = M
         self.N = N
@@ -111,7 +113,6 @@ class Somn(Env):
         self.MAXEU = MAXEU
         # self.MT = np.random.randint(0,MAXFT,M)
 
-        self.match = np.zeros(N)
 
         self.EU = np.random.random(M) * MAXEU
         self.BA = np.random.randint(10, 10*MAXFT, M)
@@ -406,7 +407,10 @@ class Somn(Env):
                     # salva a acao
                     self.DE[i].action = action
                     self.acao_on_state_plan.append(action)
-                    self.acoes.append(self.DE[i].action)
+                    
+
+                    
+
                     # executa a acao
                     if self.DE[i].DO > (t + self.DE[i].LT + action):
                         self.DE[i].ST = 3  ## produced status --- remember to run time for each case
@@ -416,7 +420,12 @@ class Somn(Env):
                         self.DE[i].TP = t + self.DE[i].real_LT
                         self.DE[i].atraso_real = abs(self.DE[i].real_LT - self.DE[i].LT)
                         self.DE[i].err = abs(self.DE[i].action - self.DE[i].atraso_real)
+                        
+                        self.acoes.append(self.DE[i].action)
                         self.atrasos_reais.append(self.DE[i].atraso_real)
+                        self.variabilidade.append(self.DE[i].VA)
+                        self.sustentabilidade.append(self.DE[i].SU)
+                        self.F.append(self.DE[i].F)
                     else:
                         self.DE[i].ST = 2  ## rejected status
                         self.OU -= self.DE[i].FT  ### libera do buffer de produção
@@ -428,7 +437,7 @@ class Somn(Env):
                         self.DE[i].TP = t + self.DE[i].real_LT
                         self.DE[i].atraso_real = abs(self.DE[i].real_LT - self.DE[i].LT)
                         self.DE[i].err = abs(self.DE[i].action - self.DE[i].atraso_real)
-                        self.atrasos_reais.append(self.DE[i].atraso_real)
+                        # self.atrasos_reais.append(self.DE[i].atraso_real)
 
         # se formou buffer, resolve para comparar depois
         # if flag == 1:
@@ -471,17 +480,10 @@ class Somn(Env):
     def dispatch(self, i: int):
              
         if self.DE[i].ST == 5:
-            # tx_ambiente = self.DE[i].err
+            
             self.rw_pr += self.DE[i].AM * self.DE[i].PR
-                # - self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.01
             self.rw_va += self.DE[i].AM * self.DE[i].PR * self.DE[i].VA
-                # - self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.01
             self.rw_su += self.DE[i].AM * self.DE[i].PR * self.DE[i].SU
-                # - self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.01
-        
-            self.variabilidade = self.DE[i].VA
-            self.sustentabilidade = self.DE[i].SU
-            self.F = self.DE[i].F
 
             self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
             self.match[i] = 0
@@ -611,9 +613,9 @@ class Somn(Env):
         self.rw_va = 0.0
         self.rw_su = 0.0
 
-        self.variabilidade = 0.0
-        self.sustentabilidade = 0.0
-        self.F = 0
+        self.variabilidade = []
+        self.sustentabilidade = []
+        self.F = []
 
         self.acoes = []
         self.atrasos_reais = []
@@ -687,6 +689,7 @@ class Somn(Env):
         self.atualiza_upper_bounds()
        
         # Informações adicionais
+        
         info = {"rw": self.reward,
                 "rw_pr": self.rw_pr,
                 "rw_va": self.rw_va,

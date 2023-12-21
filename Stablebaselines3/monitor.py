@@ -63,7 +63,7 @@ class Monitor(gym.Wrapper[ObsType, ActType, ObsType, ActType]):
         self.rw_su: List[float] = []
         self.VA: List[float] = []
         self.SU: List[float] = []
-        self.F: List[float] = []
+        self.F: List[int] = []
         self.acoes: List[int] = []
         self.atrasos_reais: List[int] = []
         self.acao_ST_1: List[int] = []
@@ -160,9 +160,9 @@ class Monitor(gym.Wrapper[ObsType, ActType, ObsType, ActType]):
         self.rw_pr.append(float(info["rw_pr"]))
         self.rw_va.append(float(info["rw_va"]))
         self.rw_su.append(float(info["rw_su"]))
-        self.VA.append(float(info["VA"]))
-        self.SU.append(float(info["SU"]))
-        self.F.append(float(info["F"]))
+        self.VA += info["VA"]
+        self.SU += info["SU"]
+        self.F += info["F"]
         self.acoes += info["acoes"]
         self.atrasos_reais += info["atrasos_reais"]
         self.acao_ST_1 += info["acao_on_state_plan"]
@@ -177,9 +177,9 @@ class Monitor(gym.Wrapper[ObsType, ActType, ObsType, ActType]):
             ep_rw_pr = sum(self.rw_pr)
             ep_rw_va = sum(self.rw_va)
             ep_rw_su = sum(self.rw_su)
-            ep_VA = sum(self.VA)
-            ep_SU = sum(self.SU)
-            ep_F = sum(self.F)
+            ep_VA = self.VA
+            ep_SU = self.SU
+            ep_F = self.F
             ep_acoes = self.acoes
             ep_atrasos_reais = self.atrasos_reais
             ep_acao_ST_1 = self.acao_ST_1
@@ -192,9 +192,9 @@ class Monitor(gym.Wrapper[ObsType, ActType, ObsType, ActType]):
                        "rw_pr": round(ep_rw_pr, 6),
                        "rw_va": round(ep_rw_va, 6),
                        "rw_su": round(ep_rw_su, 6),
-                       "VA": round(ep_VA, 6),
-                       "SU": round(ep_SU, 6),
-                       "F": round(ep_F, 6),
+                       "VA": ep_VA,
+                       "SU": ep_SU,
+                       "F": ep_F,
                        "acoes": ep_acoes,
                        "atrasos_reais": ep_atrasos_reais,
                        "acao_on_state_plan": ep_acao_ST_1,
