@@ -48,7 +48,7 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
         run1 = wandb.init(project='Fred_test_SU', #NOME DO PROJETO
                           config=config_PPO,
                           group="priorizando sustentabilidade", #GRUPOS A SEREM ADCIONADOS NO WANDB
-                          name=f'model_custom_PPO (atraso = {atraso:02d}) run_{x+1:02d}',
+                          name=f'model_custom_PPO (atraso = {atraso:02d}) run_{x+5:02d}',
                         #   name="run_test_SU", #NOME DA EXECUÇÃO
                           save_code=True,
                           reinit=True

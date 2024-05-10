@@ -82,7 +82,8 @@ class Somn(Env):
         # variaveis para salvar os valores para avaliar cada passo
         self.totReward = 0.0
         self.totPenalty = 0.0
-        self.totPenalty2 = 0.0
+        self.totPenalty_VA = 0.0
+        self.totPenalty_SU = 0.0
         self.reward = 0.0
         self.penalty = 0.0
         self.rw_pr = 0.0
@@ -490,10 +491,13 @@ class Somn(Env):
 
     def store(self, i: int):
         if self.DE[i].ST == 4:
-            self.totPenalty += (self.YA.cont/self.YA.space) * self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO)
+            self.totPenalty += (self.YA.cont/self.YA.space) * (self.DE[i].PR - self.DE[i].CO) #* self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO)
+            self.totPenalty_VA += (self.YA.cont/self.YA.space)
+            self.totPenalty_SU += (self.YA.cont/self.YA.space) 
             tx_ambiente = self.DE[i].err
-            self.totPenalty += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO) * tx_ambiente * 0.01
-            self.totPenalty2 += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO) * tx_ambiente * 0.01
+            self.totPenalty += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO) * tx_ambiente * 0.05
+            self.totPenalty_VA += self.DE[i].VA * tx_ambiente * 0.1
+            self.totPenalty_SU += self.DE[i].SU * tx_ambiente * 0.1
                 
             self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
             self.match[i] = 0
@@ -501,9 +505,12 @@ class Somn(Env):
     def reject(self, i: int):
         if self.DE[i].ST == 2:
             self.totPenalty += 0
+            self.totPenalty_VA +=0
+            self.totPenalty_SU +=0
             tx_ambiente = self.DE[i].err
-            self.totPenalty += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO) * tx_ambiente * 0.01
-            self.totPenalty2 += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO) * tx_ambiente * 0.005
+            self.totPenalty += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO) * tx_ambiente * 0.0005
+            self.totPenalty_VA += self.DE[i].VA * tx_ambiente * 0.001
+            self.totPenalty_SU += self.DE[i].SU * tx_ambiente * 0.001
             
             self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
             self.match[i] = 0
@@ -511,9 +518,12 @@ class Somn(Env):
     def reject_w_waste(self, i: int):
         if self.DE[i].ST == -2:
             self.totPenalty += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO)         # PENALIDADE PELO DESCARTE
+            self.totPenalty_VA += self.DE[i].VA
+            self.totPenalty_SU += self.DE[i].SU
             tx_ambiente = self.DE[i].err
-            self.totPenalty += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO) * tx_ambiente * 0.1
-            self.totPenalty2 += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO) * tx_ambiente * 0.1
+            self.totPenalty += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO) * tx_ambiente * 0.01
+            self.totPenalty_VA += self.DE[i].VA * tx_ambiente * 0.1
+            self.totPenalty_SU += self.DE[i].SU * tx_ambiente * 0.1
             
             self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
             self.match[i] = 0
@@ -607,7 +617,8 @@ class Somn(Env):
         """
         self.totReward = 0.0
         self.totPenalty = 0.0
-        self.totPenalty2 = 0.0
+        self.totPenalty_VA = 0.0
+        self.totPenalty_SU = 0.0
 
         self.rw_pr = 0.0                 
         self.rw_va = 0.0
@@ -646,17 +657,17 @@ class Somn(Env):
             self.penalty = self.totPenalty
         if Somn.objetivo == 1: # variabilidade
             self.totReward = self.rw_va
-            self.reward = self.totReward - self.totPenalty2
-            self.penalty = self.totPenalty2
+            self.reward = self.totReward - self.totPenalty_VA
+            self.penalty = self.totPenalty_VA
         if Somn.objetivo == 2: # sustentabilidade
             self.totReward = self.rw_su
-            self.reward = self.totReward - self.totPenalty2
-            self.penalty = self.totPenalty2
+            self.reward = self.totReward - self.totPenalty_SU
+            self.penalty = self.totPenalty_SU
         
         # desconta as penalidades
         self.rw_pr -= self.totPenalty
-        self.rw_va -= self.totPenalty2
-        self.rw_su -= self.totPenalty2
+        self.rw_va -= self.totPenalty_VA
+        self.rw_su -= self.totPenalty_SU
 
 
         
@@ -762,7 +773,8 @@ class Somn(Env):
         self.penalty = 0.0
         self.totReward = 0.0
         self.totPenalty = 0.0
-        self.totPenalty2 = 0.0
+        self.totPenalty_VA = 0.0
+        self.totPenalty_SU = 0.0
         
         self.acao_on_state_plan = []
         self.carga_on_state_plan = []
