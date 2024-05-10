@@ -107,21 +107,25 @@ class Demand:
 
         self.CO = 0.0
         for j in range(Demand.M):
-            self.CO += self.FT[j] * Demand.EU[j]
+            self.CO += self.FT[j] * Demand.EU[j] / self.MAXFT * self.MAXEU
+            self.CO /= self.F
         # sustentabilidade tem um custo maior    
-        self.CO = self.CO * float(self.M/self.F)
-        #self.CO = self.AM * self.CO  -- custo sem o amount
+        # self.CO = self.CO * float(self.M/self.F)
+        self.CO = self.AM * self.CO / self.MAXAM - 1  # custo com o amount
 
-        self.PR = Demand.MAXPR*self.CO  ### LUCRO EH 2X CUSTO  self.PR = Demand.MAXPE  (by fred)
+
+        # self.PR = Demand.MAXPR*self.CO  ### LUCRO EH 2X CUSTO  self.PR = Demand.MAXPE  (by fred)
+        # self.PR = Demand.MAXPR*self.CO  ### LUCRO EH 2X CUSTO  self.PR = Demand.MAXPE  (by fred)
 
         self.SP = self.fun_gamma() ####* 'cpu'.Y   #SPACE CONSUMPTION FACTOR
         self.VA = self.fun_upsilon() ### [0low 1up]
         self.SU = 1- self.fun_sigma() ### [0low 1up]
         
+        self.PR = (self.SU + self.VA) * self.CO   ### LUCRO EH 2X CUSTO  se SU = 1 e VA = 1 self.PR = Demand.MAXPE  (by fred)
 
 
     def fun_gamma(self) -> float:
-        x = (self.AM*self.F)/((Demand.MAXAM -1) * self.M)
+        x = (self.AM * self.F)/((Demand.MAXAM -1) * self.M)
         return x
 
     # def fun_tau(self) -> float:
@@ -136,7 +140,9 @@ class Demand:
         return x
 
     def fun_sigma(self) -> float:
-        x = self.F/self.M
+        # x = self.F/self.M
+        x = (self.F * self.MAXFT - sum(self.FT)) / (self.F * self.MAXFT - self.F)
+
         return x
     
     def gera_features(self) -> np.ndarray:

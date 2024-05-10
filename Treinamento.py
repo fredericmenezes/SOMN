@@ -44,12 +44,12 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
         'target_kl': 0.02113910446426361
     }
 
-    for x in range(1):    #### ACMO NUMEROS DE EXECUÇÕES COMPETIDORAS
-        run1 = wandb.init(project='Fred_test4', #NOME DO PROJETO
+    for x in range(5):    #### ACMO NUMEROS DE EXECUÇÕES COMPETIDORAS
+        run1 = wandb.init(project='Fred_test_SU', #NOME DO PROJETO
                           config=config_PPO,
                           group="priorizando sustentabilidade", #GRUPOS A SEREM ADCIONADOS NO WANDB
-#                          name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
-                          name="run_test4", #NOME DA EXECUÇÃO
+                          name=f'model_custom_PPO (atraso = {atraso:02d}) run_{x+1:02d}',
+                        #   name="run_test_SU", #NOME DA EXECUÇÃO
                           save_code=True,
                           reinit=True
         )
@@ -81,8 +81,8 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
         )
         
 
-        model.learn(total_timesteps=3328*301)
+        model.learn(total_timesteps=3328*181)
         
         # 1000 e verificar o tempo
-        model.save(os.path.join(wandb.run.dir, f"model_custom_PPO_atraso_{atraso:02d}"))
+        model.save(os.path.join(wandb.run.dir, f"model_custom_PPO (atraso = {atraso:02d}) run_{x+1:02d}"))
         wandb.finish()

@@ -323,11 +323,11 @@ class Somn(Env):
                         self.YA.remove_yard(idx)
                         # adiciona a recompensa
                         # tx_ambiente = self.DE[i].err
-                        self.rw_pr += self.DE[i].AM * self.DE[i].PR
+                        self.rw_pr += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO)
                         # - self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.1
-                        self.rw_va += self.DE[i].AM * self.DE[i].PR * self.DE[i].VA
+                        self.rw_va +=  self.DE[i].VA
                         # - self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.1
-                        self.rw_su += self.DE[i].AM * self.DE[i].PR * self.DE[i].SU
+                        self.rw_su +=  self.DE[i].SU
                         # - self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.1
                         # libera o espaço i para entrar outra demanda
                         self.DE[i].ST = -1
@@ -481,19 +481,19 @@ class Somn(Env):
              
         if self.DE[i].ST == 5:
             
-            self.rw_pr += self.DE[i].AM * self.DE[i].PR
-            self.rw_va += self.DE[i].AM * self.DE[i].PR * self.DE[i].VA
-            self.rw_su += self.DE[i].AM * self.DE[i].PR * self.DE[i].SU
+            self.rw_pr += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO)
+            self.rw_va += self.DE[i].VA
+            self.rw_su += self.DE[i].SU
 
             self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
             self.match[i] = 0
 
     def store(self, i: int):
         if self.DE[i].ST == 4:
-            self.totPenalty += (self.YA.cont/self.YA.space) * self.DE[i].AM * self.DE[i].CO
+            self.totPenalty += (self.YA.cont/self.YA.space) * self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO)
             tx_ambiente = self.DE[i].err
-            self.totPenalty += self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.01
-            self.totPenalty2 += self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.01
+            self.totPenalty += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO) * tx_ambiente * 0.01
+            self.totPenalty2 += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO) * tx_ambiente * 0.01
                 
             self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
             self.match[i] = 0
@@ -502,18 +502,18 @@ class Somn(Env):
         if self.DE[i].ST == 2:
             self.totPenalty += 0
             tx_ambiente = self.DE[i].err
-            self.totPenalty += self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.01
-            self.totPenalty2 += self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.005
+            self.totPenalty += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO) * tx_ambiente * 0.01
+            self.totPenalty2 += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO) * tx_ambiente * 0.005
             
             self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
             self.match[i] = 0
                 
     def reject_w_waste(self, i: int):
         if self.DE[i].ST == -2:
-            self.totPenalty += self.DE[i].AM * self.DE[i].CO         # PENALIDADE PELO DESCARTE
+            self.totPenalty += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO)         # PENALIDADE PELO DESCARTE
             tx_ambiente = self.DE[i].err
-            self.totPenalty += self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.1
-            self.totPenalty2 += self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.1
+            self.totPenalty += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO) * tx_ambiente * 0.1
+            self.totPenalty2 += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO) * tx_ambiente * 0.1
             
             self.DE[i].ST = -1  # LIBERA O ESPAÇO APÓS CONTABILIZADO
             self.match[i] = 0
