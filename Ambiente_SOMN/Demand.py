@@ -22,6 +22,7 @@ class Demand:
                  MAXMT:int,
                  MAXTI:int,
                  MAXEU:int,
+                 EU:int,
                  t: int,
                  atraso: int = None):
 
@@ -35,7 +36,9 @@ class Demand:
         Demand.MAXMT=MAXMT
         Demand.MAXTI=MAXTI
         Demand.MAXEU=MAXEU
-        Demand.EU = np.random.random(M)*MAXEU
+        Demand.EU=EU
+        # Demand.EU = np.random.random(M)*MAXEU
+
         self.ST = int(-1)   # reject_w_wast(-2) free(-1) received(0), ready(1), rejected(2), producing(3), stored(4) and delivered(5)
         
         self.action = int(-1)       # acao atribuida quando ST=1 (estado ready)
@@ -107,21 +110,22 @@ class Demand:
 
         self.CO = 0.0
         for j in range(Demand.M):
-            self.CO += self.FT[j] * Demand.EU[j] / self.MAXFT * self.MAXEU
-            self.CO /= self.F
+            self.CO += self.FT[j] * Demand.EU[j] #/ self.MAXFT * self.MAXEU
+            # self.CO /= self.F
         # sustentabilidade tem um custo maior    
         # self.CO = self.CO * float(self.M/self.F)
-        self.CO = self.AM * self.CO / self.MAXAM - 1  # custo com o amount
-
+        self.CO = self.AM * self.CO #/ self.MAXAM - 1  # custo com o amount
+        # self.ub_CO =  (Demand.MAXFT - 1) * (Demand.MAXEU - 1) * Demand.M
+        # self.CO = self.CO / (self.MAXAM - 1) * self.ub_CO
 
         # self.PR = Demand.MAXPR*self.CO  ### LUCRO EH 2X CUSTO  self.PR = Demand.MAXPE  (by fred)
         # self.PR = Demand.MAXPR*self.CO  ### LUCRO EH 2X CUSTO  self.PR = Demand.MAXPE  (by fred)
 
         self.SP = self.fun_gamma() ####* 'cpu'.Y   #SPACE CONSUMPTION FACTOR
         self.VA = self.fun_upsilon() ### [0low 1up]
-        self.SU = 1- self.fun_sigma() ### [0low 1up]
+        self.SU = self.fun_sigma() ### [0low 1up]
         
-        self.PR = (self.SU + self.VA) * self.CO   ### LUCRO EH 2X CUSTO  se SU = 1 e VA = 1 self.PR = Demand.MAXPE  (by fred)
+        self.PR = (self.SU * self.MAXPR + self.VA) * self.CO   ### LUCRO EH 2X CUSTO  se SU = 1 e VA = 1 self.PR = Demand.MAXPE  (by fred)
 
 
     def fun_gamma(self) -> float:
@@ -141,7 +145,9 @@ class Demand:
 
     def fun_sigma(self) -> float:
         # x = self.F/self.M
-        x = (self.F * self.MAXFT - sum(self.FT)) / (self.F * self.MAXFT - self.F)
+        # as features vao de 0 a (MAXFT - 1) por conta da funcao randint(0,Demand.MAXFT,self.M)
+        # nesse caso o maximo valor de FT eh MAXFT - 1
+        x = (self.F * (self.MAXFT - 1) - sum(self.FT)) / (self.F * (self.MAXFT - 1) - self.F)
 
         return x
     

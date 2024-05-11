@@ -1,12 +1,12 @@
 program: train.py
 method: bayes
-name: sweep_somn2
+name: sweep_somn_nova_formula
 metric:
   name: mean_reward_test
   goal: maximize
 parameters:
   objetivo:
-    value: 2
+    value: 0
   atraso:
     value: -1
   batch_size:

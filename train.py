@@ -54,11 +54,11 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
 
         
 
-        run1 = wandb.init(project="Sintonia de Parametros3", #NOME DO PROJETO
+        run1 = wandb.init(project="sweep_somn_nova_formula", #NOME DO PROJETO
                           config=config,
-                          group="Priorizando Sustentabilidade", #GRUPOS A SEREM ADCIONADOS NO WANDB
+                          group="Priorizando Lucro", #GRUPOS A SEREM ADCIONADOS NO WANDB
 #                          name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
-                          name="Sustentabilidade", #NOME DA EXECUÇÃO
+                        #   name=f"PPO (sintonia 1)",
                           save_code=True,
                           reinit=True
         )
@@ -93,5 +93,5 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
         model.learn(total_timesteps=3328*301)
         
         # 1000 e verificar o tempo
-        model.save(os.path.join(wandb.run.dir, "model_sustentabilidade"))
+        model.save(os.path.join(wandb.run.dir, "model_lucro"))
         wandb.finish()

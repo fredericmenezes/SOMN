@@ -32,7 +32,7 @@ objetivo = ["Lucro", "Variabilidade", "Sustentabiliade"]
 for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
 #    atraso = None
     config_PPO = {
-        'objetivo': 2, # 0: lucro, 1: variabilidade, 2: sustentabilidade
+        'objetivo': 0, # 0: lucro, 1: variabilidade, 2: sustentabilidade
         'atraso': atraso,
         'batch_size': 256,
         'ent_coef': 0.001641577520175419,
@@ -44,11 +44,11 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
         'target_kl': 0.02113910446426361
     }
 
-    for x in range(5):    #### ACMO NUMEROS DE EXECUÇÕES COMPETIDORAS
+    for x in range(1):    #### ACMO NUMEROS DE EXECUÇÕES COMPETIDORAS
         run1 = wandb.init(project='Fred_test_SU', #NOME DO PROJETO
                           config=config_PPO,
-                          group="priorizando sustentabilidade", #GRUPOS A SEREM ADCIONADOS NO WANDB
-                          name=f'model_custom_PPO (atraso = {atraso:02d}) run_{x+5:02d}',
+                          group=f"priorizando {objetivo[config_PPO['objetivo']]}", #GRUPOS A SEREM ADCIONADOS NO WANDB
+                          name=f"PPO (teste 1, atraso = {atraso:02d}, run: {x + 1:02d})",
                         #   name="run_test_SU", #NOME DA EXECUÇÃO
                           save_code=True,
                           reinit=True
