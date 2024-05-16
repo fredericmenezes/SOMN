@@ -89,8 +89,9 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
             tensorboard_log=f"runs/{run1.id}"
         )
         
-
-        model.learn(total_timesteps=3328*301)
+        multiplicador_passos = int(1000000 / config.n_steps)
+        # model.learn(total_timesteps=3328*301)
+        model.learn(total_timesteps = config.n_steps * (multiplicador_passos + 1))
         
         # 1000 e verificar o tempo
         model.save(os.path.join(wandb.run.dir, "model_lucro"))

@@ -144,9 +144,15 @@ class Demand:
         return x
 
     def fun_sigma(self) -> float:
-        # x = self.F/self.M
-        # as features vao de 0 a (MAXFT - 1) por conta da funcao randint(0,Demand.MAXFT,self.M)
-        # nesse caso o maximo valor de FT eh MAXFT - 1
+        '''
+        Formula anterior: x = self.F/self.M
+
+        As features vao de 0 a (MAXFT - 1) por conta da funcao randint(0, Demand.MAXFT, self.M)
+        
+        A funcao randint retorna um valor entre 0 e Demand.MAXFT - 1, com vetor contendo
+        M elementos, nesse caso.
+
+        '''
         x = (self.F * (self.MAXFT - 1) - sum(self.FT)) / (self.F * (self.MAXFT - 1) - self.F)
 
         return x
