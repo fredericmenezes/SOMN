@@ -125,8 +125,7 @@ class Demand:
         self.VA = self.fun_upsilon() ### [0low 1up]
         self.SU = self.fun_sigma() ### [0low 1up]
         
-        self.PR = (self.SU * self.MAXPR + self.VA) * self.CO   ### LUCRO EH 2X CUSTO  se SU = 1 e VA = 1 self.PR = Demand.MAXPE  (by fred)
-
+        self.PR = self.fun_theta(self.SU + self.VA)   ### LUCRO EH 2X CUSTO  se SU = 1 e VA = 1 self.PR = Demand.MAXPE  (by fred)
 
     def fun_gamma(self) -> float:
         x = (self.AM * self.F)/((Demand.MAXAM -1) * self.M)
@@ -156,6 +155,32 @@ class Demand:
         x = (self.F * (self.MAXFT - 1) - sum(self.FT)) / (self.F * (self.MAXFT - 1) - self.F)
 
         return x
+    
+    def fun_theta(self, fator_lucro):
+        min_original = 1/self.M
+        max_original = 2
+        novo_min = 1
+        novo_max = 2
+
+        x = self.CO * self.converter_intervalo(fator_lucro, min_original, max_original, novo_min, novo_max)
+        return x
+    
+    def converter_intervalo(self, valor_original, min_original, max_original, novo_min, novo_max):
+        """
+        Converte um valor de um intervalo original para um novo intervalo.
+
+        Args:
+        valor_original (float): O valor no intervalo original.
+        min_original (float): O mínimo do intervalo original.
+        max_original (float): O máximo do intervalo original.
+        novo_min (float): O mínimo do novo intervalo.
+        novo_max (float): O máximo do novo intervalo.
+
+        Returns:
+        float: O valor convertido no novo intervalo.
+        """
+        valor_convertido = novo_min + ((valor_original - min_original) / (max_original - min_original)) * (novo_max - novo_min)
+        return valor_convertido
     
     def gera_features(self) -> np.ndarray:
 

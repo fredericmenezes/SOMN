@@ -179,15 +179,15 @@ class Somn(Env):
 
         # PR varia de 0 a MAXFT * MAXEU * M * 2
         self.lb_PR = 0
-        self.ub_PR = self.ub_CO + self.MAXPR * self.ub_CO
+        self.ub_PR = 2 * self.ub_CO
         # self.ub_PR = (self.MAXFT - 1) * (self.MAXEU - 1) * self.M * 2
         # # PR varia de 0 a (M * (MAXFT-1) * MAXEU) * MAXPR
         # self.lb_PR = 0
         # self.ub_PR = self.M * (self.MAXFT-1) * self.MAXEU * self.MAXPR
 
         # Lucro varia de -((MAXFT-1) * (MAXEU-1)/M - (MAXFT-1) * (MAXEU-1)) a MAXPR * ub_CO
-        self.lb_lucro = -((self.MAXFT-1) * (self.MAXEU-1)/self.M - (self.MAXFT-1) * (self.MAXEU-1))
-        self.ub_lucro = self.MAXPR * self.ub_CO
+        self.lb_lucro = 0
+        self.ub_lucro = self.ub_PR - self.ub_CO
         
         # AM varia de 1 a MAXAM - 1
         self.lb_AM = 1
@@ -320,6 +320,7 @@ class Somn(Env):
     def normaliza(self, x, min, max):
         # verificar se eh um escalar ou um np.array
         # se for um escalar evitar a divisao por zero.
+        
         if type(x).__module__ != np.__name__:
             if max == min: return 1
         x_norm = np.array((x - min) / (max - min)).astype(np.float64)
@@ -365,7 +366,10 @@ class Somn(Env):
                 if not np.any(OR):
                     self.DE[i].ST = 1
                     # fila de prioridade 0 = price
-                    Somn.priorq[0][i] = 1/(self.DE[i].AM * self.DE[i].PR)
+
+                    EPSILON = 0.0001
+                    # Somn.priorq[0][i] = 1/(self.DE[i].AM * self.DE[i].PR)
+                    Somn.priorq[0][i] = 1/(self.DE[i].PR - self.DE[i].CO + EPSILON)
                     # fila de prioridade 1 = variabilidade
                     Somn.priorq[1][i] = 1 - self.DE[i].VA
                     # fila de prioridade 2 = sustentabilidade
@@ -520,7 +524,7 @@ class Somn(Env):
             tx_ambiente = self.DE[i].err
             # self.totPenalty += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO) * tx_ambiente * 0.005
             self.lucro = self.DE[i].PR - self.DE[i].CO
-            self.totPenalty += self.normaliza(self.lucro, self.lb_lucro, self.ub_lucro) * tx_ambiente * 0.05
+            self.totPenalty += self.normaliza(self.lucro, self.lb_lucro, self.ub_lucro) * tx_ambiente * 0.1
             self.totPenalty_VA += self.DE[i].VA * tx_ambiente * 0.1
             self.totPenalty_SU += self.DE[i].SU * tx_ambiente * 0.1
                 
