@@ -166,9 +166,9 @@ class Demand:
         min_original = 1/self.M
         max_original = 2
         novo_min = 1
-        novo_max = 2
+        novo_max = 2 * self.MAXPR
 
-        x = self.CO * self.converter_intervalo(fator_lucro, min_original, max_original, novo_min, novo_max) * self.MAXPR
+        x = self.CO * self.converter_intervalo(fator_lucro, min_original, max_original, novo_min, novo_max)
         return x
     
     def converter_intervalo(self, valor_original, min_original, max_original, novo_min, novo_max):
