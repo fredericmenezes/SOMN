@@ -108,9 +108,17 @@ class Demand:
         self.DI = t
         self.DO = t + self.LT + random.randint(0,Demand.MAXDO)
 
+        self.SP = self.fun_gamma() ####* 'cpu'.Y   #SPACE CONSUMPTION FACTOR
+        self.VA = self.fun_upsilon() ### [0low 1up]
+        self.SU = self.fun_sigma() ### [0low 1up]
+
         self.CO = 0.0
         for j in range(Demand.M):
-            self.CO += self.FT[j] * Demand.EU[j] #/ self.MAXFT * self.MAXEU
+            if self.FT[j] != 0:
+                self.CO += ((self.MAXFT - 1) / self.FT[j]) * Demand.EU[j] #/ self.MAXFT * self.MAXEU
+            else:
+                self.CO += 0
+
             # self.CO /= self.F
         # sustentabilidade tem um custo maior    
         # self.CO = self.CO * float(self.M/self.F)
@@ -121,9 +129,6 @@ class Demand:
         # self.PR = Demand.MAXPR*self.CO  ### LUCRO EH 2X CUSTO  self.PR = Demand.MAXPE  (by fred)
         # self.PR = Demand.MAXPR*self.CO  ### LUCRO EH 2X CUSTO  self.PR = Demand.MAXPE  (by fred)
 
-        self.SP = self.fun_gamma() ####* 'cpu'.Y   #SPACE CONSUMPTION FACTOR
-        self.VA = self.fun_upsilon() ### [0low 1up]
-        self.SU = self.fun_sigma() ### [0low 1up]
         
         self.PR = self.fun_theta(self.SU + self.VA)   ### LUCRO EH 2X CUSTO  se SU = 1 e VA = 1 self.PR = Demand.MAXPE  (by fred)
 

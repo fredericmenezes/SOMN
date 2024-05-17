@@ -1,6 +1,6 @@
 program: train.py
 method: bayes
-name: sweep_somn_nova_formula
+name: Hiperparametrizacao PPO (novas formulações)
 metric:
   name: mean_reward_test
   goal: maximize

@@ -54,7 +54,7 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
 
         
 
-        run1 = wandb.init(project="sweep_somn_nova_formula", #NOME DO PROJETO
+        run1 = wandb.init(project="Hiperparametrizacao PPO (novas formulações)", #NOME DO PROJETO
                           config=config,
                           group="Priorizando Lucro", #GRUPOS A SEREM ADCIONADOS NO WANDB
 #                          name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
