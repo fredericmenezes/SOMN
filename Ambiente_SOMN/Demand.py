@@ -167,7 +167,7 @@ class Demand:
         novo_min = 1
         novo_max = 2
 
-        x = self.CO * self.converter_intervalo(fator_lucro, min_original, max_original, novo_min, novo_max)
+        x = self.CO * self.converter_intervalo(fator_lucro, min_original, max_original, novo_min, novo_max) * self.MAXPR
         return x
     
     def converter_intervalo(self, valor_original, min_original, max_original, novo_min, novo_max):
@@ -192,11 +192,12 @@ class Demand:
         FT = np.zeros(Demand.M).astype(np.int32)
 
         # joga a moeda para decidir entre variabilidade alta ou baixa
-        joga_moeda = bool(random.randint(0,1))
-        if joga_moeda:
-            F = random.randint(1,int(Demand.M*0.3))
-        else:
-            F = random.randint(int(Demand.M*0.8),Demand.M)
+        # joga_moeda = bool(random.randint(0,1))
+        # if joga_moeda:
+        #     F = random.randint(1,int(Demand.M*0.3))
+        # else:
+        #     F = random.randint(int(Demand.M*0.8),Demand.M)
+        F = random.randint(1, Demand.M)
 
         posicoes = sorted(random.sample(range(0, Demand.M), F))
         mask = np.zeros(Demand.M).astype(np.int32)

@@ -181,7 +181,7 @@ class Somn(Env):
 
         # PR varia de 0 a MAXFT * MAXEU * M * 2
         self.lb_PR = 0
-        self.ub_PR = 2 * self.ub_CO
+        self.ub_PR = 2 * self.MAXPR * self.ub_CO
         # self.ub_PR = (self.MAXFT - 1) * (self.MAXEU - 1) * self.M * 2
         # # PR varia de 0 a (M * (MAXFT-1) * MAXEU) * MAXPR
         # self.lb_PR = 0
