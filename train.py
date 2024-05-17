@@ -89,7 +89,7 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
             tensorboard_log=f"runs/{run1.id}"
         )
         
-        multiplicador_passos = int(1000000 / config.n_steps)
+        multiplicador_passos = int(500000 / config.n_steps)
         # model.learn(total_timesteps=3328*301)
         model.learn(total_timesteps = config.n_steps * (multiplicador_passos + 1))
         
