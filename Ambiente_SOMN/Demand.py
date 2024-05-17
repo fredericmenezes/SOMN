@@ -183,6 +183,8 @@ class Demand:
         return valor_convertido
     
     def gera_features(self) -> np.ndarray:
+        F = 0
+        FT = np.zeros(Demand.M).astype(np.int32)
 
         # joga a moeda para decidir entre variabilidade alta ou baixa
         joga_moeda = bool(random.randint(0,1))
@@ -194,7 +196,17 @@ class Demand:
         posicoes = sorted(random.sample(range(0, Demand.M), F))
         mask = np.zeros(Demand.M).astype(np.int32)
         mask[posicoes] = 1
-        return F, np.random.randint(1,Demand.MAXFT,Demand.M).astype(np.int32) * mask, mask
+
+        if F == Demand.M:
+            joga_moeda = random.randint(0,100)
+            if joga_moeda > 10:
+                FT = np.random.randint(1, Demand.MAXFT, Demand.M).astype(np.int32) * mask
+            else:
+                mask = np.ones(Demand.M).astype(np.int32)
+                FT = np.random.randint(1, 2, Demand.M).astype(np.int32) * mask
+                F = Demand.M
+
+        return F, FT, mask
 
 
 #  def fun_beta(self, IN, OU) -> float:

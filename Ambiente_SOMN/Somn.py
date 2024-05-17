@@ -172,7 +172,9 @@ class Somn(Env):
         
         # CO varia de 0 a (MAXFT-1) * (MAXEU-1) * M
         self.lb_CO = 0
-        self.ub_CO =  (self.MAXFT-1) * (self.MAXEU - 1) * self.M
+        self.ub_CO =  sum((self.MAXFT-1) * self.EU)
+        # self.ub_CO =  (self.MAXFT-1) * (self.MAXEU - 1) * self.M
+        
         # # CO varia de 0 a (M * (MAXFT-1) * MAXEU)
         # self.lb_CO = 0
         # self.ub_CO = self.M * (self.MAXFT-1) * self.MAXEU
