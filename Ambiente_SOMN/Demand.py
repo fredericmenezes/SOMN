@@ -192,12 +192,12 @@ class Demand:
         FT = np.zeros(Demand.M).astype(np.int32)
 
         # joga a moeda para decidir entre variabilidade alta ou baixa
-        # joga_moeda = bool(random.randint(0,1))
-        # if joga_moeda:
-        #     F = random.randint(1,int(Demand.M*0.3))
-        # else:
-        #     F = random.randint(int(Demand.M*0.8),Demand.M)
-        F = random.randint(1, Demand.M)
+        joga_moeda = bool(random.randint(0,1))
+        if joga_moeda:
+            F = random.randint(1,int(Demand.M*0.3))
+        else:
+            F = random.randint(int(Demand.M*0.8),Demand.M)
+        # F = random.randint(1, Demand.M)
 
         posicoes = sorted(random.sample(range(0, Demand.M), F))
         mask = np.zeros(Demand.M).astype(np.int32)
@@ -211,6 +211,8 @@ class Demand:
                 mask = np.ones(Demand.M).astype(np.int32)
                 FT = np.random.randint(1, 2, Demand.M).astype(np.int32) * mask
                 F = Demand.M
+
+        FT = np.random.randint(1, Demand.MAXFT, Demand.M).astype(np.int32) * mask
 
         return F, FT, mask
 

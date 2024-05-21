@@ -1,7 +1,5 @@
-import wandb
-import yaml
-
 import os
+import wandb
 import time
 import random
 import numpy as np
@@ -30,35 +28,28 @@ from Seed.Seed import seed_everything
 #seed_everything(2023)
 
 #atraso:int=None
-# objetivo = ["Lucro", "Variabilidade", "Sustentabiliade"]
+objetivo = ["Lucro", "Variabilidade", "Sustentabiliade"]
 for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
 #    atraso = None
-    # config_PPO = {
-    #     'objetivo': 2, # 0: lucro, 1: variabilidade, 2: sustentabilidade
-    #     'atraso': atraso,
-    #     'batch_size': 256,
-    #     'ent_coef': 0.001641577520175419,
-    #     'gae_lambda': 0.9142950466044,
-    #     'gamma': 0.918623650457886,
-    #     'learning_rate': 0.0003660144793262825,
-    #     'n_epochs': 21,
-    #     'n_steps': 3328,
-    #     'target_kl': 0.02113910446426361
-    # }
-
-    # Set up your default hyperparameters
-    with open("./config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
+    config_PPO = {
+        'objetivo': 0, # 0: lucro, 1: variabilidade, 2: sustentabilidade
+        'atraso': atraso,
+        'batch_size': 128,
+        'ent_coef': 0.0003275020331514811,
+        'gae_lambda': 0.905633833005548,
+        'gamma': 0.8918195434909006,
+        'learning_rate': 0.08580913514781795,
+        'n_epochs': 17,
+        'n_steps': 3328,
+        'target_kl': 0.008164781515861428
+    }
 
     for x in range(1):    #### ACMO NUMEROS DE EXECUÇÕES COMPETIDORAS
-
-        
-
-        run1 = wandb.init(project="Hiperparametrizacao PPO (novas formulações)", #NOME DO PROJETO
-                          config=config,
-                          group="Priorizando Lucro", #GRUPOS A SEREM ADCIONADOS NO WANDB
-#                          name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
-                        #   name=f"PPO (sintonia 1)",
+        run1 = wandb.init(project='Fred_test_SU', #NOME DO PROJETO
+                          config=config_PPO,
+                          group=f"priorizando {objetivo[config_PPO['objetivo']]}", #GRUPOS A SEREM ADCIONADOS NO WANDB
+                          name=f"PPO (teste 1, atraso = {atraso:02d}, run: {x + 1:02d})",
+                        #   name="run_test_SU", #NOME DA EXECUÇÃO
                           save_code=True,
                           reinit=True
         )
@@ -89,10 +80,9 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
             tensorboard_log=f"runs/{run1.id}"
         )
         
-        multiplicador_passos = int(333334 / config.n_steps)
-        # model.learn(total_timesteps=3328*301)
-        model.learn(total_timesteps = config.n_steps * (multiplicador_passos + 1))
+
+        model.learn(total_timesteps=200_000)
         
         # 1000 e verificar o tempo
-        model.save(os.path.join(wandb.run.dir, "model_lucro"))
+        model.save(os.path.join(wandb.run.dir, f"model_custom_PPO (atraso = {atraso:02d}) run_{x+1:02d}"))
         wandb.finish()
