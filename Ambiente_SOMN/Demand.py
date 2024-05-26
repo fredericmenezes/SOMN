@@ -115,7 +115,8 @@ class Demand:
         self.CO = 0.0
         for j in range(Demand.M):
             if self.FT[j] != 0:
-                self.CO += ((self.MAXFT - 1) / self.FT[j]) * Demand.EU[j] #/ self.MAXFT * self.MAXEU
+                # self.CO += ((self.MAXFT - 1) / self.FT[j]) * Demand.EU[j] #/ self.MAXFT * self.MAXEU
+                self.CO += self.FT[j] * Demand.EU[j]
             else:
                 self.CO += 0
 
@@ -211,8 +212,8 @@ class Demand:
                 mask = np.ones(Demand.M).astype(np.int32)
                 FT = np.random.randint(1, 2, Demand.M).astype(np.int32) * mask
                 F = Demand.M
-
-        FT = np.random.randint(1, Demand.MAXFT, Demand.M).astype(np.int32) * mask
+        else:
+            FT = np.random.randint(1, Demand.MAXFT, Demand.M).astype(np.int32) * mask
 
         return F, FT, mask
 

@@ -118,6 +118,7 @@ class Somn(Env):
 
         # self.EU = np.random.random(M) * MAXEU
         self.EU = np.random.randint(1, [MAXEU]*M).astype(np.float64)
+        print(self.EU)
 
         self.BA = np.random.randint(10, 10*MAXFT, M)
         self.IN = np.random.randint(0, MAXFT, M)
@@ -792,6 +793,8 @@ class Somn(Env):
         self.match = np.zeros(self.N)
 
         self.MT = np.random.randint(0, self.MAXFT, self.M)
+        # self.EU = np.random.randint(1, [self.MAXEU]*self.M).astype(np.float64)
+        # print(self.EU)
         # self.EU = np.random.random(self.M) * self.MAXEU
         self.BA = np.random.randint(10, 10*self.MAXFT, self.M)
         self.IN = np.random.randint(0, self.MAXFT, self.M)
