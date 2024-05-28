@@ -118,7 +118,7 @@ class Somn(Env):
 
         # self.EU = np.random.random(M) * MAXEU
         self.EU = np.random.randint(1, [MAXEU]*M).astype(np.float64)
-        print(self.EU)
+        # print(self.EU)
 
         self.BA = np.random.randint(10, 10*MAXFT, M)
         self.IN = np.random.randint(0, MAXFT, M)
@@ -349,7 +349,10 @@ class Somn(Env):
                         # adiciona a recompensa
                         # tx_ambiente = self.DE[i].err
                         self.lucro = (self.DE[i].PR - self.DE[i].CO)
-                        self.rw_pr += self.normaliza(self.lucro, self.lb_lucro, self.ub_lucro)
+
+                        self.rw_pr += self.lucro
+                        # self.rw_pr += self.normaliza(self.lucro, self.lb_lucro, self.ub_lucro)
+
                         # - self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.1
                         self.rw_va +=  self.DE[i].VA
                         # - self.DE[i].AM * self.DE[i].PR * tx_ambiente * 0.1
@@ -513,7 +516,8 @@ class Somn(Env):
             # self.rw_pr += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO)
             self.lucro = self.DE[i].PR - self.DE[i].CO
             
-            self.rw_pr += self.normaliza(self.lucro, self.lb_lucro, self.ub_lucro)
+            self.rw_pr += self.lucro
+            # self.rw_pr += self.normaliza(self.lucro, self.lb_lucro, self.ub_lucro)
             self.rw_va += self.DE[i].VA
             self.rw_su += self.DE[i].SU
 
@@ -523,13 +527,16 @@ class Somn(Env):
     def store(self, i: int):
         if self.DE[i].ST == 4:
             
-            self.totPenalty += (self.YA.cont/self.YA.space) #* (self.DE[i].PR - self.DE[i].CO) * self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO)
+            self.lucro = self.DE[i].PR - self.DE[i].CO
+            
+            self.totPenalty += (self.YA.cont/self.YA.space) * self.lucro
+            # self.totPenalty += (self.YA.cont/self.YA.space) #* (self.DE[i].PR - self.DE[i].CO) * self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO)
             self.totPenalty_VA += (self.YA.cont/self.YA.space)
             self.totPenalty_SU += (self.YA.cont/self.YA.space) 
             tx_ambiente = self.DE[i].err
             # self.totPenalty += self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO) * tx_ambiente * 0.005
-            self.lucro = self.DE[i].PR - self.DE[i].CO
-            self.totPenalty += self.normaliza(self.lucro, self.lb_lucro, self.ub_lucro) * tx_ambiente * 0.1
+            self.totPenalty += self.lucro * tx_ambiente * 0.01
+            # self.totPenalty += self.normaliza(self.lucro, self.lb_lucro, self.ub_lucro) * tx_ambiente * 0.1
             self.totPenalty_VA += self.DE[i].VA * tx_ambiente * 0.1
             self.totPenalty_SU += self.DE[i].SU * tx_ambiente * 0.1
                 
@@ -543,7 +550,8 @@ class Somn(Env):
             self.totPenalty_SU +=0
             tx_ambiente = self.DE[i].err
             self.lucro = self.DE[i].PR - self.DE[i].CO
-            self.totPenalty += self.normaliza(self.lucro, self.lb_lucro, self.ub_lucro) * tx_ambiente * 0.001
+            self.totPenalty += self.lucro * tx_ambiente * 0.0005
+            # self.totPenalty += self.normaliza(self.lucro, self.lb_lucro, self.ub_lucro) * tx_ambiente * 0.001
             self.totPenalty_VA += self.DE[i].VA * tx_ambiente * 0.001
             self.totPenalty_SU += self.DE[i].SU * tx_ambiente * 0.001
             
@@ -553,11 +561,15 @@ class Somn(Env):
     def reject_w_waste(self, i: int):
         if self.DE[i].ST == -2:
             self.lucro = self.DE[i].PR - self.DE[i].CO
-            self.totPenalty += self.normaliza(self.lucro, self.lb_lucro, self.ub_lucro)         # PENALIDADE PELO DESCARTE
+
+            self.totPenalty += self.lucro         # PENALIDADE PELO DESCARTE
+            # self.totPenalty += self.normaliza(self.lucro, self.lb_lucro, self.ub_lucro)         # PENALIDADE PELO DESCARTE
             self.totPenalty_VA += self.DE[i].VA
             self.totPenalty_SU += self.DE[i].SU
+
             tx_ambiente = self.DE[i].err
-            self.totPenalty += self.normaliza(self.lucro, self.lb_lucro, self.ub_lucro) * tx_ambiente * 0.01
+            self.totPenalty += self.lucro * tx_ambiente * 0.01
+            # self.totPenalty += self.normaliza(self.lucro, self.lb_lucro, self.ub_lucro) * tx_ambiente * 0.01
             self.totPenalty_VA += self.DE[i].VA * tx_ambiente * 0.1
             self.totPenalty_SU += self.DE[i].SU * tx_ambiente * 0.1
             
@@ -795,7 +807,7 @@ class Somn(Env):
         self.match = np.zeros(self.N)
 
         self.MT = np.random.randint(0, self.MAXFT, self.M)
-        # self.EU = np.random.randint(1, [self.MAXEU]*self.M).astype(np.float64)
+        self.EU = np.random.randint(1, [self.MAXEU]*self.M).astype(np.float64)
         # print(self.EU)
         # self.EU = np.random.random(self.M) * self.MAXEU
         self.BA = np.random.randint(10, 10*self.MAXFT, self.M)

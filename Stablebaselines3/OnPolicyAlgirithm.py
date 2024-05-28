@@ -7,7 +7,9 @@ import numpy as np
 import torch as th
 from gymnasium import spaces
 
-from stable_baselines3.common.base_class import BaseAlgorithm
+# from stable_baselines3.common.base_class import BaseAlgorithm
+from Stablebaselines3.base_class import BaseAlgorithm
+
 from stable_baselines3.common.buffers import DictRolloutBuffer, RolloutBuffer
 from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.policies import ActorCriticPolicy
@@ -179,6 +181,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             new_obs, rewards, dones, infos = env.step(clipped_actions)
 
             self.num_timesteps += env.num_envs
+            
 
             # Give access to local variables
             callback.update_locals(locals())
@@ -322,13 +325,21 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     # for patio in patios_on_state_plan:
                     #     wandb.log({"patio_on_state_plan": patio,"timesteps": self.num_timesteps})
 
-                    if self.num_timesteps > 1 and self.num_timesteps < 5000 or\
-                       self.num_timesteps > 9000 and self.num_timesteps < 10000 or\
-                       self.num_timesteps > 49000 and self.num_timesteps < 50000 or\
-                       self.num_timesteps > 99000 and self.num_timesteps < 100000 or\
-                       self.num_timesteps > 249000 and self.num_timesteps < 250000 or\
-                       self.num_timesteps > 499000 and self.num_timesteps < 500000 or\
-                       self.num_timesteps > 990000 and self.num_timesteps < 1000000:
+                    if self.num_timesteps > 1 and self.contador == 0 or\
+                       self.num_timesteps > 9000 and self.contador == 1 or\
+                       self.num_timesteps > 49000 and self.contador == 2 or\
+                       self.num_timesteps > 99000 and self.contador == 3 or\
+                       self.num_timesteps > 149000 and self.contador == 4 or\
+                       self.num_timesteps > 499000 and self.contador == 5 or\
+                       self.num_timesteps > 990000 and self.contador == 6:
+                    # if self.num_timesteps > 1 and self.num_timesteps < 5000 or\
+                    #    self.num_timesteps > 9000 and self.num_timesteps < 10000 or\
+                    #    self.num_timesteps > 49000 and self.num_timesteps < 50000 or\
+                    #    self.num_timesteps > 99000 and self.num_timesteps < 100000 or\
+                    #    self.num_timesteps > 249000 and self.num_timesteps < 250000 or\
+                    #    self.num_timesteps > 499000 and self.num_timesteps < 500000 or\
+                    #    self.num_timesteps > 990000 and self.num_timesteps < 1000000:
+                        self.contador += 1
                         acoes = []
                         acoes_on_state_plan = []
                         atrasos = []

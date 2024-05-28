@@ -1,0 +1,48 @@
+program: train.py
+method: bayes
+name: Sweep_PPO
+metric:
+  name: mean_reward_test
+  goal: maximize
+parameters:
+  objetivo:
+    value: 0
+  atraso:
+    value: -1
+  learning_rate:
+    distribution: uniform
+    min: 1e-05
+    max: 1e-01
+  n_steps:
+    values: [1024, 1536, 2048, 2304, 2560, 2816, 3072, 3328, 3584, 3840, 4096]
+  batch_size:
+    values: [16, 32, 64, 128, 256]
+  n_epochs:
+    distribution: int_uniform
+    min: 3
+    max: 30
+  gamma:
+    distribution: uniform
+    min: 0.9
+    max: 0.9999
+  gae_lambda:
+    distribution: uniform
+    min: 0.8
+    max: 0.95
+  clip_range:
+    min: 0.1
+    max: 0.3
+  ent_coef:
+    distribution: uniform
+    min: 0.0
+    max: 0.01
+  vf_coef:
+    min: 0.5
+    max: 1.0
+  max_grad_norm:
+    min: 0.5
+    max: 1.0
+  target_kl:
+    distribution: uniform
+    min: 0.003
+    max: 0.03

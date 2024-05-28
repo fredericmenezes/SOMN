@@ -8,8 +8,9 @@ import numpy as np
 #import gym
 
 #from stable_baselines3 import PPO
-from stable_baselines3.common.monitor import Monitor
-#from stable_baselines3.common.vec_env import DummyVecEnv, VecVideoRecorder
+from Stablebaselines3.monitor import Monitor
+# from stable_baselines3.common.monitor import Monitor
+# from stable_baselines3.common.vec_env import DummyVecEnv, VecVideoRecorder
 from Stablebaselines3.dummy_vec_env import DummyVecEnv
 
 from Ambiente_SOMN.make_env import make_env
@@ -47,14 +48,14 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
     # }
 
     # Set up your default hyperparameters
-    with open("./config.yaml") as file:
+    with open("./config2.yaml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
     for x in range(1):    #### ACMO NUMEROS DE EXECUÇÕES COMPETIDORAS
 
         
 
-        run1 = wandb.init(project="Hiperparametrizacao PPO (novas formulações)", #NOME DO PROJETO
+        run1 = wandb.init(project="Sweep_PPO_exp_01", #NOME DO PROJETO
                           config=config,
                           group="Priorizando Lucro", #GRUPOS A SEREM ADCIONADOS NO WANDB
 #                          name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
@@ -76,10 +77,11 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
             n_epochs=config.n_epochs,
             gamma=config.gamma,
             gae_lambda=config.gae_lambda,
-            #clip_range=config.clip_range,
+            clip_range=config.clip_range,
+            # clip_range_vf=config.clip_range_vf,
             ent_coef=config.ent_coef,
-            #vf_coef=config.vf_coef,
-            #max_grad_norm=config.max_grad_norm,
+            vf_coef=config.vf_coef,
+            max_grad_norm=config.max_grad_norm,
             target_kl=config.target_kl,
             #stats_window_size=config.stats_window_size,
             verbose=0,
@@ -89,7 +91,7 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
             tensorboard_log=f"runs/{run1.id}"
         )
         
-        multiplicador_passos = int(166_667) / config.n_steps
+        multiplicador_passos = int(1_000_000) / config.n_steps
         # model.learn(total_timesteps=3328*301)
         model.learn(total_timesteps = config.n_steps * (multiplicador_passos + 1))
         
