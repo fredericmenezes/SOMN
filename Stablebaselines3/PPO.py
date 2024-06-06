@@ -17,7 +17,8 @@ from stable_baselines3.common.utils import obs_as_tensor, safe_mean
 from Ambiente_SOMN.Demand import Demand
 from Ambiente_SOMN.Somn import Somn
 from Ambiente_SOMN.Yard import Yard
-from stable_baselines3.common.base_class import BaseAlgorithm
+# from stable_baselines3.common.base_class import BaseAlgorithm
+from Stablebaselines3.base_class import BaseAlgorithm
 
 SelfPPO = TypeVar("SelfPPO", bound="PPO")
 

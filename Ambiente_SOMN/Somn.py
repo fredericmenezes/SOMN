@@ -276,7 +276,11 @@ class Somn(Env):
         # accept to produce or reject
         # self.action_space = spaces.Box(0, 4, shape=(1,)) # usar o TD3
         #self.action_space = spaces.Discrete(self.MAXDO)  # usar com o PPO, DQN, A2C
+        
         self.action_space = spaces.Discrete(self.MAX_ATRASO)
+        # self.action_space = spaces.Box(
+        #     low=self.lb_action, high=self.ub_action, shape=(1,), dtype=np.int64
+        # )
 
         self.observation_space = spaces.Dict(
             {

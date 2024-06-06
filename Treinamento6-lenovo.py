@@ -29,26 +29,33 @@ from Seed.Seed import seed_everything
 
 #atraso:int=None
 objetivo = ["Lucro", "Variabilidade", "Sustentabiliade"]
+experimento = 0
 for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
 #    atraso = None
+    experimento += 1
     config_PPO = {
         'objetivo': 0, # 0: lucro, 1: variabilidade, 2: sustentabilidade
+        'experimento': experimento,
         'atraso': atraso,
-        'learning_rate': 0.07198439800197767,
-        'n_steps': 3840,
-        'batch_size': 128,
-        'n_epochs': 12,
-        'gamma': 0.9047337342942704,
-        'gae_lambda': 0.9425274050666608,
-        'ent_coef': 0.003350864215612144,
-        'target_kl': 0.008603665138069642
+        'batch_size': 256,
+        'clip_range': 0.14311039226030886,
+        'ent_coef': 0.0014053690148127865,
+        'gae_lambda': 0.9206238863792052,
+        'gamma': 0.9112587992138684,
+        'learning_rate': 0.0017558458502709678,
+        'max_grad_norm': 0.5405584582570564,
+        'n_epochs': 11,
+        'n_steps': 2816,
+        'target_kl': 0.008229889663239797,
+        'vf_coef': 0.9986824285455052
     }
 
     for x in range(5):    #### ACMO NUMEROS DE EXECUÇÕES COMPETIDORAS
         run1 = wandb.init(project='Fred_test_SU', #NOME DO PROJETO
                           config=config_PPO,
                           group=f"priorizando {objetivo[config_PPO['objetivo']]}", #GRUPOS A SEREM ADCIONADOS NO WANDB
-                          name=f"PPO (teste 9, atraso = {atraso:02d}, run: {x + 1:02d})",
+                        #   name=f"PPO (teste 12, atraso = {atraso:02d}, run: {x + 1:02d})",
+                          name=f"PPO (teste 12, experimento {experimento:02d}, run {x + 1:02d})",
                         #   name="run_test_SU", #NOME DA EXECUÇÃO
                           save_code=True,
                           reinit=True
@@ -61,17 +68,17 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
         model = PPO(
             policy="MultiInputPolicy",
             env=env1,
-            learning_rate=config.learning_rate,
-            n_steps=config.n_steps,
             batch_size=config.batch_size,
-            n_epochs=config.n_epochs,
-            gamma=config.gamma,
-            gae_lambda=config.gae_lambda,
-            #clip_range=config.clip_range,
+            clip_range=config.clip_range,
             ent_coef=config.ent_coef,
-            #vf_coef=config.vf_coef,
-            #max_grad_norm=config.max_grad_norm,
+            gae_lambda=config.gae_lambda,
+            gamma=config.gamma,
+            learning_rate=config.learning_rate,
+            max_grad_norm=config.max_grad_norm,
+            n_epochs=config.n_epochs,
+            n_steps=config.n_steps,
             target_kl=config.target_kl,
+            vf_coef=config.vf_coef,
             #stats_window_size=config.stats_window_size,
             verbose=0,
             #seed = 2023,
@@ -81,9 +88,9 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
         )
         
 
-        model.learn(total_timesteps=333_334)
+        model.learn(total_timesteps=3_000_000)
         
         # 1000 e verificar o tempo
         # model.save(os.path.join(wandb.run.dir, f"model_custom_PPO (atraso = {atraso:02d}) run_{x+1:02d}"))
-        model.save(os.path.join(wandb.run.dir, f"model_custom_PPO (atraso = {atraso:02d}) run_{x + 1:02d}"))
+        model.save(os.path.join(wandb.run.dir, f"Sweep_PPO_exp_01_param_173 (atraso = {atraso:02d}) run_{x + 1:02d}"))
         wandb.finish()

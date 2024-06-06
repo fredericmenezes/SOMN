@@ -1,0 +1,35 @@
+program: train_dqn.py
+method: bayes
+name: Sweep_DQN
+metric:
+  name: mean_reward_test
+  goal: maximize
+
+parameters:
+  batch_size:
+    values: [32, 64, 128, 256]
+  gamma:
+    min: 0.8
+    max: 0.999
+  learning_rate:
+    min: 0.00001
+    max: 0.01
+  buffer_size:
+    values: [10000, 50000, 100000, 200000]
+  learning_starts:
+    values: [1000, 5000, 10000]
+  target_update_interval:
+    values: [100, 500, 1000]
+  train_freq:
+    values: [1, 4, 10]
+  gradient_steps:
+    values: [1, 4, 8]
+  exploration_fraction:
+    min: 0.1
+    max: 0.3
+  exploration_final_eps:
+    min: 0.01
+    max: 0.05
+  max_grad_norm:
+    min: 0.5
+    max: 2.0
