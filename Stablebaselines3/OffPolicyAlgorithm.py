@@ -411,19 +411,38 @@ class OffPolicyAlgorithm(BaseAlgorithm):
             wandb.log({"SU": safe_mean([su for ep_info in self.ep_info_buffer for su in ep_info["SU"]]), "timesteps": self.num_timesteps})
             wandb.log({"numero_de_Features": safe_mean([f for ep_info in self.ep_info_buffer for f in ep_info["F"]]), 'timesteps': self.num_timesteps})
             if self.num_timesteps > 1 and self.contador == 0 or\
-                       self.num_timesteps > 9000 and self.contador == 1 or\
-                       self.num_timesteps > 49000 and self.contador == 2 or\
-                       self.num_timesteps > 99000 and self.contador == 3 or\
-                       self.num_timesteps > 149000 and self.contador == 4 or\
-                       self.num_timesteps > 499000 and self.contador == 5 or\
-                       self.num_timesteps > 990000 and self.contador == 6:
+                self.num_timesteps > 10000 and self.contador == 1 or\
+                self.num_timesteps > 50000 and self.contador == 2 or\
+                self.num_timesteps > 100000 and self.contador == 3 or\
+                self.num_timesteps > 200000 and self.contador == 4 or\
+                self.num_timesteps > 300000 and self.contador == 5 or\
+                self.num_timesteps > 400000 and self.contador == 6 or\
+                self.num_timesteps > 500000 and self.contador == 7 or\
+                self.num_timesteps > 600000 and self.contador == 8 or\
+                self.num_timesteps > 700000 and self.contador == 9 or\
+                self.num_timesteps > 800000 and self.contador == 10 or\
+                self.num_timesteps > 900000 and self.contador == 11 or\
+                self.num_timesteps > 1000000 and self.contador == 12:
+
+                # latest_ep = int(self.train_freq.frequency)
+                # recent_ep_info = list(self.ep_info_buffer)[-latest_ep:]
+                recent_ep_info = list(self.ep_info_buffer)
+                
                 self.contador += 1
+
                 acoes = []
                 acoes_on_state_plan = []
                 atrasos = []
-                acoes = [acao for ep_info in self.ep_info_buffer for acao in ep_info["acoes"]]
-                acoes_on_state_plan = [acao_on_state_plan for ep_info in self.ep_info_buffer for acao_on_state_plan in ep_info["acao_on_state_plan"]]
-                atrasos = [atraso for ep_info in self.ep_info_buffer for atraso in ep_info["atrasos_reais"]]
+
+                # acoes = [acao for ep_info in self.ep_info_buffer for acao in ep_info["acoes"]]
+                acoes = [acao for ep_info in recent_ep_info for acao in ep_info["acoes"]]
+
+                # acoes_on_state_plan = [acao_on_state_plan for ep_info in self.ep_info_buffer for acao_on_state_plan in ep_info["acao_on_state_plan"]]
+                acoes_on_state_plan = [acao_on_state_plan for ep_info in recent_ep_info for acao_on_state_plan in ep_info["acao_on_state_plan"]]
+
+                # atrasos = [atraso for ep_info in self.ep_info_buffer for atraso in ep_info["atrasos_reais"]]
+                atrasos = [atraso for ep_info in recent_ep_info for atraso in ep_info["atrasos_reais"]]
+
                 data_acoes = [[i, acoes[i]] for i in range(len(acoes))]
                 table_acoes = wandb.Table(data=data_acoes, columns=["step", "acoes"])
                 fields_acoes = {"value" : "acoes",  "title" : "Ações timesteps = " + str(self.num_timesteps)}

@@ -3,7 +3,7 @@ import sys
 import time
 from copy import deepcopy
 from typing import Any, Dict, Optional, Type, TypeVar, Union
-from OnPolicyAlgirithm import OnPolicyAlgorithm
+from Stablebaselines3.OnPolicyAlgirithm import OnPolicyAlgorithm
 
 import numpy as np
 import torch as th

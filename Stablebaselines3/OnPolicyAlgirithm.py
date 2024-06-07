@@ -296,6 +296,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     #         "carga_on_state_plan": self.carga_on_state_plan,
                     #         "patio_on_state_plan": self.patio_on_state_plan
                     #        }
+                    
                     wandb.log({"mean_reward_test": safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
                     wandb.log({"ep_len_mean": safe_mean([ep_info["l"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
                     #wandb.log({"recompensa": safe_mean([ep_info["rw"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
@@ -328,12 +329,18 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     #     wandb.log({"patio_on_state_plan": patio,"timesteps": self.num_timesteps})
 
                     if self.num_timesteps > 1 and self.contador == 0 or\
-                       self.num_timesteps > 9000 and self.contador == 1 or\
-                       self.num_timesteps > 49000 and self.contador == 2 or\
-                       self.num_timesteps > 99000 and self.contador == 3 or\
-                       self.num_timesteps > 149000 and self.contador == 4 or\
-                       self.num_timesteps > 499000 and self.contador == 5 or\
-                       self.num_timesteps > 990000 and self.contador == 6:
+                       self.num_timesteps > 10000 and self.contador == 1 or\
+                       self.num_timesteps > 50000 and self.contador == 2 or\
+                       self.num_timesteps > 100000 and self.contador == 3 or\
+                       self.num_timesteps > 200000 and self.contador == 4 or\
+                       self.num_timesteps > 300000 and self.contador == 5 or\
+                       self.num_timesteps > 400000 and self.contador == 6 or\
+                       self.num_timesteps > 500000 and self.contador == 7 or\
+                       self.num_timesteps > 600000 and self.contador == 8 or\
+                       self.num_timesteps > 700000 and self.contador == 9 or\
+                       self.num_timesteps > 800000 and self.contador == 10 or\
+                       self.num_timesteps > 900000 and self.contador == 11 or\
+                       self.num_timesteps > 1000000 and self.contador == 12:
                     # if self.num_timesteps > 1 and self.num_timesteps < 5000 or\
                     #    self.num_timesteps > 9000 and self.num_timesteps < 10000 or\
                     #    self.num_timesteps > 49000 and self.num_timesteps < 50000 or\
@@ -341,13 +348,24 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                     #    self.num_timesteps > 249000 and self.num_timesteps < 250000 or\
                     #    self.num_timesteps > 499000 and self.num_timesteps < 500000 or\
                     #    self.num_timesteps > 990000 and self.num_timesteps < 1000000:
+                        
+                        latest_ep = int(self.n_steps)
+                        recent_ep_info = list(self.ep_info_buffer)[-latest_ep:]
                         self.contador += 1
+
                         acoes = []
                         acoes_on_state_plan = []
                         atrasos = []
-                        acoes = [acao for ep_info in self.ep_info_buffer for acao in ep_info["acoes"]]
-                        acoes_on_state_plan = [acao_on_state_plan for ep_info in self.ep_info_buffer for acao_on_state_plan in ep_info["acao_on_state_plan"]]
-                        atrasos = [atraso for ep_info in self.ep_info_buffer for atraso in ep_info["atrasos_reais"]]
+
+                        # acoes = [acao for ep_info in self.ep_info_buffer for acao in ep_info["acoes"]]
+                        acoes = [acao for ep_info in recent_ep_info for acao in ep_info["acoes"]]
+
+                        # acoes_on_state_plan = [acao_on_state_plan for ep_info in self.ep_info_buffer for acao_on_state_plan in ep_info["acao_on_state_plan"]]
+                        acoes_on_state_plan = [acao_on_state_plan for ep_info in recent_ep_info for acao_on_state_plan in ep_info["acao_on_state_plan"]]
+
+                        # atrasos = [atraso for ep_info in self.ep_info_buffer for atraso in ep_info["atrasos_reais"]]
+                        atrasos = [atraso for ep_info in recent_ep_info for atraso in ep_info["atrasos_reais"]]
+
                         # hist_acoes = np.histogram(acoes)
                         # hist_acoes_on_state_plan = np.histogram(acoes_on_state_plan)
                         # hist_atrasos = np.histogram(atrasos)
