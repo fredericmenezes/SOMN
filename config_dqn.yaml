@@ -6,6 +6,10 @@ metric:
   goal: maximize
 
 parameters:
+  objetivo:
+    value: 0
+  atraso:
+    value: -1
   batch_size:
     values: [32, 64, 128, 256]
   gamma:

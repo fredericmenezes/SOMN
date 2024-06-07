@@ -5,16 +5,13 @@ import os
 import time
 import random
 import numpy as np
-#import gym
-
-#from stable_baselines3 import PPO
-from Stablebaselines3.monitor import Monitor
 # from stable_baselines3.common.monitor import Monitor
+from Stablebaselines3.monitor import Monitor
 # from stable_baselines3.common.vec_env import DummyVecEnv, VecVideoRecorder
 from Stablebaselines3.dummy_vec_env import DummyVecEnv
 
 from Ambiente_SOMN.make_env import make_env
-from Stablebaselines3.DQN import DQN
+from Stablebaselines3.a2c import A2C
 from Ambiente_SOMN.Yard import Yard
 
 # Initialize a new wandb run
@@ -51,16 +48,16 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
     # }
 
     # Set up your default hyperparameters
-    with open("./config_dqn.yaml") as file:
+    with open("./config_a2c.yaml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
     for x in range(1):    #### ACMO NUMEROS DE EXECUÇÕES COMPETIDORAS
 
         
 
-        run1 = wandb.init(project="Sweep_DQN", #NOME DO PROJETO
+        run1 = wandb.init(project="Sweep_A2C", #NOME DO PROJETO
                           config=config,
-                          group="DQN", #GRUPOS A SEREM ADCIONADOS NO WANDB
+                          group="A2C", #GRUPOS A SEREM ADCIONADOS NO WANDB
 #                          name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
                         #   name=f"PPO (sintonia 1)",
                           save_code=True,
@@ -71,21 +68,18 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
         config = wandb.config
         env1 = DummyVecEnv([lambda: make_env(config.atraso, config.objetivo)])
 
-        model = DQN(
+        model = A2C(
             policy="MultiInputPolicy",
             env=env1,
-            batch_size=config.batch_size,
-            gamma=config.gamma,
             learning_rate=config.learning_rate,
-            buffer_size=config.buffer_size,
-            learning_starts=config.learning_starts,
-            target_update_interval=config.target_update_interval,
-            train_freq=config.train_freq,
-            gradient_steps=config.gradient_steps,
-            exploration_fraction=config.exploration_fraction,
-            # exploration_initial_eps=config.exploration_initial_eps,
-            exploration_final_eps=config.exploration_final_eps,
+            n_steps=config.n_steps,
+            gamma=config.gamma,
+            gae_lambda=config.gae_lambda,
+            ent_coef=config.ent_coef,
+            vf_coef=config.vf_coef,
             max_grad_norm=config.max_grad_norm,
+            rms_prop_eps=1e-5,  # Adicionando parâmetro específico do A2C
+            use_rms_prop=True,  # Adicionando parâmetro específico do A2C
             verbose=0,
             device='cpu',
             tensorboard_log=f"runs/{run1.id}"
@@ -96,5 +90,5 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
         model.learn(total_timesteps = 1_000_000)
         
         # 1000 e verificar o tempo
-        model.save(os.path.join(wandb.run.dir, f"Sweep_DQN_exp_{experimento:02d} (atraso = {atraso:02d}) run_{x + 1:02d}"))
+        model.save(os.path.join(wandb.run.dir, f"Sweep_A2C_exp_{experimento:02d} (atraso = {atraso:02d}) run_{x + 1:02d}"))
         wandb.finish()

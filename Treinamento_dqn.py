@@ -86,7 +86,7 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
             config=config_DQN,
             group=f"priorizando {objetivo[config_DQN['objetivo']]}", #GRUPOS A SEREM ADCIONADOS NO WANDB
         #   name=f"PPO (teste 12, atraso = {atraso:02d}, run: {x + 1:02d})",
-            name=f"DQN (teste 01, experimento {experimento:02d}, run {x + 1:02d})",
+            name=f"DQN (teste 02, experimento {experimento:02d}, run {x + 1:02d})",
         #   name="run_test_SU", #NOME DA EXECUÇÃO
             save_code=True,
             reinit=True
