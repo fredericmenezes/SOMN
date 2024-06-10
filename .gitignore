@@ -1,6 +1,8 @@
 # Byte-compiled / optimized / DLL files
-__pycache__/
-__pycache__/
+Ambiente_SOMN/__pycache__/
+JobShop/__pycache__/
+Seed/__pycache__/
+Stablebaselines3/__pycache__
 *.py[cod]
 
 # Weights and Biases
