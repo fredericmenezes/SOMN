@@ -2,7 +2,7 @@
 Ambiente_SOMN/__pycache__/
 JobShop/__pycache__/
 Seed/__pycache__/
-Stablebaselines3/__pycache__
+Stablebaselines3/__pycache__/
 *.py[cod]
 
 # Weights and Biases
