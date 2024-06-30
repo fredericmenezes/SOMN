@@ -75,17 +75,17 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
         model = RecurrentPPO(
             policy="MultiInputLstmPolicy",
             env=env1,
-            learning_rate=config.learning_rate,
-            n_steps=config.n_steps,
             batch_size=config.batch_size,
-            n_epochs=config.n_epochs,
+            n_steps=config.n_steps,
             gamma=config.gamma,
-            gae_lambda=config.gae_lambda,
-            clip_range=config.clip_range,
-            # clip_range_vf=config.clip_range_vf,
+            learning_rate=config.learning_rate,
             ent_coef=config.ent_coef,
-            vf_coef=config.vf_coef,
+            clip_range=config.clip_range,
+            n_epochs=config.n_epochs,
+            gae_lambda=config.gae_lambda,
             max_grad_norm=config.max_grad_norm,
+            vf_coef=config.vf_coef,
+            # clip_range_vf=config.clip_range_vf,
             target_kl=config.target_kl,
             #stats_window_size=config.stats_window_size,
             verbose=0,
@@ -100,5 +100,5 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
         model.learn(total_timesteps = config.n_steps * (multiplicador_passos + 1))
         
         # 1000 e verificar o tempo
-        model.save(os.path.join(wandb.run.dir, "model_lucro"))
+        model.save(os.path.join(wandb.run.dir, "model_PPO_lstm_lucro"))
         wandb.finish()
