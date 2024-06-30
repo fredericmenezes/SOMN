@@ -52,7 +52,7 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
     # }
 
     # Set up your default hyperparameters
-    with open("./config_ppo_lstm.yam") as file:
+    with open("./config_ppo_lstm.yaml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
     for x in range(1):    #### ACMO NUMEROS DE EXECUÇÕES COMPETIDORAS
