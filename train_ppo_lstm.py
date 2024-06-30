@@ -15,7 +15,8 @@ from Stablebaselines3.monitor import Monitor
 from Stablebaselines3.dummy_vec_env import DummyVecEnv
 
 from Ambiente_SOMN.make_env import make_env
-from Stablebaselines3.PPO import PPO
+# from Stablebaselines3.PPO import PPO
+from Sb3_contrib.ppo_recurrent.ppo_recurrent import RecurrentPPO
 from Ambiente_SOMN.Yard import Yard
 
 # Initialize a new wandb run
@@ -33,7 +34,9 @@ from Seed.Seed import seed_everything
 
 #atraso:int=None
 # objetivo = ["Lucro", "Variabilidade", "Sustentabiliade"]
+experimento = 0
 for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
+    experimento += 1
 #    atraso = None
     # config_PPO = {
     #     'objetivo': 2, # 0: lucro, 1: variabilidade, 2: sustentabilidade
@@ -49,16 +52,16 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
     # }
 
     # Set up your default hyperparameters
-    with open("./config2.yaml") as file:
+    with open("./config_ppo_lstm.yam") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
     for x in range(1):    #### ACMO NUMEROS DE EXECUÇÕES COMPETIDORAS
 
         
 
-        run1 = wandb.init(project="Sweep_PPO_exp_01", #NOME DO PROJETO
+        run1 = wandb.init(project="Sweep_PPO_Recurrent", #NOME DO PROJETO
                           config=config,
-                          group="Priorizando Lucro", #GRUPOS A SEREM ADCIONADOS NO WANDB
+                          group="PPO_Recurrent", #GRUPOS A SEREM ADCIONADOS NO WANDB
 #                          name=f'custom-PPO-atraso_{atraso:02d}-run_{x+1:02d}',
                         #   name=f"PPO (sintonia 1)",
                           save_code=True,
@@ -69,8 +72,8 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
         config = wandb.config
         env1 = DummyVecEnv([lambda: make_env(config.atraso, config.objetivo)])
 
-        model = PPO(
-            policy="MultiInputPolicy",
+        model = RecurrentPPO(
+            policy="MultiInputLstmPolicy",
             env=env1,
             learning_rate=config.learning_rate,
             n_steps=config.n_steps,
