@@ -86,7 +86,7 @@ for atraso in range(-1,0,10):  ### ACMO USAR UMA COMBINAÇÃO QUE DESABILITE
             max_grad_norm=config.max_grad_norm,
             vf_coef=config.vf_coef,
             # clip_range_vf=config.clip_range_vf,
-            target_kl=config.target_kl,
+            # target_kl=config.target_kl,
             #stats_window_size=config.stats_window_size,
             verbose=0,
             #seed = 2023,
