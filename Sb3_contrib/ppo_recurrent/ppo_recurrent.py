@@ -1,3 +1,4 @@
+import wandb
 from copy import deepcopy
 from typing import Any, ClassVar, Dict, Optional, Type, TypeVar, Union
 
@@ -11,7 +12,7 @@ from stable_baselines3.common.callbacks import BaseCallback
 from Stablebaselines3.OnPolicyAlgirithm import OnPolicyAlgorithm
 from stable_baselines3.common.policies import BasePolicy
 from stable_baselines3.common.type_aliases import GymEnv, MaybeCallback, Schedule
-from stable_baselines3.common.utils import explained_variance, get_schedule_fn, obs_as_tensor
+from stable_baselines3.common.utils import explained_variance, get_schedule_fn, obs_as_tensor, safe_mean
 from stable_baselines3.common.vec_env import VecEnv
 
 from sb3_contrib.common.recurrent.buffers import RecurrentDictRolloutBuffer, RecurrentRolloutBuffer
@@ -443,6 +444,24 @@ class RecurrentPPO(OnPolicyAlgorithm):
         self.logger.record("train/clip_range", clip_range)
         if self.clip_range_vf is not None:
             self.logger.record("train/clip_range_vf", clip_range_vf)
+
+        # --------- WandB Log ----------- #
+        wandb.log({'entropy_loss': np.mean(entropy_losses), 'timesteps': self.num_timesteps})
+        wandb.log({'policy_gradient_loss': np.mean(pg_losses), 'timesteps': self.num_timesteps})
+        wandb.log({'value_loss': np.mean(value_losses), 'timesteps': self.num_timesteps})
+        wandb.log({'approx_kl': np.mean(approx_kl_divs), 'timesteps': self.num_timesteps})
+        wandb.log({'clip_fraction': np.mean(clip_fractions), 'timesteps': self.num_timesteps})
+        wandb.log({'loss': loss.item(), 'timesteps': self.num_timesteps})
+        wandb.log({'explained_variance': explained_var, 'timesteps': self.num_timesteps})
+
+        acoes = actions.tolist()
+        wandb.log({'Actions':  np.mean(acoes),
+                   'timesteps': self.num_timesteps,
+                   'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
+                   'value_loss': np.mean(value_losses),
+                   'loss': loss.item()
+                   }
+        )
 
     def learn(
         self: SelfRecurrentPPO,

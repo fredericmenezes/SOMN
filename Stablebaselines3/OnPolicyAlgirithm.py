@@ -315,18 +315,26 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             #     wandb.log({"patio_on_state_plan": patio,"timesteps": self.num_timesteps})
 
             if self.num_timesteps > 1 and self.contador == 0 or\
-                self.num_timesteps > 10000 and self.contador == 1 or\
-                self.num_timesteps > 50000 and self.contador == 2 or\
-                self.num_timesteps > 100000 and self.contador == 3 or\
-                self.num_timesteps > 200000 and self.contador == 4 or\
-                self.num_timesteps > 300000 and self.contador == 5 or\
-                self.num_timesteps > 400000 and self.contador == 6 or\
-                self.num_timesteps > 500000 and self.contador == 7 or\
-                self.num_timesteps > 600000 and self.contador == 8 or\
-                self.num_timesteps > 700000 and self.contador == 9 or\
-                self.num_timesteps > 800000 and self.contador == 10 or\
-                self.num_timesteps > 900000 and self.contador == 11 or\
-                self.num_timesteps > 1000000 and self.contador == 12:
+                self.num_timesteps > 5000 and self.contador == 1 or\
+                self.num_timesteps > 6000 and self.contador == 2 or\
+                self.num_timesteps > 7000 and self.contador == 3 or\
+                self.num_timesteps > 8000 and self.contador == 4 or\
+                self.num_timesteps > 9000 and self.contador == 5 or\
+                self.num_timesteps > 10000 and self.contador == 6 or\
+                self.num_timesteps > 20000 and self.contador == 7 or\
+                self.num_timesteps > 30000 and self.contador == 8 or\
+                self.num_timesteps > 40000 and self.contador == 9 or\
+                self.num_timesteps > 50000 and self.contador == 10 or\
+                self.num_timesteps > 100000 and self.contador == 11 or\
+                self.num_timesteps > 200000 and self.contador == 12 or\
+                self.num_timesteps > 300000 and self.contador == 13 or\
+                self.num_timesteps > 400000 and self.contador == 14 or\
+                self.num_timesteps > 500000 and self.contador == 15 or\
+                self.num_timesteps > 600000 and self.contador == 16 or\
+                self.num_timesteps > 700000 and self.contador == 17 or\
+                self.num_timesteps > 800000 and self.contador == 18 or\
+                self.num_timesteps > 900000 and self.contador == 19 or\
+                self.num_timesteps > 1000000 and self.contador == 20:
             # if self.num_timesteps > 1 and self.num_timesteps < 5000 or\
             #    self.num_timesteps > 9000 and self.num_timesteps < 10000 or\
             #    self.num_timesteps > 49000 and self.num_timesteps < 50000 or\

@@ -1,6 +1,7 @@
 import os
 import yaml
 import wandb
+import random
 
 import numpy as np
 from torch import nn as nn
@@ -16,7 +17,9 @@ from Ambiente_SOMN.make_env import make_env
 from stable_baselines3.common.evaluation import evaluate_policy
 from Ambiente_SOMN.Yard import Yard
 
-
+def seed_everything(seed):
+    random.seed(seed)
+    np.random.seed(seed)
 
 def config_alg_parameters(env, alg_class, alg_name, config, run):
     
@@ -96,20 +99,21 @@ def train_and_select_best(alg_class, alg_name, config, n_evaluations, total_time
 
     
     for i in range(n_evaluations):
+        wandb_config = config
 
         run = wandb.init(
-             project=config['projeto'],
-             config = config,
-             group = config['grupo'],
+             project=wandb_config['projeto'],
+             config = wandb_config,
+             group = wandb_config['grupo'],
              name = f"{alg_name}_run_{i + 1:02d}",
              save_code = True,
              reinit = True
         )
-        config = wandb.config
-        env = DummyVecEnv([lambda: make_env(config.atraso, config.objetivo)])
+        wandb_config = wandb.config
+        env = DummyVecEnv([lambda: make_env(wandb_config.atraso, wandb_config.objetivo)])
 
         print(f"Training {alg_name} model {i+1}/{n_evaluations}")
-        model = config_alg_parameters(env, alg_class, alg_name, config, run)
+        model = config_alg_parameters(env, alg_class, alg_name, wandb_config, run)
         model.learn(total_timesteps=total_timesteps)
         
         mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=10)
@@ -120,10 +124,10 @@ def train_and_select_best(alg_class, alg_name, config, n_evaluations, total_time
             best_mean_reward = mean_reward
             best_model = model
             num = i + 1
-        model.save(os.path.join(wandb.run.dir, f"{alg_name}_run_{i + 1:02d}"))
-        
-    
+
+        model.save(os.path.join("wandb_models", f"{alg_name}_run_{i + 1:02d}"))
         wandb.finish()
+
     best_model.save(os.path.join("best_model", f"{alg_name}_run_{i + 1:02d}"))
 
     return best_model, num
@@ -131,6 +135,8 @@ def train_and_select_best(alg_class, alg_name, config, n_evaluations, total_time
 
 if __name__ == "__main__":
     
+    seed_everything(2024)
+
     n_evaluations = 5
     total_timesteps = 1_000_000
 

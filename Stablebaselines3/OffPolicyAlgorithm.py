@@ -296,7 +296,7 @@ class OffPolicyAlgorithm(BaseAlgorithm):
         self: SelfOffPolicyAlgorithm,
         total_timesteps: int,
         callback: MaybeCallback = None,
-        log_interval: int = 4,
+        log_interval: int = 1,
         tb_log_name: str = "run",
         reset_num_timesteps: bool = True,
         progress_bar: bool = False,
@@ -412,18 +412,26 @@ class OffPolicyAlgorithm(BaseAlgorithm):
             wandb.log({"acoes": safe_mean([acoes for ep_info in self.ep_info_buffer for acoes in ep_info["acoes"]]), "timesteps": self.num_timesteps})
             wandb.log({"numero_de_Features": safe_mean([f for ep_info in self.ep_info_buffer for f in ep_info["F"]]), 'timesteps': self.num_timesteps})
             if self.num_timesteps > 1 and self.contador == 0 or\
-                self.num_timesteps > 10000 and self.contador == 1 or\
-                self.num_timesteps > 50000 and self.contador == 2 or\
-                self.num_timesteps > 100000 and self.contador == 3 or\
-                self.num_timesteps > 200000 and self.contador == 4 or\
-                self.num_timesteps > 300000 and self.contador == 5 or\
-                self.num_timesteps > 400000 and self.contador == 6 or\
-                self.num_timesteps > 500000 and self.contador == 7 or\
-                self.num_timesteps > 600000 and self.contador == 8 or\
-                self.num_timesteps > 700000 and self.contador == 9 or\
-                self.num_timesteps > 800000 and self.contador == 10 or\
-                self.num_timesteps > 900000 and self.contador == 11 or\
-                self.num_timesteps > 1000000 and self.contador == 12:
+                self.num_timesteps > 5000 and self.contador == 1 or\
+                self.num_timesteps > 6000 and self.contador == 2 or\
+                self.num_timesteps > 7000 and self.contador == 3 or\
+                self.num_timesteps > 8000 and self.contador == 4 or\
+                self.num_timesteps > 9000 and self.contador == 5 or\
+                self.num_timesteps > 10000 and self.contador == 6 or\
+                self.num_timesteps > 20000 and self.contador == 7 or\
+                self.num_timesteps > 30000 and self.contador == 8 or\
+                self.num_timesteps > 40000 and self.contador == 9 or\
+                self.num_timesteps > 50000 and self.contador == 10 or\
+                self.num_timesteps > 100000 and self.contador == 11 or\
+                self.num_timesteps > 200000 and self.contador == 12 or\
+                self.num_timesteps > 300000 and self.contador == 13 or\
+                self.num_timesteps > 400000 and self.contador == 14 or\
+                self.num_timesteps > 500000 and self.contador == 15 or\
+                self.num_timesteps > 600000 and self.contador == 16 or\
+                self.num_timesteps > 700000 and self.contador == 17 or\
+                self.num_timesteps > 800000 and self.contador == 18 or\
+                self.num_timesteps > 900000 and self.contador == 19 or\
+                self.num_timesteps > 1000000 and self.contador == 20:
 
                 # latest_ep = int(self.train_freq.frequency)
                 # recent_ep_info = list(self.ep_info_buffer)[-latest_ep:]
@@ -465,6 +473,7 @@ class OffPolicyAlgorithm(BaseAlgorithm):
                     data_table = table_atrasos,
                     fields = fields_acoes)
                 wandb.log({"atrasos (timesteps = " + str(self.num_timesteps) + ")": custom_atrasos_histogram1, "acoes (timesteps = " + str(self.num_timesteps) + ")": custom_atrasos_histogram2})
+
         self.logger.record("time/fps", fps)
         self.logger.record("time/time_elapsed", int(time_elapsed), exclude="tensorboard")
         self.logger.record("time/total_timesteps", self.num_timesteps, exclude="tensorboard")
@@ -645,6 +654,13 @@ class OffPolicyAlgorithm(BaseAlgorithm):
                     # Log training infos
                     if log_interval is not None and self._episode_num % log_interval == 0:
                         self._dump_logs()
+                        acoes = actions.tolist()
+                        wandb.log({'Actions':  np.mean(acoes),
+                                'timesteps': self.num_timesteps,
+                                'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
+                                }
+                        )
+
         callback.on_rollout_end()
 
         return RolloutReturn(num_collected_steps * env.num_envs, num_collected_episodes, continue_training)
