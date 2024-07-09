@@ -327,7 +327,7 @@ class PPO(OnPolicyAlgorithm):
         wandb.log({'explained_variance': explained_var, 'timesteps': self.num_timesteps})
 
         # Customizar um grafico para as acoes no tempo
-        # acoes = actions.tolist()
+        acoes = actions.tolist()
         # is_None = lambda lista: lista if any(lista) else 0
 
 
@@ -336,13 +336,13 @@ class PPO(OnPolicyAlgorithm):
         #            }
         # )
 
-        # wandb.log({'Actions':  np.mean(acoes),
-        #            'timesteps': self.num_timesteps,
-        #            'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
-        #            'value_loss': np.mean(value_losses),
-        #            'loss': loss.item()
-        #            }
-        # )
+        wandb.log({'Actions':  np.mean(acoes),
+                   'timesteps': self.num_timesteps,
+                   'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
+                   'value_loss': np.mean(value_losses),
+                   'loss': loss.item()
+                   }
+        )
 
         # wandb.log({'Yard PPO': (Yard.cont/Yard.Y)*100,
         #            'timesteps': self.num_timesteps,

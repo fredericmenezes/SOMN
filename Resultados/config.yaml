@@ -1,0 +1,811 @@
+wandb_version: 1
+
+atraso:
+  desc: null
+  value: -1
+batch_size:
+  desc: null
+  value: 128
+buffer_size:
+  desc: null
+  value: 200000
+exploration_final_eps:
+  desc: null
+  value: 0.04288701052307786
+exploration_fraction:
+  desc: null
+  value: 0.2453438645250582
+gamma:
+  desc: null
+  value: 0.9449903680839068
+gradient_steps:
+  desc: null
+  value: 8
+learning_rate:
+  desc: null
+  value: 2.379400483008385e-05
+learning_starts:
+  desc: null
+  value: 10000
+max_grad_norm:
+  desc: null
+  value: 1.915553030648168
+objetivo:
+  desc: null
+  value: 0
+target_update_interval:
+  desc: null
+  value: 1000
+train_freq:
+  desc: null
+  value: 10
+program:
+  desc: null
+  value: train_dqn.py
+method:
+  desc: null
+  value: bayes
+name:
+  desc: null
+  value: Sweep_DQN
+metric:
+  desc: null
+  value:
+    name: mean_reward_test
+    goal: maximize
+parameters:
+  desc: null
+  value:
+    objetivo:
+      value: 0
+    atraso:
+      value: -1
+    batch_size:
+      values:
+      - 32
+      - 64
+      - 128
+      - 256
+    gamma:
+      min: 0.8
+      max: 0.999
+    learning_rate:
+      min: 1.0e-05
+      max: 0.01
+    buffer_size:
+      values:
+      - 10000
+      - 50000
+      - 100000
+      - 200000
+    learning_starts:
+      values:
+      - 1000
+      - 5000
+      - 10000
+    target_update_interval:
+      values:
+      - 100
+      - 500
+      - 1000
+    train_freq:
+      values:
+      - 1
+      - 4
+      - 10
+    gradient_steps:
+      values:
+      - 1
+      - 4
+      - 8
+    exploration_fraction:
+      min: 0.1
+      max: 0.3
+    exploration_final_eps:
+      min: 0.01
+      max: 0.05
+    max_grad_norm:
+      min: 0.5
+      max: 2.0
+_wandb:
+  desc: null
+  value:
+    code_path: code/train_dqn.py
+    python_version: 3.10.12
+    cli_version: 0.15.12
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1718259499.61058
+    t:
+      1:
+      - 1
+      - 55
+      2:
+      - 1
+      - 55
+      3:
+      - 2
+      - 16
+      - 23
+      - 34
+      - 37
+      4: 3.10.12
+      5: 0.15.12
+      8:
+      - 3
+      - 5
+      13: windows-amd64
+    visualize:
+      acoes (timesteps = 400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: acoes
+            title: Ações timesteps = 400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: acoes (timesteps = 400)_table
+                fields: []
+      atrasos (timesteps = 400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: atrasos
+            title: Atrasos reais timesteps = 400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: atrasos (timesteps = 400)_table
+                fields: []
+      acoes (timesteps = 10400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: acoes
+            title: Ações timesteps = 10400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: acoes (timesteps = 10400)_table
+                fields: []
+      atrasos (timesteps = 10400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: atrasos
+            title: Atrasos reais timesteps = 10400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: atrasos (timesteps = 10400)_table
+                fields: []
+      acoes (timesteps = 50400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: acoes
+            title: Ações timesteps = 50400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: acoes (timesteps = 50400)_table
+                fields: []
+      atrasos (timesteps = 50400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: atrasos
+            title: Atrasos reais timesteps = 50400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: atrasos (timesteps = 50400)_table
+                fields: []
+      acoes (timesteps = 100400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: acoes
+            title: Ações timesteps = 100400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: acoes (timesteps = 100400)_table
+                fields: []
+      atrasos (timesteps = 100400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: atrasos
+            title: Atrasos reais timesteps = 100400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: atrasos (timesteps = 100400)_table
+                fields: []
+      acoes (timesteps = 200400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: acoes
+            title: Ações timesteps = 200400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: acoes (timesteps = 200400)_table
+                fields: []
+      atrasos (timesteps = 200400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: atrasos
+            title: Atrasos reais timesteps = 200400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: atrasos (timesteps = 200400)_table
+                fields: []
+      acoes (timesteps = 300400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: acoes
+            title: Ações timesteps = 300400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: acoes (timesteps = 300400)_table
+                fields: []
+      atrasos (timesteps = 300400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: atrasos
+            title: Atrasos reais timesteps = 300400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: atrasos (timesteps = 300400)_table
+                fields: []
+      acoes (timesteps = 400400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: acoes
+            title: Ações timesteps = 400400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: acoes (timesteps = 400400)_table
+                fields: []
+      atrasos (timesteps = 400400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: atrasos
+            title: Atrasos reais timesteps = 400400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: atrasos (timesteps = 400400)_table
+                fields: []
+      acoes (timesteps = 500400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: acoes
+            title: Ações timesteps = 500400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: acoes (timesteps = 500400)_table
+                fields: []
+      atrasos (timesteps = 500400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: atrasos
+            title: Atrasos reais timesteps = 500400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: atrasos (timesteps = 500400)_table
+                fields: []
+      acoes (timesteps = 600400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: acoes
+            title: Ações timesteps = 600400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: acoes (timesteps = 600400)_table
+                fields: []
+      atrasos (timesteps = 600400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: atrasos
+            title: Atrasos reais timesteps = 600400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: atrasos (timesteps = 600400)_table
+                fields: []
+      acoes (timesteps = 700400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: acoes
+            title: Ações timesteps = 700400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: acoes (timesteps = 700400)_table
+                fields: []
+      atrasos (timesteps = 700400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: atrasos
+            title: Atrasos reais timesteps = 700400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: atrasos (timesteps = 700400)_table
+                fields: []
+      acoes (timesteps = 800400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: acoes
+            title: Ações timesteps = 800400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: acoes (timesteps = 800400)_table
+                fields: []
+      atrasos (timesteps = 800400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: atrasos
+            title: Atrasos reais timesteps = 800400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: atrasos (timesteps = 800400)_table
+                fields: []
+      acoes (timesteps = 900400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: acoes
+            title: Ações timesteps = 900400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: acoes (timesteps = 900400)_table
+                fields: []
+      atrasos (timesteps = 900400):
+        panel_type: Vega2
+        panel_config:
+          panelDefId: lacmor/histograma_preset_9
+          fieldSettings:
+            value: atrasos
+            title: Atrasos reais timesteps = 900400
+          stringSettings: {}
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: atrasos (timesteps = 900400)_table
+                fields: []

@@ -409,6 +409,7 @@ class OffPolicyAlgorithm(BaseAlgorithm):
             wandb.log({"Sutentabilidade":safe_mean([ep_info["rw_su"] for ep_info in self.ep_info_buffer]),"timesteps": self.num_timesteps})
             wandb.log({"VA": safe_mean([va for ep_info in self.ep_info_buffer for va in ep_info["VA"]]), "timesteps": self.num_timesteps})
             wandb.log({"SU": safe_mean([su for ep_info in self.ep_info_buffer for su in ep_info["SU"]]), "timesteps": self.num_timesteps})
+            wandb.log({"acoes": safe_mean([acoes for ep_info in self.ep_info_buffer for acoes in ep_info["acoes"]]), "timesteps": self.num_timesteps})
             wandb.log({"numero_de_Features": safe_mean([f for ep_info in self.ep_info_buffer for f in ep_info["F"]]), 'timesteps': self.num_timesteps})
             if self.num_timesteps > 1 and self.contador == 0 or\
                 self.num_timesteps > 10000 and self.contador == 1 or\

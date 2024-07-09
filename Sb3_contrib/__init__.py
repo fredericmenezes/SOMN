@@ -1,11 +1,11 @@
 import os
 
-from sb3_contrib.ars import ARS
-from sb3_contrib.ppo_mask import MaskablePPO
-from sb3_contrib.ppo_recurrent import RecurrentPPO
-from sb3_contrib.qrdqn import QRDQN
-from sb3_contrib.tqc import TQC
-from sb3_contrib.trpo import TRPO
+from Sb3_contrib.ars import ARS
+from Sb3_contrib.ppo_mask import MaskablePPO
+from Sb3_contrib.ppo_recurrent import RecurrentPPO
+from Sb3_contrib.qrdqn import QRDQN
+from Sb3_contrib.tqc import TQC
+from Sb3_contrib.trpo import TRPO
 
 # Read version from file
 version_file = os.path.join(os.path.dirname(__file__), "version.txt")

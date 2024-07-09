@@ -297,6 +297,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             #            'timesteps': self.num_timesteps})
             wandb.log({"VA": safe_mean([va for ep_info in self.ep_info_buffer for va in ep_info["VA"]]), "timesteps": self.num_timesteps})
             wandb.log({"SU": safe_mean([su for ep_info in self.ep_info_buffer for su in ep_info["SU"]]), "timesteps": self.num_timesteps})
+            wandb.log({"acoes": safe_mean([acoes for ep_info in self.ep_info_buffer for acoes in ep_info["acoes"]]), "timesteps": self.num_timesteps})
             # if self.num_timesteps == 1000000:
             #     F = []
             #     F = [num_features for ep_info in self.ep_info_buffer for num_features in ep_info["F"]]

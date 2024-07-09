@@ -1,0 +1,19 @@
+Melhores parametros
+
+PPO Recurrent
+	runs:
+		- silvery-sweep-198
+		- peach-sweep-74
+		- ruby-sweep-161
+PPO
+	runs:
+		- autumn-sweep-171
+		- deep-sweep-164
+		- iconic-sweep-125
+DQN
+	runs:
+		- bumbling-sweep-110
+		- fresh-sweep-109
+		- sandy-sweep-206
+		
+		
