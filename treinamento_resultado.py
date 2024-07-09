@@ -17,9 +17,9 @@ from Ambiente_SOMN.make_env import make_env
 from stable_baselines3.common.evaluation import evaluate_policy
 from Ambiente_SOMN.Yard import Yard
 
-def seed_everything(seed):
-    random.seed(seed)
-    np.random.seed(seed)
+# def seed_everything(seed):
+#     random.seed(seed)
+#     np.random.seed(seed)
 
 def config_alg_parameters(env, alg_class, alg_name, config, run):
     
@@ -105,7 +105,7 @@ def train_and_select_best(alg_class, alg_name, config, n_evaluations, total_time
              project=wandb_config['projeto'],
              config = wandb_config,
              group = wandb_config['grupo'],
-             name = f"{alg_name}_comp2_run_{i + 1:02d}",
+             name = f"{alg_name}_comp1_run_{i + 1:02d}",
              save_code = True,
              reinit = True
         )
@@ -126,17 +126,17 @@ def train_and_select_best(alg_class, alg_name, config, n_evaluations, total_time
             best_model = model
             num = i + 1
 
-        model.save(os.path.join("wandb_models", f"{alg_name}_comp2_run_{i + 1:02d}"))
+        model.save(os.path.join("wandb_models", f"{alg_name}_comp1_run_{i + 1:02d}"))
         wandb.finish()
 
-    best_model.save(os.path.join("best_model", f"{alg_name}_comp2_run_{i + 1:02d}"))
+    best_model.save(os.path.join("best_model", f"{alg_name}_comp1_run_{i + 1:02d}"))
 
     return best_model, best_mean_reward, num
 
 
 if __name__ == "__main__":
     
-    seed_everything(2024)
+    # seed_everything(2024)
 
     n_evaluations = 1
     total_timesteps = 1_000_000

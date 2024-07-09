@@ -14,5 +14,6 @@
             }
         ],
         "compounds": []
-    }
+    },
+    "debugpy.debugJustMyCode": false
 }

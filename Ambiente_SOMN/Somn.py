@@ -48,6 +48,10 @@ OUT_TIME = False
 
 FINAL_STATES = [REJECTED_W_WASTE, REJECTED, STORED, DELIVERED]
 
+def seed_everything(seed):
+    random.seed(seed)
+    np.random.seed(seed)
+
 
 class Somn(Env):
 
@@ -70,6 +74,8 @@ class Somn(Env):
         objetivo: int
     ):
         super(Somn).__init__()
+
+        seed_everything(2024)
 
         Somn.obj_list = ['pr', 'va', 'su']
         Somn.priorq = [heapdict() for objetivo in Somn.obj_list]
