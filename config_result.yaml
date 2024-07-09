@@ -30,7 +30,7 @@ ppo:
   learning_rate: 0.012493229804787403
   max_grad_norm: 0.7643398933249385
   n_epochs: 25
-  n_steps: 3840
+  n_steps: 128
   objetivo: 0
   target_kl: 0.011310485292843255
   vf_coef: 0.6940340633011972
@@ -47,7 +47,7 @@ dqn:
   gamma: 0.9449903680839068
   gradient_steps: 8
   learning_rate: 2.379400483008385e-05
-  learning_starts: 10000
+  learning_starts: 128
   max_grad_norm: 1.915553030648168
   objetivo: 0
   target_update_interval: 1000

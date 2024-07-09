@@ -105,7 +105,7 @@ def train_and_select_best(alg_class, alg_name, config, n_evaluations, total_time
              project=wandb_config['projeto'],
              config = wandb_config,
              group = wandb_config['grupo'],
-             name = f"{alg_name}_comp1_run_{i + 1:02d}",
+             name = f"{alg_name}_comp4_run_{i + 1:02d}",
              save_code = True,
              reinit = True
         )
@@ -126,10 +126,10 @@ def train_and_select_best(alg_class, alg_name, config, n_evaluations, total_time
             best_model = model
             num = i + 1
 
-        model.save(os.path.join("wandb_models", f"{alg_name}_comp1_run_{i + 1:02d}"))
+        model.save(os.path.join("wandb_models", f"{alg_name}_comp4_run_{i + 1:02d}"))
         wandb.finish()
 
-    best_model.save(os.path.join("best_model", f"{alg_name}_comp1_run_{i + 1:02d}"))
+    best_model.save(os.path.join("best_model", f"{alg_name}_comp4_run_{i + 1:02d}"))
 
     return best_model, best_mean_reward, num
 
