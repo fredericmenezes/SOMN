@@ -244,7 +244,7 @@ def train_and_select_best(alg_class, alg_name, config, n_evaluations, total_time
             num = i + 1
 
         model.save(os.path.join("wandb_models", f"{alg_name}_run_{i + 1:02d}"))
-        # wandb.finish()
+        wandb.finish()
 
     best_model.save(os.path.join("best_model", f"{alg_name}_run_{num:02d}"))
 
