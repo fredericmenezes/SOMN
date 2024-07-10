@@ -52,3 +52,10 @@ dqn:
   objetivo: 0
   target_update_interval: 1000
   train_freq: 10
+
+randomico:
+  projeto: 'Resultados_dissertacao'
+  grupo: 'randomico'
+  atraso: -1
+  objetivo: 0
+  buffer_size: 200000

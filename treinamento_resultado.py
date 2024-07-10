@@ -156,18 +156,17 @@ if __name__ == "__main__":
                                                              config["ppo_lstm"], 
                                                              n_evaluations, 
                                                              total_timesteps)
-    # best_dqn, num_best_dqn = train_and_select_best(DQN, 
-    #                                                "dqn", 
-    #                                                config["dqn"], 
-    #                                                n_evaluations, 
-    #                                                total_timesteps)
-    # best_ppo, num_best_ppo = train_and_select_best(PPO, 
-    #                                                "ppo", 
-    #                                                config["ppo"], 
-    #                                                n_evaluations, 
-    #                                                total_timesteps)
+    best_dqn, best_mean_reward, num_best_dqn = train_and_select_best(DQN, 
+                                                   "dqn", 
+                                                   config["dqn"], 
+                                                   n_evaluations, 
+                                                   total_timesteps)
+    best_ppo, best_mean_reward, num_best_ppo = train_and_select_best(PPO, 
+                                                   "ppo", 
+                                                   config["ppo"], 
+                                                   n_evaluations, 
+                                                   total_timesteps)
     
-    # print(f" Os melhores modelos são: {num_best_ppo_lstm}, {num_best_dqn}, {num_best_ppo}")
-    print(f" O  modelo gerado é: {num_best_ppo_lstm} com o melhor reward de {best_mean_reward} em média.")
+    print(f" Os melhores modelos são: PPO Recorrente-{num_best_ppo_lstm}, DQN-{num_best_dqn}, PPO-{num_best_ppo}")
 
 
