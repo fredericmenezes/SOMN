@@ -175,7 +175,8 @@ class Somn(Env):
         self.lb_TP = 2
         p = [poisson.rvs(mu=self.ub_LT + MAX_LOAD) for _ in range(10000)]
         #test_fred: atraso
-        self.MAX_ATRASO = max(p) + 30
+        self.controle_atraso_real = 20
+        self.MAX_ATRASO = max(p) + self.controle_atraso_real
         self.ub_TP = self.ub_time + self.ub_LT + self.MAX_ATRASO
         
         # CO varia de 0 a (MAXFT-1) * (MAXEU-1) * M
@@ -460,7 +461,7 @@ class Somn(Env):
                         self.OU += self.DE[i].FT  ## CONSOME OS RECURSOS
                         Demand.load = Demand.load + 1
                         #test_fred: aumentar o atraso real + 30
-                        self.DE[i].real_LT = poisson.rvs(mu=(self.DE[i].LT + Demand.load))+30 # by_frederic
+                        self.DE[i].real_LT = poisson.rvs(mu=(self.DE[i].LT + Demand.load)) + self.controle_atraso_real # by_frederic
                         self.DE[i].TP = t + self.DE[i].real_LT
                         self.DE[i].atraso_real = abs(self.DE[i].real_LT - self.DE[i].LT)
                         self.DE[i].err = abs(self.DE[i].action - self.DE[i].atraso_real)
