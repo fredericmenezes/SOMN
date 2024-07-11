@@ -8,8 +8,8 @@ def make_env(atraso: int, objetivo: int):
     env = Somn(
                 Y=10,
                 M=10,
-                N=10,
-                MAXDO=100,
+                N=10,       #test_fred: mudei de 10 para 50
+                MAXDO=100,  #test_fred: mudei de 100 para 500
                 MAXAM=2,
                 MAXPR=2,
                 MAXPE=10,
