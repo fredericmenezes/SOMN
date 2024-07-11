@@ -1,0 +1,17 @@
+
+
+
+Em Demand.py
+
+linha 109
+self.DO = t + self.LT + random.randint(490,Demand.MAXDO)
+
+
+Em make_env.py
+linha 11 e 12
+N=50,       #test_fred: mudei de 10 para 50
+MAXDO=500,  #test_fred: mudei de 100 para 500
+
+Em Somn.py
+linha 156
+self.ub_time = 200 #test_fred: mudei de 100 para 300
