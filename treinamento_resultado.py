@@ -105,7 +105,7 @@ def train_and_select_best(alg_class, alg_name, config, n_evaluations, total_time
              project=wandb_config['projeto'],
              config = wandb_config,
              group = wandb_config['grupo'],
-             name = f"{alg_name}_comp4_run_{i + 1:02d}",
+             name = f"{alg_name}_comp9_run_{i + 1:02d}",
              save_code = True,
              reinit = True
         )
@@ -126,10 +126,10 @@ def train_and_select_best(alg_class, alg_name, config, n_evaluations, total_time
             best_model = model
             num = i + 1
 
-        model.save(os.path.join("wandb_models", f"{alg_name}_comp4_run_{i + 1:02d}"))
+        model.save(os.path.join("wandb_models", f"{alg_name}_comp9_run_{i + 1:02d}"))
         wandb.finish()
 
-    best_model.save(os.path.join("best_model", f"{alg_name}_comp4_run_{i + 1:02d}"))
+    best_model.save(os.path.join("best_model", f"{alg_name}_comp9_run_{i + 1:02d}"))
 
     return best_model, best_mean_reward, num
 
@@ -151,22 +151,23 @@ if __name__ == "__main__":
     with open("./config_result.yaml") as file:
             config = yaml.load(file, Loader=yaml.FullLoader)
 
-    best_ppo_lstm, best_mean_reward, num_best_ppo_lstm = train_and_select_best(RecurrentPPO, 
-                                                             "ppo_lstm", 
-                                                             config["ppo_lstm"], 
-                                                             n_evaluations, 
-                                                             total_timesteps)
+    # best_ppo_lstm, best_mean_reward, num_best_ppo_lstm = train_and_select_best(RecurrentPPO, 
+    #                                                          "ppo_lstm", 
+    #                                                          config["ppo_lstm"], 
+    #                                                          n_evaluations, 
+    #                                                          total_timesteps)
     best_dqn, best_mean_reward, num_best_dqn = train_and_select_best(DQN, 
                                                    "dqn", 
                                                    config["dqn"], 
                                                    n_evaluations, 
                                                    total_timesteps)
-    best_ppo, best_mean_reward, num_best_ppo = train_and_select_best(PPO, 
-                                                   "ppo", 
-                                                   config["ppo"], 
-                                                   n_evaluations, 
-                                                   total_timesteps)
+    # best_ppo, best_mean_reward, num_best_ppo = train_and_select_best(PPO, 
+    #                                                "ppo", 
+    #                                                config["ppo"], 
+    #                                                n_evaluations, 
+    #                                                total_timesteps)
     
-    print(f" Os melhores modelos são: PPO Recorrente-{num_best_ppo_lstm}, DQN-{num_best_dqn}, PPO-{num_best_ppo}")
+    # print(f" Os melhores modelos são: {num_best_ppo_lstm}, {num_best_dqn}, {num_best_ppo}")
+    print(f" O  modelo gerado é: {num_best_dqn} com o melhor reward de {best_mean_reward} em média.")
 
 

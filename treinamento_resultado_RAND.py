@@ -7,6 +7,7 @@ from gymnasium import spaces
 
 import numpy as np
 from torch import nn as nn
+import torch
 
 from Stablebaselines3.monitor import Monitor
 from Stablebaselines3.dummy_vec_env import DummyVecEnv
@@ -22,7 +23,8 @@ from stable_baselines3.common.buffers import DictReplayBuffer, ReplayBuffer
 from stable_baselines3.her.her_replay_buffer import HerReplayBuffer
 
 from Ambiente_SOMN.make_env import make_env
-from stable_baselines3.common.evaluation import evaluate_policy
+# from stable_baselines3.common.evaluation import evaluate_policy
+from Stablebaselines3.evalue_policy import evaluate_policy
 from Ambiente_SOMN.Yard import Yard
 
 
@@ -39,7 +41,14 @@ class RandomPolicy(BasePolicy):
         pass
 
     def _predict(self, observation, deterministic=False):
-        return np.array([self.action_space.sample() for _ in range(observation_space.shape[0])])
+        # observation, vectorized_env = self.obs_to_tensor(observation)
+
+        if isinstance(observation, dict):
+            n_envs = observation[next(iter(observation.keys()))].shape[0]
+        else:
+            n_envs = observation.shape[0]
+
+        return torch.from_numpy(np.array([self.action_space.sample() for _ in range(n_envs)]))
 
 class RAND(OffPolicyAlgorithm):
     policy_aliases: ClassVar[Dict[str, Type[BasePolicy]]] = {
@@ -222,7 +231,7 @@ def train_and_select_best(alg_class, alg_name, config, n_evaluations, total_time
              project=wandb_config['projeto'],
              config = wandb_config,
              group = wandb_config['grupo'],
-             name = f"{alg_name}_run_{i + 1:02d}",
+             name = f"{alg_name}_comp9_run_{i + 1:02d}",
              save_code = True,
              reinit = True
         )
@@ -234,7 +243,7 @@ def train_and_select_best(alg_class, alg_name, config, n_evaluations, total_time
         model = config_alg_parameters(env, alg_class, alg_name, wandb_config, run)
         model.learn(total_timesteps=total_timesteps)
 
-        mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=10)
+        mean_reward, std_reward = evaluate_policy(model, model.get_env(), n_eval_episodes=10)
         print(f"Mean reward for {alg_name} model {i+1}/{n_evaluations}: {mean_reward} ± {std_reward}")
 
         
@@ -243,18 +252,18 @@ def train_and_select_best(alg_class, alg_name, config, n_evaluations, total_time
             best_model = model
             num = i + 1
 
-        model.save(os.path.join("wandb_models", f"{alg_name}_run_{i + 1:02d}"))
+        model.save(os.path.join("wandb_models", f"{alg_name}_comp9_run_{i + 1:02d}"))
         wandb.finish()
 
-    best_model.save(os.path.join("best_model", f"{alg_name}_run_{num:02d}"))
+    best_model.save(os.path.join("best_model", f"{alg_name}comp9_run_{num:02d}"))
 
-    return best_model, best_mean_reward, num
+    return best_mean_reward, num
 
 
 if __name__ == "__main__":
     
-    n_evaluations = 3
-    total_timesteps = 1_000_000
+    n_evaluations = 1
+    total_timesteps = 1
 
     # Initialize a new wandb run
     if len(wandb.patched["tensorboard"]) > 0:
@@ -288,5 +297,6 @@ if __name__ == "__main__":
                                                                 total_timesteps)
     
     # print(f" Os melhores modelos são: PPO Recorrente-{num_best_ppo_lstm}, DQN-{num_best_dqn}, PPO-{num_best_ppo}")
+    
 
 

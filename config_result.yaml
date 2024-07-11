@@ -58,4 +58,4 @@ randomico:
   grupo: 'randomico'
   atraso: -1
   objetivo: 0
-  buffer_size: 200000
+  buffer_size: 1
