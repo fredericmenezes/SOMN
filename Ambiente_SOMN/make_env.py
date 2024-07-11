@@ -18,7 +18,8 @@ def make_env(atraso: int, objetivo: int):
                 MAXTI=2,
                 MAXEU = 5, 
                 atraso=atraso,
-                objetivo=objetivo
+                objetivo=objetivo,
+                tx_penalidade=10
             )
     
     env = Monitor(env)  # record stats such as returns

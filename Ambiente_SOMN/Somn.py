@@ -71,7 +71,10 @@ class Somn(Env):
         MAXEU: int,
         #seed: int,
         atraso: int,
-        objetivo: int
+        objetivo: int,
+        tx_penalidade: int = 100,
+        controle_atraso_real: int = 5,
+        tempo_maximo: int = 200
     ):
         super(Somn).__init__()
 
@@ -108,6 +111,8 @@ class Somn(Env):
         
         self.match = np.zeros(N)
 
+        #test_fred: taxa de penalidade
+        self.tx_penalidade = tx_penalidade
         self.M = M
         self.N = N
         self.Y = Y
@@ -153,7 +158,7 @@ class Somn(Env):
         # time varia de 1 a 100 (era de 1 ate 10*MAXDO + M)
         self.lb_time = 1
         # self.ub_time = 10 * self.MAXDO + self.M
-        self.ub_time = 200 #test_fred: mudei de 100 para 200
+        self.ub_time = tempo_maximo #test_fred: mudei de 100 para 200
 
         # ST varia de -2 a 5
         self.lb_ST = -2
@@ -175,7 +180,7 @@ class Somn(Env):
         self.lb_TP = 2
         p = [poisson.rvs(mu=self.ub_LT + MAX_LOAD) for _ in range(10000)]
         #test_fred: atraso
-        self.controle_atraso_real = 20
+        self.controle_atraso_real = controle_atraso_real
         self.MAX_ATRASO = max(p) + self.controle_atraso_real
         self.ub_TP = self.ub_time + self.ub_LT + self.MAX_ATRASO
         
@@ -542,7 +547,7 @@ class Somn(Env):
             
             self.lucro = self.DE[i].PR - self.DE[i].CO
             
-            self.totPenalty += (self.YA.cont/self.YA.space) * self.lucro
+            self.totPenalty += (self.YA.cont/self.YA.space) * self.lucro * self.tx_penalidade
             # self.totPenalty += (self.YA.cont/self.YA.space) #* (self.DE[i].PR - self.DE[i].CO) * self.DE[i].AM * (self.DE[i].PR - self.DE[i].CO)
             self.totPenalty_VA += (self.YA.cont/self.YA.space)
             self.totPenalty_SU += (self.YA.cont/self.YA.space) 
@@ -575,7 +580,7 @@ class Somn(Env):
         if self.DE[i].ST == -2:
             self.lucro = self.DE[i].PR - self.DE[i].CO
 
-            self.totPenalty += self.lucro         # PENALIDADE PELO DESCARTE
+            self.totPenalty += self.lucro * self.tx_penalidade        # PENALIDADE PELO DESCARTE
             # self.totPenalty += self.normaliza(self.lucro, self.lb_lucro, self.ub_lucro)         # PENALIDADE PELO DESCARTE
             self.totPenalty_VA += self.DE[i].VA
             self.totPenalty_SU += self.DE[i].SU
