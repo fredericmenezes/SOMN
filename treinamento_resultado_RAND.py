@@ -59,8 +59,8 @@ class RAND(OffPolicyAlgorithm):
         self, 
         policy, 
         env, 
-        buffer_size: int = 200_000,
-        batch_size: int = 32, 
+        buffer_size: int = 5_000,
+        batch_size: int = 16, 
         gradient_steps: int = 1,
         **kwargs
     ):
@@ -118,7 +118,7 @@ class RAND(OffPolicyAlgorithm):
         self._setup_learn(total_timesteps, callback, reset_num_timesteps, tb_log_name)
 
         while self.num_timesteps < total_timesteps:
-            action = np.array([self.action_space.sample() for _ in range(self.env.num_envs)])
+            action = np.array([self.action_space.sample() * 0 for _ in range(self.env.num_envs)])
             new_obs, rewards, dones, infos = self.env.step(action)
             self.num_timesteps += self.env.num_envs
             self.replay_buffer.add(self._last_obs, new_obs, action, rewards, dones, infos)
@@ -231,7 +231,7 @@ def train_and_select_best(alg_class, alg_name, config, n_evaluations, total_time
              project=wandb_config['projeto'],
              config = wandb_config,
              group = wandb_config['grupo'],
-             name = f"{alg_name}_comp9_run_{i + 1:02d}",
+             name = f"{alg_name}_comp8_run_{i + 1:02d}",
              save_code = True,
              reinit = True
         )
@@ -252,17 +252,17 @@ def train_and_select_best(alg_class, alg_name, config, n_evaluations, total_time
             best_model = model
             num = i + 1
 
-        model.save(os.path.join("wandb_models", f"{alg_name}_comp9_run_{i + 1:02d}"))
+        model.save(os.path.join("wandb_models", f"{alg_name}_comp8_run_{i + 1:02d}"))
         wandb.finish()
 
-    best_model.save(os.path.join("best_model", f"{alg_name}comp9_run_{num:02d}"))
+    best_model.save(os.path.join("best_model", f"{alg_name}_comp8_run_{num:02d}"))
 
     return best_mean_reward, num
 
 
 if __name__ == "__main__":
     
-    n_evaluations = 3
+    n_evaluations = 1
     total_timesteps = 1_000_000
 
     # Initialize a new wandb run

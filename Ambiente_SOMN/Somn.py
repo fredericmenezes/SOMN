@@ -644,6 +644,9 @@ class Somn(Env):
         wandb.log({
             'Penalidade' : self.penalty,
         })
+        wandb.log({
+            'Carga' : Demand.load,
+        })
         # Gera grafico do Yard (by_frederic)
 
         #INFORMAÇÃO APENAS DE COMO ACABA O EPISÓDIO, BUSCAR LOCAL PARA RECEBER MELHOR INFORMAÇÃO
