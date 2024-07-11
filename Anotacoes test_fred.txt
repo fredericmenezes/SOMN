@@ -16,3 +16,25 @@ MAXDO=500,  #test_fred: mudei de 100 para 500
 Em Somn.py
 linha 156
 self.ub_time = 200 #test_fred: mudei de 100 para 200
+
+#########################################################
+OBS: diminuir o DO e aumentar o atraso real
+
+Em Demand.py
+linha 110
+#test_fred: mudei DO (DO = t + LT), MAXDO agora é 100 me make_env.py.
+self.DO = t + self.LT + random.randint(490,Demand.MAXDO) * 0
+
+Em make_env.py (sem alteração N=10 e MAXDO=100)
+
+Em Somn.py
+
+linha 156
+self.ub_time = 200 #test_fred: mudei de 100 para 200
+
+def plan()
+linha 461
+#test_fred: aumentar o (atraso +60)
+self.DE[i].real_LT = poisson.rvs(mu=(self.DE[i].LT + Demand.load + 60)) # by_frederic
+
+
