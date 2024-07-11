@@ -290,7 +290,7 @@ if __name__ == "__main__":
     #                                                config["ppo"], 
     #                                                n_evaluations, 
     #                                                total_timesteps)
-    random_mean_reward, num_best_random = train_and_select_best("comp10_act=0_t=300",
+    random_mean_reward, num_best_random = train_and_select_best("comp11_act=0_t=200_atraso_real+30",
                                                                 RAND,  
                                                                 "randomico", 
                                                                 config["randomico"], 

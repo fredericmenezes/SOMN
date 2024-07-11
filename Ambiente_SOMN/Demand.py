@@ -106,7 +106,10 @@ class Demand:
         self.err = abs(self.action - self.atraso_real)  # err = 0
 
         self.DI = t
-        self.DO = t + self.LT + random.randint(0,Demand.MAXDO)
+
+        #test_fred: mudei a faixa que era 0 a 100 agora é 90 a 100, MAXDO agora é 100 me make_env.py.
+        #test_fred: voltei a 0 a 100
+        self.DO = t + self.LT + random.randint(0, Demand.MAXDO)
 
         self.SP = self.fun_gamma() ####* 'cpu'.Y   #SPACE CONSUMPTION FACTOR
         self.VA = self.fun_upsilon() ### [0low 1up]

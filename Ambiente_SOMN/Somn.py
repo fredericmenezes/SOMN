@@ -153,7 +153,7 @@ class Somn(Env):
         # time varia de 1 a 100 (era de 1 ate 10*MAXDO + M)
         self.lb_time = 1
         # self.ub_time = 10 * self.MAXDO + self.M
-        self.ub_time = 100
+        self.ub_time = 200 #test_fred: mudei de 100 para 200
 
         # ST varia de -2 a 5
         self.lb_ST = -2
@@ -174,7 +174,8 @@ class Somn(Env):
         # TP varia de 2 a (ub_time + ub_LT + 2) onde 2 e um ruido (troquei 2 pela distribuicao de poisson)
         self.lb_TP = 2
         p = [poisson.rvs(mu=self.ub_LT + MAX_LOAD) for _ in range(10000)]
-        self.MAX_ATRASO = max(p)
+        #test_fred: atraso
+        self.MAX_ATRASO = max(p) + 30
         self.ub_TP = self.ub_time + self.ub_LT + self.MAX_ATRASO
         
         # CO varia de 0 a (MAXFT-1) * (MAXEU-1) * M
@@ -458,7 +459,8 @@ class Somn(Env):
                         self.DE[i].ST = 3  ## produced status --- remember to run time for each case
                         self.OU += self.DE[i].FT  ## CONSOME OS RECURSOS
                         Demand.load = Demand.load + 1
-                        self.DE[i].real_LT = poisson.rvs(mu=(self.DE[i].LT+Demand.load)) # by_frederic
+                        #test_fred: aumentar o atraso real + 30
+                        self.DE[i].real_LT = poisson.rvs(mu=(self.DE[i].LT + Demand.load))+30 # by_frederic
                         self.DE[i].TP = t + self.DE[i].real_LT
                         self.DE[i].atraso_real = abs(self.DE[i].real_LT - self.DE[i].LT)
                         self.DE[i].err = abs(self.DE[i].action - self.DE[i].atraso_real)

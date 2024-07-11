@@ -15,5 +15,6 @@
         ],
         "compounds": []
     },
-    "debugpy.debugJustMyCode": false
+    "debugpy.debugJustMyCode": false,
+    "terminal.integrated.defaultProfile.windows": "Command Prompt"
 }
