@@ -3,7 +3,8 @@
 
 Em Demand.py
 
-linha 109
+linha 110
+#test_fred: mudei a faixa que era 0 a 100 agora é 490 a 500, MAXDO agora é 500 me make_env.py.
 self.DO = t + self.LT + random.randint(490,Demand.MAXDO)
 
 
@@ -14,4 +15,4 @@ MAXDO=500,  #test_fred: mudei de 100 para 500
 
 Em Somn.py
 linha 156
-self.ub_time = 200 #test_fred: mudei de 100 para 300
+self.ub_time = 200 #test_fred: mudei de 100 para 200
