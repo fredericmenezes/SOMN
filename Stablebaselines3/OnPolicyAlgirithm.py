@@ -251,7 +251,7 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         """
         raise NotImplementedError
     
-    def _dump_logs(self, iteration: int) -> None:
+    def _dump_logs(self, iteration: int, tamanho_infos: int) -> None:
         """
         Write log.
 
@@ -266,53 +266,23 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         if len(self.ep_info_buffer) > 0 and len(self.ep_info_buffer[0]) > 0:
             self.logger.record("rollout/ep_rew_mean", safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]))
             self.logger.record("rollout/ep_len_mean", safe_mean([ep_info["l"] for ep_info in self.ep_info_buffer]))
-            # --------- WandB Log ----------- #
-            # para lembrar como estão as variaveis em info:
-            # info = {"rw": reward,
-            #         "rw_pr": rw_pr,                   # reward lucro
-            #         "rw_va": rw_va,                   # reward variabilidade
-            #         "rw_su": rw_su,                   # reward sustentabilidade
-            #         "VA": variabilidade,
-            #         "SU": sustentabilidade,
-            #         "F": F,                           # numero de features (maquinas)
-            #         "acoes": acoes,
-            #         "atrasos_reais": atrasos_reais,   # atrasos para comparar com acoes
-            #         "acao_on_state_plan": self.acao_on_state_plan,
-            #         "carga_on_state_plan": self.carga_on_state_plan,
-            #         "patio_on_state_plan": self.patio_on_state_plan
-            #        }
+            wandb.log("ep_VA_mean", safe_mean([ep_info["VA"] for ep_info in self.ep_info_buffer]))
+            wandb.log("ep_SU_mean", safe_mean([ep_info["SU"] for ep_info in self.ep_info_buffer]))
+            wandb.log("ep_acoes_mean", safe_mean([ep_info["acoes"] for ep_info in self.ep_info_buffer]))
+            wandb.log("ep_F_mean", safe_mean([ep_info["F"] for ep_info in self.ep_info_buffer]))
+            wandb.log("ep_atrasos_reais_mean", safe_mean([ep_info["atrasos_reais"] for ep_info in self.ep_info_buffer]))
             
-            wandb.log({"mean_reward_test": safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
-            wandb.log({"ep_len_mean": safe_mean([ep_info["l"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
-            #wandb.log({"recompensa": safe_mean([ep_info["rw"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
-            # wandb.log({"recompensa_lucro": safe_mean([ep_info["rw_pr"] for ep_info in self.ep_info_buffer]),
-            #            "recompensa_variabilidade": safe_mean([ep_info["rw_va"] for ep_info in self.ep_info_buffer]),
-            #            "recompensa_sustentabilidade": safe_mean([ep_info["rw_su"] for ep_info in self.ep_info_buffer]),
-            #            'timesteps': self.num_timesteps})
-            wandb.log({"Lucro":safe_mean([ep_info["rw_pr"] for ep_info in self.ep_info_buffer]),"timesteps": self.num_timesteps})
-            wandb.log({"Variabilidade":safe_mean([ep_info["rw_va"] for ep_info in self.ep_info_buffer]),"timesteps": self.num_timesteps})
-            wandb.log({"Sutentabilidade":safe_mean([ep_info["rw_su"] for ep_info in self.ep_info_buffer]),"timesteps": self.num_timesteps})
-            # wandb.log({"variabilidade": safe_mean([ep_info["VA"] for ep_info in self.ep_info_buffer]),
-            #            "sustentabilidade": safe_mean([ep_info["SU"] for ep_info in self.ep_info_buffer]),
-            #            'timesteps': self.num_timesteps})
             wandb.log({"VA": safe_mean([va for ep_info in self.ep_info_buffer for va in ep_info["VA"]]), "timesteps": self.num_timesteps})
             wandb.log({"SU": safe_mean([su for ep_info in self.ep_info_buffer for su in ep_info["SU"]]), "timesteps": self.num_timesteps})
             wandb.log({"acoes": safe_mean([acoes for ep_info in self.ep_info_buffer for acoes in ep_info["acoes"]]), "timesteps": self.num_timesteps})
-            # if self.num_timesteps == 1000000:
-            #     F = []
-            #     F = [num_features for ep_info in self.ep_info_buffer for num_features in ep_info["F"]]
-            #     hist_F = np.histogram(F)
-            #     wandb.log({"numero_de_Features": wandb.Histogram(np_histogram=hist_F, num_bins=10),'timesteps': self.num_timesteps})
             wandb.log({"numero_de_Features": safe_mean([f for ep_info in self.ep_info_buffer for f in ep_info["F"]]), 'timesteps': self.num_timesteps})
-            # cargas_on_state_plan = []
-            # cargas_on_state_plan = [carga_on_state_plan for ep_info in self.ep_info_buffer for carga_on_state_plan in ep_info["carga_on_state_plan"]]
-            # for carga in cargas_on_state_plan:
-            #     wandb.log({"carga_on_state_plan": carga,"timesteps": self.num_timesteps})
             
-            # patios_on_state_plan = []
-            # patios_on_state_plan = [patio_on_state_plan for ep_info in self.ep_info_buffer for patio_on_state_plan in ep_info["patio_on_state_plan"]]
-            # for patio in patios_on_state_plan:
-            #     wandb.log({"patio_on_state_plan": patio,"timesteps": self.num_timesteps})
+            
+            wandb.log({"mean_reward_test": safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
+            wandb.log({"ep_len_mean": safe_mean([ep_info["l"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
+            wandb.log({"Lucro":safe_mean([ep_info["rw_pr"] for ep_info in self.ep_info_buffer]),"timesteps": self.num_timesteps})
+            wandb.log({"Variabilidade":safe_mean([ep_info["rw_va"] for ep_info in self.ep_info_buffer]),"timesteps": self.num_timesteps})
+            wandb.log({"Sutentabilidade":safe_mean([ep_info["rw_su"] for ep_info in self.ep_info_buffer]),"timesteps": self.num_timesteps})
 
             if self.num_timesteps > 1 and self.contador == 0 or\
                 self.num_timesteps > 5000 and self.contador == 1 or\
@@ -335,16 +305,11 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 self.num_timesteps > 800000 and self.contador == 18 or\
                 self.num_timesteps > 900000 and self.contador == 19 or\
                 self.num_timesteps > 1000000 and self.contador == 20:
-            # if self.num_timesteps > 1 and self.num_timesteps < 5000 or\
-            #    self.num_timesteps > 9000 and self.num_timesteps < 10000 or\
-            #    self.num_timesteps > 49000 and self.num_timesteps < 50000 or\
-            #    self.num_timesteps > 99000 and self.num_timesteps < 100000 or\
-            #    self.num_timesteps > 249000 and self.num_timesteps < 250000 or\
-            #    self.num_timesteps > 499000 and self.num_timesteps < 500000 or\
-            #    self.num_timesteps > 990000 and self.num_timesteps < 1000000:
                 
-                latest_ep = int(self.n_steps)
-                recent_ep_info = list(self.ep_info_buffer)[-latest_ep:]
+                # latest_ep = int(self.n_steps)
+                # recent_ep_info = list(self.ep_info_buffer)[-latest_ep:]
+                recent_ep_info = list(self.ep_info_buffer[-tamanho_infos:])
+
                 self.contador += 1
 
                 acoes = []
@@ -360,19 +325,6 @@ class OnPolicyAlgorithm(BaseAlgorithm):
                 # atrasos = [atraso for ep_info in self.ep_info_buffer for atraso in ep_info["atrasos_reais"]]
                 atrasos = [atraso for ep_info in recent_ep_info for atraso in ep_info["atrasos_reais"]]
 
-                # hist_acoes = np.histogram(acoes)
-                # hist_acoes_on_state_plan = np.histogram(acoes_on_state_plan)
-                # hist_atrasos = np.histogram(atrasos)
-                # wandb.log({f"acoes (timesteps = {self.num_timesteps})": wandb.Histogram(np_histogram=hist_acoes, num_bins=100),
-                #            f"acoes_on_state_plan (timesteps = {self.num_timesteps})": wandb.Histogram(np_histogram=hist_acoes_on_state_plan, num_bins=100),
-                #            f"atrasos (timesteps = {self.num_timesteps})": wandb.Histogram(np_histogram=hist_atrasos, num_bins=100),
-                #             'timesteps': self.num_timesteps}
-                # )
-                # exemplo
-                # data = [[s] for s in bird_scores]
-                # table = wandb.Table(data=data, columns=["bird_scores"])
-                # wandb.log({'my_histogram': wandb.plot.histogram(table, "bird_scores",
-                #         title="Bird Confidence Scores")})
                 data_acoes = [[i, acoes[i]] for i in range(len(acoes))]
                 table_acoes = wandb.Table(data=data_acoes, columns=["step", "acoes"])
                 fields_acoes = {"value" : "acoes",  "title" : "Ações timesteps = " + str(self.num_timesteps)}
@@ -463,7 +415,10 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             # Display training infos
             if log_interval is not None and iteration % log_interval == 0:
                 assert self.ep_info_buffer is not None
-                self._dump_logs(iteration)
+                # len(self._last_episode_starts) equivale a  lem(dones)
+                # para passar o tamanho da lista de infos já que 
+                # len(infos) é do mesmo tamamanho que len(dones)
+                self._dump_logs(iteration, len(self._last_episode_starts))
 
             self.train()
 

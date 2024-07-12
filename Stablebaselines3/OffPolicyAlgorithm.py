@@ -392,7 +392,7 @@ class OffPolicyAlgorithm(BaseAlgorithm):
             action = buffer_action
         return action, buffer_action
 
-    def _dump_logs(self) -> None:
+    def _dump_logs(self, tamanho_infos) -> None:
         """
         Write log.
         """
@@ -402,15 +402,23 @@ class OffPolicyAlgorithm(BaseAlgorithm):
         if len(self.ep_info_buffer) > 0 and len(self.ep_info_buffer[0]) > 0:
             self.logger.record("rollout/ep_rew_mean", safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]))
             self.logger.record("rollout/ep_len_mean", safe_mean([ep_info["l"] for ep_info in self.ep_info_buffer]))
+            wandb.log("ep_VA_mean", safe_mean([ep_info["VA"] for ep_info in self.ep_info_buffer]))
+            wandb.log("ep_SU_mean", safe_mean([ep_info["SU"] for ep_info in self.ep_info_buffer]))
+            wandb.log("ep_acoes_mean", safe_mean([ep_info["acoes"] for ep_info in self.ep_info_buffer]))
+            wandb.log("ep_F_mean", safe_mean([ep_info["F"] for ep_info in self.ep_info_buffer]))
+            wandb.log("ep_atrasos_reais_mean", safe_mean([ep_info["atrasos_reais"] for ep_info in self.ep_info_buffer]))
+
+            wandb.log({"VA": safe_mean([va for ep_info in self.ep_info_buffer for va in ep_info["VA"]]), "timesteps": self.num_timesteps})
+            wandb.log({"SU": safe_mean([su for ep_info in self.ep_info_buffer for su in ep_info["SU"]]), "timesteps": self.num_timesteps})
+            wandb.log({"acoes": safe_mean([acoes for ep_info in self.ep_info_buffer for acoes in ep_info["acoes"]]), "timesteps": self.num_timesteps})
+            wandb.log({"numero_de_Features": safe_mean([f for ep_info in self.ep_info_buffer for f in ep_info["F"]]), 'timesteps': self.num_timesteps})
+
             wandb.log({"mean_reward_test": safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
             wandb.log({"ep_len_mean": safe_mean([ep_info["l"] for ep_info in self.ep_info_buffer]),'timesteps': self.num_timesteps})
             wandb.log({"Lucro":safe_mean([ep_info["rw_pr"] for ep_info in self.ep_info_buffer]),"timesteps": self.num_timesteps})
             wandb.log({"Variabilidade":safe_mean([ep_info["rw_va"] for ep_info in self.ep_info_buffer]),"timesteps": self.num_timesteps})
             wandb.log({"Sutentabilidade":safe_mean([ep_info["rw_su"] for ep_info in self.ep_info_buffer]),"timesteps": self.num_timesteps})
-            wandb.log({"VA": safe_mean([va for ep_info in self.ep_info_buffer for va in ep_info["VA"]]), "timesteps": self.num_timesteps})
-            wandb.log({"SU": safe_mean([su for ep_info in self.ep_info_buffer for su in ep_info["SU"]]), "timesteps": self.num_timesteps})
-            wandb.log({"acoes": safe_mean([acoes for ep_info in self.ep_info_buffer for acoes in ep_info["acoes"]]), "timesteps": self.num_timesteps})
-            wandb.log({"numero_de_Features": safe_mean([f for ep_info in self.ep_info_buffer for f in ep_info["F"]]), 'timesteps': self.num_timesteps})
+            
             if self.num_timesteps > 1 and self.contador == 0 or\
                 self.num_timesteps > 5000 and self.contador == 1 or\
                 self.num_timesteps > 6000 and self.contador == 2 or\
@@ -435,7 +443,7 @@ class OffPolicyAlgorithm(BaseAlgorithm):
 
                 # latest_ep = int(self.train_freq.frequency)
                 # recent_ep_info = list(self.ep_info_buffer)[-latest_ep:]
-                recent_ep_info = list(self.ep_info_buffer)
+                recent_ep_info = list(self.ep_info_buffer[-tamanho_infos:])
                 
                 self.contador += 1
 
@@ -653,7 +661,7 @@ class OffPolicyAlgorithm(BaseAlgorithm):
 
                     # Log training infos
                     if log_interval is not None and self._episode_num % log_interval == 0:
-                        self._dump_logs()
+                        self._dump_logs(len(infos))
                         acoes = actions.tolist()
                         wandb.log({'Actions':  np.mean(acoes),
                                 'timesteps': self.num_timesteps,
