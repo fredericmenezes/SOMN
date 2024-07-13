@@ -12,11 +12,8 @@ runs/
 # Virtual envs
 .venv/
 /Ambiente_SOMN/__pycache__
-/Ambiente_SOMN/__pycache__
-/Ambiente_SOMN/__pycache__
-*.pyc
 *.pyc
 Ambiente_SOMN/__pycache__/Demand.cpython-310.pyc
 Ambiente_SOMN/__pycache__/Somn.cpython-310.pyc
-*.pyc
 Ambiente_SOMN/__pycache__/Yard.cpython-310.pyc
+Ambiente_SOMN/__pycache__/custom_make_env.cpython-310.pyc
