@@ -1,4 +1,4 @@
-program: train_resultado_3_ppo_lstm.py
+program: train_resultado_3_sweep_ppo_lstm.py
 projeto: 'Resultados_dissertacao_3'
 grupo: ppo_lstm
 method: bayes

@@ -273,7 +273,7 @@ if __name__ == "__main__":
     wandb.tensorboard.patch(root_logdir="./runs")
 
     # Set up your default hyperparameters
-    with open("./config_ppo_lstm_3.yaml") as file:
+    with open("./config_sweep_3_ppo_lstm.yaml") as file:
             config = yaml.load(file, Loader=yaml.FullLoader)
 
     _ = train_and_select_best(RecurrentPPO, 
