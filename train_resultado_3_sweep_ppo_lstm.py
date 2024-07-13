@@ -264,7 +264,7 @@ def train_and_select_best(alg_class, alg_name, wandb_config, n_evaluations, tota
 if __name__ == "__main__":
     
     n_evaluations = 1
-    total_timesteps = 1_000_000
+    total_timesteps = 100_000
 
     # Initialize a new wandb run
     if len(wandb.patched["tensorboard"]) > 0:
