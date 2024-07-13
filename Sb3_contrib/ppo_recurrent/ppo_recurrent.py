@@ -223,6 +223,7 @@ class RecurrentPPO(OnPolicyAlgorithm):
         # Switch to eval mode (this affects batch norm / dropout)
         self.policy.set_training_mode(False)
 
+        acoes = []
         n_steps = 0
         rollout_buffer.reset()
         # Sample new weights for the state dependent exploration
@@ -287,6 +288,176 @@ class RecurrentPPO(OnPolicyAlgorithm):
                         terminal_value = self.policy.predict_values(terminal_obs, terminal_lstm_state, episode_starts)[0]
                     rewards[idx] += self.gamma * terminal_value
 
+                    acoes2 = actions.tolist()
+                    wandb.log({'Actions':  np.mean(acoes2),
+                                'timesteps': self.num_timesteps,
+                                # 'mean_reward_test': safe_mean([ep_info["r"] for ep_info in self.ep_info_buffer]),
+                                }
+                        )
+                    acoes.extend(acoes2)
+
+
+
+
+            if len(acoes) > 0 and (self.num_timesteps > 1 and self.contador2 == 0 or\
+                self.num_timesteps > 5000 and self.contador2 == 1 or\
+                self.num_timesteps > 6000 and self.contador2 == 2 or\
+                self.num_timesteps > 7000 and self.contador2 == 3 or\
+                self.num_timesteps > 8000 and self.contador2 == 4 or\
+                self.num_timesteps > 9000 and self.contador2 == 5 or\
+                self.num_timesteps > 10000 and self.contador2 == 6 or\
+                self.num_timesteps > 20000 and self.contador2 == 7 or\
+                self.num_timesteps > 30000 and self.contador2 == 8 or\
+                self.num_timesteps > 40000 and self.contador2 == 9 or\
+                self.num_timesteps > 50000 and self.contador2 == 10 or\
+                self.num_timesteps > 100000 and self.contador2 == 11 or\
+                self.num_timesteps > 200000 and self.contador2 == 12 or\
+                self.num_timesteps > 300000 and self.contador2 == 13 or\
+                self.num_timesteps > 400000 and self.contador2 == 14 or\
+                self.num_timesteps > 500000 and self.contador2 == 15 or\
+                self.num_timesteps > 600000 and self.contador2 == 16 or\
+                self.num_timesteps > 700000 and self.contador2 == 17 or\
+                self.num_timesteps > 800000 and self.contador2 == 18 or\
+                self.num_timesteps > 900000 and self.contador2 == 19 or\
+                self.num_timesteps > 1000000 and self.contador2 == 20):
+                
+                # latest_ep = int(self.n_steps)
+                # recent_ep_info = list(self.ep_info_buffer)[-latest_ep:]
+
+                # recent_ep_info = list(self.ep_info_buffer)[-n_rollout_steps:]
+                # print(f"tamanho do ep_info_buffer: {len(list(self.ep_info_buffer))}")
+                # ultimo_ep_info = self.ep_info_buffer[-1]
+
+                self.contador2 += 1
+
+                # acoes = []
+                # ultimo_ep_acoes = []
+                # acoes_on_state_plan = []
+                # atrasos = []
+                # ultimo_ep_atrasos = []
+
+                # acoes = [acao for ep_info in self.ep_info_buffer for acao in ep_info["acoes"]]
+                # acoes = [acao for ep_info in recent_ep_info for acao in ep_info["acoes"]]
+                # ultimo_ep_acoes = [acao for acao in ultimo_ep_info["acoes"]]
+                # ultimo_ep_acoes = list(acoes[-tamanho_infos:])
+
+                # acoes_on_state_plan = [acao_on_state_plan for ep_info in self.ep_info_buffer for acao_on_state_plan in ep_info["acao_on_state_plan"]]
+                # acoes_on_state_plan = [acao_on_state_plan for ep_info in recent_ep_info for acao_on_state_plan in ep_info["acao_on_state_plan"]]
+
+                # atrasos = [atraso for ep_info in self.ep_info_buffer for atraso in ep_info["atrasos_reais"]]
+                # atrasos = [atraso for ep_info in recent_ep_info for atraso in ep_info["atrasos_reais"]]
+                # ultimo_ep_atrasos = [atrasos for atrasos in ultimo_ep_info["atrasos_reais"]]
+
+                data_acoes = [[i, acoes[i]] for i in range(len(acoes))]
+                table_acoes = wandb.Table(data=data_acoes, columns=["step", "acoes"])
+                fields_acoes = {"value" : "acoes",  "title" : f"Ações (passo = {self.num_timesteps})"}
+                custom_acoes_histogram = wandb.plot_table(
+                    vega_spec_name="lacmor/histograma_preset_9",
+                    data_table = table_acoes,
+                    fields = fields_acoes)
+                wandb.log({f"actions_{self.contador})": custom_acoes_histogram})
+
+
+
+
+
+
+
+
+
+
+
+
+                    # if len(self.ep_info_buffer) > 0 and len(self.ep_info_buffer[0]) > 0:
+
+                    #     if self.num_timesteps > 1 and self.contador == 0 or\
+                    #         self.num_timesteps > 5000 and self.contador == 1 or\
+                    #         self.num_timesteps > 6000 and self.contador == 2 or\
+                    #         self.num_timesteps > 7000 and self.contador == 3 or\
+                    #         self.num_timesteps > 8000 and self.contador == 4 or\
+                    #         self.num_timesteps > 9000 and self.contador == 5 or\
+                    #         self.num_timesteps > 10000 and self.contador == 6 or\
+                    #         self.num_timesteps > 20000 and self.contador == 7 or\
+                    #         self.num_timesteps > 30000 and self.contador == 8 or\
+                    #         self.num_timesteps > 40000 and self.contador == 9 or\
+                    #         self.num_timesteps > 50000 and self.contador == 10 or\
+                    #         self.num_timesteps > 100000 and self.contador == 11 or\
+                    #         self.num_timesteps > 200000 and self.contador == 12 or\
+                    #         self.num_timesteps > 300000 and self.contador == 13 or\
+                    #         self.num_timesteps > 400000 and self.contador == 14 or\
+                    #         self.num_timesteps > 500000 and self.contador == 15 or\
+                    #         self.num_timesteps > 600000 and self.contador == 16 or\
+                    #         self.num_timesteps > 700000 and self.contador == 17 or\
+                    #         self.num_timesteps > 800000 and self.contador == 18 or\
+                    #         self.num_timesteps > 900000 and self.contador == 19 or\
+                    #         self.num_timesteps > 1000000 and self.contador == 20:
+                            
+                    #         # latest_ep = int(self.n_steps)
+                    #         # recent_ep_info = list(self.ep_info_buffer)[-latest_ep:]
+
+                    #         recent_ep_info = list(self.ep_info_buffer)[-len(infos):]
+                    #         # print(f"tamanho do ep_info_buffer: {len(list(self.ep_info_buffer))}")
+                    #         ultimo_ep_info = self.ep_info_buffer[-1]
+
+                    #         self.contador += 1
+
+                    #         # acoes = []
+                    #         ultimo_ep_acoes = []
+                    #         acoes_on_state_plan = []
+                    #         atrasos = []
+                    #         ultimo_ep_atrasos = []
+
+                    #         # acoes = [acao for ep_info in self.ep_info_buffer for acao in ep_info["acoes"]]
+                    #         acoes = [acao for ep_info in recent_ep_info for acao in ep_info["acoes"]]
+                    #         # ultimo_ep_acoes = [acao for acao in ultimo_ep_info["acoes"]]
+                    #         ultimo_ep_acoes = list(acoes[-len(infos):])
+
+                    #         # acoes_on_state_plan = [acao_on_state_plan for ep_info in self.ep_info_buffer for acao_on_state_plan in ep_info["acao_on_state_plan"]]
+                    #         acoes_on_state_plan = [acao_on_state_plan for ep_info in recent_ep_info for acao_on_state_plan in ep_info["acao_on_state_plan"]]
+
+                    #         # atrasos = [atraso for ep_info in self.ep_info_buffer for atraso in ep_info["atrasos_reais"]]
+                    #         atrasos = [atraso for ep_info in recent_ep_info for atraso in ep_info["atrasos_reais"]]
+                    #         ultimo_ep_atrasos = [atrasos for atrasos in ultimo_ep_info["atrasos_reais"]]
+
+                    #         data_acoes = [[i, acoes[i]] for i in range(len(acoes))]
+                    #         table_acoes = wandb.Table(data=data_acoes, columns=["step", "acoes"])
+                    #         fields_acoes = {"value" : "acoes",  "title" : f"Ações timesteps = {self.num_timesteps}"}
+                    #         custom_acoes_histogram = wandb.plot_table(
+                    #             vega_spec_name="lacmor/histograma_preset_9",
+                    #             data_table = table_acoes,
+                    #             fields = fields_acoes)
+                    #         wandb.log({f"actions_{self.contador})": custom_acoes_histogram})
+                            
+                    #         ultimo_data_acoes = [[i, ultimo_ep_acoes[i]] for i in range(len(ultimo_ep_acoes))]
+                    #         ultimo_table_acoes = wandb.Table(data=ultimo_data_acoes, columns=["step", "acoes"])
+                    #         fields_ultimo_acoes = {"value" : "acoes",  "title" : f"Ações timesteps = {self.num_timesteps}"}
+                    #         ultimo_custom_acoes_histogram = wandb.plot_table(
+                    #             vega_spec_name="lacmor/histograma_preset_10",
+                    #             data_table = ultimo_table_acoes,
+                    #             fields = fields_ultimo_acoes)
+                    #         wandb.log({f"ultimo_ep_acoes_{self.contador}": ultimo_custom_acoes_histogram})
+
+                            
+                    #         data_atrasos = [[i, acoes[i], atrasos[i]] for i in range(len(atrasos))]
+                    #         table_atrasos = wandb.Table(data=data_atrasos, columns=["step", "acoes", "atrasos"])
+                    #         fields_atrasos = {"value" : "atrasos",  "title" : f"Atrasos reais timesteps = {self.num_timesteps}"}
+                    #         custom_atrasos_histogram1 = wandb.plot_table(
+                    #             vega_spec_name="lacmor/histograma_preset_12",
+                    #             data_table = table_atrasos,
+                    #             fields = fields_atrasos)
+                    #         wandb.log({f"atrasos_reais_{self.contador}": custom_atrasos_histogram1})
+                            
+                    #         ultimo_data_atrasos = [[i, ultimo_ep_acoes[i], ultimo_ep_atrasos[i]] for i in range(len(ultimo_ep_atrasos))]
+                    #         ultimo_table_atrasos = wandb.Table(data=ultimo_data_atrasos, columns=["step", "acoes", "atrasos"])
+                    #         fields_ultimo_atrasos = {"value" : "atrasos",  "title" : f"Atrasos reais timesteps = {self.num_timesteps}"}
+                    #         ultimo_custom_atrasos_histogram1 = wandb.plot_table(
+                    #             vega_spec_name="lacmor/histograma_preset_11",
+                    #             data_table = ultimo_table_atrasos,
+                    #             fields = fields_ultimo_atrasos)
+                    #         wandb.log({f"ultimo_ep_atrasos_reais_{self.contador}": ultimo_custom_atrasos_histogram1})
+
+
+
             rollout_buffer.add(
                 self._last_obs,
                 actions,
@@ -329,6 +500,9 @@ class RecurrentPPO(OnPolicyAlgorithm):
         entropy_losses = []
         pg_losses, value_losses = [], []
         clip_fractions = []
+
+        acoes = []
+        acoes_ep = []
 
         continue_training = True
 
@@ -374,6 +548,7 @@ class RecurrentPPO(OnPolicyAlgorithm):
                 pg_losses.append(policy_loss.item())
                 clip_fraction = th.mean((th.abs(ratio - 1) > clip_range).float()[mask]).item()
                 clip_fractions.append(clip_fraction)
+                acoes.extend(actions.tolist())
 
                 if self.clip_range_vf is None:
                     # No clipping
@@ -423,6 +598,7 @@ class RecurrentPPO(OnPolicyAlgorithm):
                 th.nn.utils.clip_grad_norm_(self.policy.parameters(), self.max_grad_norm)
                 self.policy.optimizer.step()
 
+            acoes_ep.append(acoes)
             if not continue_training:
                 break
 
@@ -462,6 +638,101 @@ class RecurrentPPO(OnPolicyAlgorithm):
                    'loss': loss.item()
                    }
         )
+
+
+        # if len(self.ep_info_buffer) > 0 and len(self.ep_info_buffer[0]) > 0:
+
+        #     if self.num_timesteps > 1 and self.contador == 0 or\
+        #         self.num_timesteps > 5000 and self.contador == 1 or\
+        #         self.num_timesteps > 6000 and self.contador == 2 or\
+        #         self.num_timesteps > 7000 and self.contador == 3 or\
+        #         self.num_timesteps > 8000 and self.contador == 4 or\
+        #         self.num_timesteps > 9000 and self.contador == 5 or\
+        #         self.num_timesteps > 10000 and self.contador == 6 or\
+        #         self.num_timesteps > 20000 and self.contador == 7 or\
+        #         self.num_timesteps > 30000 and self.contador == 8 or\
+        #         self.num_timesteps > 40000 and self.contador == 9 or\
+        #         self.num_timesteps > 50000 and self.contador == 10 or\
+        #         self.num_timesteps > 100000 and self.contador == 11 or\
+        #         self.num_timesteps > 200000 and self.contador == 12 or\
+        #         self.num_timesteps > 300000 and self.contador == 13 or\
+        #         self.num_timesteps > 400000 and self.contador == 14 or\
+        #         self.num_timesteps > 500000 and self.contador == 15 or\
+        #         self.num_timesteps > 600000 and self.contador == 16 or\
+        #         self.num_timesteps > 700000 and self.contador == 17 or\
+        #         self.num_timesteps > 800000 and self.contador == 18 or\
+        #         self.num_timesteps > 900000 and self.contador == 19 or\
+        #         self.num_timesteps > 1000000 and self.contador == 20:
+                
+        #         # latest_ep = int(self.n_steps)
+        #         # recent_ep_info = list(self.ep_info_buffer)[-latest_ep:]
+
+        #         recent_ep_info = list(self.ep_info_buffer)[-len(acoes):]
+        #         # print(f"tamanho do ep_info_buffer: {len(list(self.ep_info_buffer))}")
+        #         ultimo_ep_info = self.ep_info_buffer[-1]
+
+        #         self.contador += 1
+
+        #         # acoes = []
+        #         ultimo_ep_acoes = []
+        #         acoes_on_state_plan = []
+        #         atrasos = []
+        #         ultimo_ep_atrasos = []
+
+        #         # acoes = [acao for ep_info in self.ep_info_buffer for acao in ep_info["acoes"]]
+        #         # acoes = [acao for ep_info in recent_ep_info for acao in ep_info["acoes"]]
+        #         # ultimo_ep_acoes = [acao for acao in ultimo_ep_info["acoes"]]
+        #         ultimo_ep_acoes = list(acoes[-len(acoes):])
+
+        #         # acoes_on_state_plan = [acao_on_state_plan for ep_info in self.ep_info_buffer for acao_on_state_plan in ep_info["acao_on_state_plan"]]
+        #         acoes_on_state_plan = [acao_on_state_plan for ep_info in recent_ep_info for acao_on_state_plan in ep_info["acao_on_state_plan"]]
+
+        #         # atrasos = [atraso for ep_info in self.ep_info_buffer for atraso in ep_info["atrasos_reais"]]
+        #         atrasos = [atraso for ep_info in recent_ep_info for atraso in ep_info["atrasos_reais"]]
+        #         ultimo_ep_atrasos = [atrasos for atrasos in ultimo_ep_info["atrasos_reais"]]
+
+        #         data_acoes = [[i, acoes[i]] for i in range(len(acoes))]
+        #         table_acoes = wandb.Table(data=data_acoes, columns=["step", "acoes"])
+        #         fields_acoes = {"value" : "acoes",  "title" : f"Ações timesteps = {self.num_timesteps}"}
+        #         custom_acoes_histogram = wandb.plot_table(
+        #             vega_spec_name="lacmor/histograma_preset_9",
+        #             data_table = table_acoes,
+        #             fields = fields_acoes)
+        #         wandb.log({f"actions_{self.contador})": custom_acoes_histogram})
+                
+        #         ultimo_data_acoes = [[i, ultimo_ep_acoes[i]] for i in range(len(ultimo_ep_acoes))]
+        #         ultimo_table_acoes = wandb.Table(data=ultimo_data_acoes, columns=["step", "acoes"])
+        #         fields_ultimo_acoes = {"value" : "acoes",  "title" : f"Ações timesteps = {self.num_timesteps}"}
+        #         ultimo_custom_acoes_histogram = wandb.plot_table(
+        #             vega_spec_name="lacmor/histograma_preset_10",
+        #             data_table = ultimo_table_acoes,
+        #             fields = fields_ultimo_acoes)
+        #         wandb.log({f"ultimo_ep_acoes_{self.contador}": ultimo_custom_acoes_histogram})
+
+                
+        #         data_atrasos = [[i, acoes[i], atrasos[i]] for i in range(len(atrasos))]
+        #         table_atrasos = wandb.Table(data=data_atrasos, columns=["step", "acoes", "atrasos"])
+        #         fields_atrasos = {"value" : "atrasos",  "title" : f"Atrasos reais timesteps = {self.num_timesteps}"}
+        #         custom_atrasos_histogram1 = wandb.plot_table(
+        #             vega_spec_name="lacmor/histograma_preset_12",
+        #             data_table = table_atrasos,
+        #             fields = fields_atrasos)
+        #         wandb.log({f"atrasos_reais_{self.contador}": custom_atrasos_histogram1})
+                
+        #         ultimo_data_atrasos = [[i, ultimo_ep_acoes[i], ultimo_ep_atrasos[i]] for i in range(len(ultimo_ep_atrasos))]
+        #         ultimo_table_atrasos = wandb.Table(data=ultimo_data_atrasos, columns=["step", "acoes", "atrasos"])
+        #         fields_ultimo_atrasos = {"value" : "atrasos",  "title" : f"Atrasos reais timesteps = {self.num_timesteps}"}
+        #         ultimo_custom_atrasos_histogram1 = wandb.plot_table(
+        #             vega_spec_name="lacmor/histograma_preset_11",
+        #             data_table = ultimo_table_atrasos,
+        #             fields = fields_ultimo_atrasos)
+        #         wandb.log({f"ultimo_ep_atrasos_reais_{self.contador}": ultimo_custom_atrasos_histogram1})
+
+
+
+
+
+
 
     def learn(
         self: SelfRecurrentPPO,

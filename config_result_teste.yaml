@@ -1,0 +1,61 @@
+
+
+ppo_lstm:
+
+  projeto: 'Resultados_teste'
+  grupo: 'ppo_lstm'
+  atraso: -1
+  batch_size: 256
+  clip_range: 0.1
+  ent_coef: 0.08075713262847144
+  gae_lambda: 0.95
+  gamma: 0.9999
+  learning_rate: 0.371916582833758
+  max_grad_norm: 0.9
+  n_epochs: 20
+  n_steps: 512
+  objetivo: 0
+  vf_coef: 0.011498497781090132
+
+ppo:
+
+  projeto: 'Resultados_teste'
+  grupo: 'ppo'
+  atraso: -1
+  batch_size: 256
+  clip_range: 0.2794483042430038
+  ent_coef: 0.002608094931216046
+  gae_lambda: 0.842687013638654
+  gamma: 0.9181244544250098
+  learning_rate: 0.012493229804787403
+  max_grad_norm: 0.7643398933249385
+  n_epochs: 25
+  n_steps: 128
+  objetivo: 0
+  target_kl: 0.011310485292843255
+  vf_coef: 0.6940340633011972
+
+dqn:
+
+  projeto: 'Resultados_teste'
+  grupo: 'dqn'
+  atraso: -1
+  batch_size: 128
+  buffer_size: 200000
+  exploration_final_eps: 0.04288701052307786
+  exploration_fraction: 0.2453438645250582
+  gamma: 0.9449903680839068
+  gradient_steps: 8
+  learning_rate: 2.379400483008385e-05
+  learning_starts: 128
+  max_grad_norm: 1.915553030648168
+  objetivo: 0
+  target_update_interval: 1000
+  train_freq: 16
+
+randomico:
+  projeto: 'Resultados_teste'
+  grupo: 'randomico'
+  atraso: -1
+  objetivo: 0
+  buffer_size: 5000

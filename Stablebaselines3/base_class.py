@@ -136,6 +136,7 @@ class BaseAlgorithm(ABC):
 
         # para contar os histogramas de acoes e atrasos em OnPolicyAlgirithm
         self.contador = 0
+        self.contador2 = 0
 
         self.num_timesteps = 0
         # Used for updating schedules
@@ -416,6 +417,7 @@ class BaseAlgorithm(ABC):
 
         if reset_num_timesteps:
             self.contador = 0
+            self.contador2 = 0
             self.num_timesteps = 0
             self._episode_num = 0
         else:
